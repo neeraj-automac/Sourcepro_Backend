@@ -60,24 +60,30 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware'
 ]
 #
-# CORS_ORIGIN_ALLOW_ALL = False
-CORS_ORIGIN_WHITELIST = (
-        'http://localhost:3000',
-        'http://3.110.105.9:3000',
-        'http://192.168.29.74:3000',
-        'http://192.168.0.106:3000',
-    )
-#
+
+
+#same origin settings starts here-----------
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'http://3.110.105.9:3000',
     'http://192.168.29.74:3000',
     'http://192.168.0.106:3000',
     ]
+
 CORS_ALLOW_CREDENTIALS=True
+#------same origin settings ends here-------
 
+
+
+# CORS_ORIGIN_WHITELIST = (
+#         'http://localhost:3000',
+#         'http://3.110.105.9:3000',
+#         'http://192.168.29.74:3000',
+#         'http://192.168.0.106:3000',
+#     )
+
+# CORS_ORIGIN_ALLOW_ALL = False
 # CORS_ALLOW_ALL_ORIGINS = True
-
 # CSRF_COOKIE_SECURE = False
 # SESSION_COOKIE_SECURE = False
 # CSRF_COOKIE_SAMESITE = 'None'
