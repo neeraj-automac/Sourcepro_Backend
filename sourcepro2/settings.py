@@ -9,11 +9,13 @@ https://docs.djangoproject.com/en/2.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
-
+from pathlib import Path
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = Path(__file__).resolve().parent.parent
+print("BASE_DIRRRRRRRRR", BASE_DIR)
 
 
 # Quick-start development settings - unsuitable for production
@@ -26,7 +28,7 @@ SECRET_KEY = '25hvcpi(fa3liem*9qj$@slda5kh7cy539@11_e6de$mkx@8g)'
 DEBUG = True
 
 # ALLOWED_HOSTS = ['sourceproenv.eba-mi9yupsf.us-west-2.elasticbeanstalk.com', '127.0.0.1','65.0.154.172','192.168.29.74',]
-ALLOWED_HOSTS = ['192.168.1.163','192.168.7.147','192.168.29.220','192.168.0.104','192.168.0.105','127.0.0.1',]
+ALLOWED_HOSTS = ['3.110.168.213','192.168.29.220','127.0.0.1',]
 
 
 # Application definition
@@ -64,10 +66,10 @@ MIDDLEWARE = [
 
 #same origin settings starts here-----------
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
-    'http://3.110.105.9:3000',
+
+
     'http://192.168.29.74:3000',
-    'http://192.168.0.106:3000',
+
     ]
 
 CORS_ALLOW_CREDENTIALS=True
@@ -114,6 +116,7 @@ ROOT_URLCONF = 'sourcepro2.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        # 'DIRS': [os.path.join(BASE_DIR,'build')],
         'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -206,6 +209,18 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+# STATICFILES_DIRS=[
+#     os.path.join(BASE_DIR, 'build/static'),
+#
+# ]
+
+# STATIC_ROOT= os.path.join(BASE_DIR, 'static') # settings affected at Deployment
+
+#-----below static files dirs affect at development time
+# STATICFILES_DIRS=[
+#     os.path.join(BASE_DIR, "static_cdn"),
+#     os.path.join('build','static'),
+# ]
 
 
 REST_FRAMEWORK = {
