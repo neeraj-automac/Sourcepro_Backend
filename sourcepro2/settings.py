@@ -28,7 +28,7 @@ SECRET_KEY = '25hvcpi(fa3liem*9qj$@slda5kh7cy539@11_e6de$mkx@8g)'
 DEBUG = True
 
 # ALLOWED_HOSTS = ['sourceproenv.eba-mi9yupsf.us-west-2.elasticbeanstalk.com', '127.0.0.1','65.0.154.172','192.168.29.74',]
-ALLOWED_HOSTS = ['3.110.168.213','192.168.29.220','127.0.0.1',]
+ALLOWED_HOSTS = ['172.31.2.182','3.110.168.213','192.168.29.220','127.0.0.1',]
 
 
 # Application definition
