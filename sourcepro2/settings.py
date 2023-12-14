@@ -65,14 +65,14 @@ MIDDLEWARE = [
 
 
 #same origin settings starts here-----------
-CORS_ALLOWED_ORIGINS = [
-
-    'http://localhost:3000',
-    'http://192.168.29.74:3000',
-
-    ]
-
-CORS_ALLOW_CREDENTIALS=True
+# CORS_ALLOWED_ORIGINS = [
+#
+#     'http://localhost:3000',
+#     'http://192.168.29.74:3000',
+#
+#     ]
+#
+# CORS_ALLOW_CREDENTIALS=True
 #------same origin settings ends here-------
 
 
@@ -116,8 +116,8 @@ ROOT_URLCONF = 'sourcepro2.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        # 'DIRS': [os.path.join(BASE_DIR,'build')],
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR,'build')],
+        # 'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -209,10 +209,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-# STATICFILES_DIRS=[
-#     os.path.join(BASE_DIR, 'build/static'),
-#
-# ]
+STATICFILES_DIRS=[
+    os.path.join(BASE_DIR, 'build/static'),
+
+]
+
+
+
 
 # STATIC_ROOT= os.path.join(BASE_DIR, 'static') # settings affected at Deployment
 
