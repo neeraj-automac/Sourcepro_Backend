@@ -65,14 +65,14 @@ MIDDLEWARE = [
 
 
 #same origin settings starts here-----------
-# CORS_ALLOWED_ORIGINS = [
-#
-#     'http://localhost:3000',
-#     'http://192.168.29.74:3000',
-#
-#     ]
-#
-# CORS_ALLOW_CREDENTIALS=True
+CORS_ALLOWED_ORIGINS = [
+
+    'http://localhost:3000',
+    'http://192.168.29.74:3000',
+
+    ]
+
+CORS_ALLOW_CREDENTIALS=True
 #------same origin settings ends here-------
 
 

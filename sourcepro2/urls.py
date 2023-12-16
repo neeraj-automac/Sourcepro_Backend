@@ -28,19 +28,9 @@ urlpatterns = [
 
     path('home/', TemplateView.as_view(template_name='index.html')),
     path('mycourses/', TemplateView.as_view(template_name='index.html')),
-    path('usr_course_page/', TemplateView.as_view(template_name='index.html')),
-    path('usr_course_page_lesson/', TemplateView.as_view(template_name='index.html')),
-    path('faq/', TemplateView.as_view(template_name='index.html')),
-    path('learners_count/', TemplateView.as_view(template_name='index.html')),
-    path('likes_count/', TemplateView.as_view(template_name='index.html')),
-    path('quiz/',  TemplateView.as_view(template_name='index.html')),
-    # path('course_page/',views.course_page),
-    # path('quiz_result/',views.quiz_result),
-    path('quiz_attempt/', TemplateView.as_view(template_name='index.html')),
-    path('user_details/',  TemplateView.as_view(template_name='index.html')),
-    # path('lesson_details/',views.lesson_details),
-    path('change_password/',  TemplateView.as_view(template_name='index.html')),
-    path('training_subscription/', TemplateView.as_view(template_name='index.html')),
-    path('next_lesson/', TemplateView.as_view(template_name='index.html')),
+    path('changepassword', TemplateView.as_view(template_name='index.html')),
+    path('mydetails/', TemplateView.as_view(template_name='index.html')),
+    path('trainingsubscriptions/', TemplateView.as_view(template_name='index.html')),
+    # path('quiz/',  TemplateView.as_view(template_name='index.html')),
 
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
