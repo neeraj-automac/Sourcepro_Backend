@@ -31,6 +31,9 @@ urlpatterns = [
     path('changepassword', TemplateView.as_view(template_name='index.html')),
     path('mydetails/', TemplateView.as_view(template_name='index.html')),
     path('trainingsubscriptions/', TemplateView.as_view(template_name='index.html')),
+    # path('forgot-password/set-new-password', TemplateView.as_view(template_name='index.html')),
+    path('changepassword', TemplateView.as_view(template_name='index.html')),
+
     # path('quiz/',  TemplateView.as_view(template_name='index.html')),
 
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

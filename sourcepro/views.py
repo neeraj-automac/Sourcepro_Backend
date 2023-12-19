@@ -177,30 +177,28 @@ def logout_view(request):
 def set_new_password_send_otp(request):
 
     # SCREEN 5-----------------
-    # print(request.user)
-    if request.user.is_authenticated:
-        # print(request.data)
-        print(request.user)
-        # a=User.objects.get(username='neerajpynam3@gmail.com')
-        a=request.data
-        email = request.data.get('email')
-        queryset=User.objects.filter(username=email).exists()
-        # print('***querset',queryset)
-        # print('*****email',email)
-        if queryset:
-            otp_code = ''.join([str(random.randint(0, 9)) for i in range(6)])
-            email_body = f'''<p>Hey, here is your One Time Password for password reset:{otp_code}</p>'''
-            send_mail('Source_Pro  Email Verification Code', '', from_email=settings.EMAIL_HOST_USER,
-                          recipient_list=[email, ], html_message=email_body)
-            user = User_details.objects.get(business_email=email)
-            # print(user)
-            user.otp = otp_code
-            user.save()
-            return JsonResponse({'status':'OTP sent successfully'})
-        return JsonResponse({"status":"Please_provide_valid_email"})
 
-    else:
-        return JsonResponse({"status":"unauthorized_user"})
+    print(request.data)
+    # print(request.user)
+    # a=User.objects.get(username='neerajpynam3@gmail.com')
+    # a=request.data
+    email = request.data.get('email')
+    queryset=User.objects.filter(username=email).exists()
+    # print('***querset',queryset)
+    # print('*****email',email)
+    if queryset:
+        otp_code = ''.join([str(random.randint(0, 9)) for i in range(6)])
+        email_body = f'''<p>Hey, here is your One Time Password for password reset:{otp_code}</p>'''
+        send_mail('Source_Pro  Email Verification Code', '', from_email=settings.EMAIL_HOST_USER,
+                      recipient_list=[email, ], html_message=email_body)
+        user = User_details.objects.get(business_email=email)
+        # print(user)
+        user.otp = otp_code
+        user.save()
+        return JsonResponse({'status':'OTP sent successfully'})
+    return JsonResponse({"status":"Please_provide_valid_email"})
+
+
 
 
 @api_view(['POST'])
@@ -208,40 +206,40 @@ def set_new_password(request):
 
     #SCREEN 6,7 -----------------
 
-    if request.user.is_authenticated:
-        user=request.user
-        email=request.data['email']
-        queryset = User.objects.filter(username=email).exists()
-        if queryset:
+    # if request.user.is_authenticated:
+        # user=request.user
+    email=request.data['email']
+    queryset = User.objects.filter(username=email).exists()
+    if queryset:
 
-            user_business_email = User_details.objects.get(business_email=email)
-            user_business_email_otp=user_business_email.otp
-            # print('otppppppp', user_business_email_otp)
-            if user_business_email_otp==request.data['otp']:
-                current_user=User.objects.get(username=user_business_email)
-                current_password=User.objects.get(username=user_business_email).password
-                # print('current_password',current_password)
-                # print('newpassword_hashed',make_password(request.data['password']))
-                # print(check_password(request.data['password'],current_password ))
-                if not check_password(request.data['password'],current_password):
-                    # print(check_password(current_password,request.data['password']))
-                    # print("setting password")
-                    current_user.set_password(request.data['password'])
-                    current_user.save()
-                    return JsonResponse({"status": "Successfull"})
-
-
-                return JsonResponse({"status":"current_password_cannot_be_set_as_new_password"})
+        user_business_email = User_details.objects.get(business_email=email)
+        user_business_email_otp=user_business_email.otp
+        # print('otppppppp', user_business_email_otp)
+        if user_business_email_otp==request.data['otp']:
+            current_user=User.objects.get(username=user_business_email)
+            current_password=User.objects.get(username=user_business_email).password
+            # print('current_password',current_password)
+            # print('newpassword_hashed',make_password(request.data['password']))
+            # print(check_password(request.data['password'],current_password ))
+            if not check_password(request.data['password'],current_password):
+                # print(check_password(current_password,request.data['password']))
+                # print("setting password")
+                current_user.set_password(request.data['password'])
+                current_user.save()
+                return JsonResponse({"status": "Successfull"})
 
 
-            # print('wrong otp')
-            return JsonResponse({"status":"Invalid_OTP"})
+            return JsonResponse({"status":"current_password_cannot_be_set_as_new_password"})
 
-        else:
-            # print("wrong")
-           return JsonResponse({"status": "Invaid_email_id"})
+
+        # print('wrong otp')
+        return JsonResponse({"status":"Invalid_OTP"})
+
     else:
-        return JsonResponse({"status":"unauthorized_user"})
+        # print("wrong")
+       return JsonResponse({"status": "Invalid_email_id"})
+    # else:
+    #     return JsonResponse({"status":"unauthorized_user"})
 
 
 @api_view(['GET'])
@@ -1544,13 +1542,15 @@ def change_password(request):
             # userr="neerajpynam3@gmail.com"
             user = User.objects.get(username=userr)
             # print(user)
-
+            if new_password!=confirm_new_password and not check_password(current_password,user.password):
+                return JsonResponse({"status": ["you_have_entered_wrong_password","password_do_not_match"]})
             if not check_password(current_password,user.password):
                 return JsonResponse({"status":"you_have_entered_wrong_password"})
             if new_password!=confirm_new_password:
                 return JsonResponse({"status":"password_do_not_match"})
-            if new_password == current_password:
-                return JsonResponse({"status": "New_password_cannot_be_the_same_as_the_old_password"})
+            # if new_password == current_password:
+            #     return JsonResponse({"status": "New_password_cannot_be_the_same_as_the_old_password"})
+
             user.set_password(new_password)
             user.save()
 
