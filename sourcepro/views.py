@@ -285,81 +285,81 @@ def mycourses(request):
     # screens 9,10
     # print('8888888',usr_course.objects.filter(course_id=2),request.user)
 
-    if request.user.is_authenticated:
-        user_id = request.user #expects user_id
-        # user_id = 2 #expects user_id
-        info1 = usr_course.objects.filter(user_id = user_id, deactivation_days_left = 0) #this belongs to history tab
-        serializer1 = usr_course_serializer(info1, many=True)
+    # if request.user.is_authenticated:
+    user_id = request.user #expects user_id
+    # user_id = 2 #expects user_id
+    info1 = usr_course.objects.filter(user_id = user_id, deactivation_days_left = 0) #this belongs to history tab
+    serializer1 = usr_course_serializer(info1, many=True)
 
-        info2 = usr_course.objects.filter(user_id = user_id,deactivation_days_left__in = range(1,100), course_status = "Completed") #this bwelongs to History tab
-        serializer2 = usr_course_serializer(info2, many = True)
-        # print('info2',info2)
-        info3 = usr_course.objects.filter(user_id = user_id, deactivation_days_left__in = range(1,100), course_status = "Inprogress") #this belongs to in progress tab
-        serializer3 = usr_course_serializer(info3, many = True)
+    info2 = usr_course.objects.filter(user_id = user_id,deactivation_days_left__in = range(1,100), course_status = "Completed") #this bwelongs to History tab
+    serializer2 = usr_course_serializer(info2, many = True)
+    # print('info2',info2)
+    info3 = usr_course.objects.filter(user_id = user_id, deactivation_days_left__in = range(1,100), course_status = "Inprogress") #this belongs to in progress tab
+    serializer3 = usr_course_serializer(info3, many = True)
 
 
-        for i in range(0, len(serializer1.data)):
-            for k in list(serializer1.data[i].keys()):
-                if k in ["subscription_datetime", "deactivation_days_left", "course_id", "course_status",'last_viewed_lesson_id']:
-                    continue
-                else:
-                    serializer1.data[i].pop(k)
+    for i in range(0, len(serializer1.data)):
+        for k in list(serializer1.data[i].keys()):
+            if k in ["subscription_datetime", "deactivation_days_left", "course_id", "course_status",'last_viewed_lesson_id']:
+                continue
+            else:
+                serializer1.data[i].pop(k)
 
-        for i in range(0, len(serializer1.data)):
-            # print('len',serializer2.data)
-            a = Course.objects.filter(course_id=serializer1.data[i]["course_id"])
-            aa = Course_serializerr(a, many=True)
-            # print("aa-----------------------", aa.data)
-            serializer1.data[i].update(course_name=aa.data[0]["course_name"])
-            serializer1.data[i].update(thumbnail=aa.data[0]["thumbnail"])
-            serializer1.data[i].update(author=aa.data[0]["author"])
-            serializer1.data[i].update(activation_duration=(Course.objects.get(course_id=serializer1.data[i]["course_id"])).activation_duration)
-            # serializer1.data[i].update({"lesson_id": 1})
-        for i in range(0, len(serializer2.data)):
-            for k in list(serializer2.data[i].keys()):
-                if k in ["subscription_datetime", "deactivation_days_left", "course_id", "course_status",'last_viewed_lesson_id']:
-                    continue
-                else:
-                    serializer2.data[i].pop(k)
+    for i in range(0, len(serializer1.data)):
+        # print('len',serializer2.data)
+        a = Course.objects.filter(course_id=serializer1.data[i]["course_id"])
+        aa = Course_serializerr(a, many=True)
+        # print("aa-----------------------", aa.data)
+        serializer1.data[i].update(course_name=aa.data[0]["course_name"])
+        serializer1.data[i].update(thumbnail=aa.data[0]["thumbnail"])
+        serializer1.data[i].update(author=aa.data[0]["author"])
+        serializer1.data[i].update(activation_duration=(Course.objects.get(course_id=serializer1.data[i]["course_id"])).activation_duration)
+        # serializer1.data[i].update({"lesson_id": 1})
+    for i in range(0, len(serializer2.data)):
+        for k in list(serializer2.data[i].keys()):
+            if k in ["subscription_datetime", "deactivation_days_left", "course_id", "course_status",'last_viewed_lesson_id']:
+                continue
+            else:
+                serializer2.data[i].pop(k)
 
-        for i in range(0, len(serializer2.data)):
-            a = Course.objects.filter(course_id=serializer2.data[i]["course_id"])
-            aa = Course_serializerr(a, many=True)
-            serializer2.data[i].update(course_name=aa.data[0]["course_name"])
-            serializer2.data[i].update(thumbnail=aa.data[0]["thumbnail"])
-            serializer2.data[i].update(author=aa.data[0]["author"])
-            serializer2.data[i].update(activation_duration=(Course.objects.get(course_id=serializer2.data[i]["course_id"])).activation_duration)
-            # serializer2.data[i].update({"lesson_id": 1})
-        # print("type-----------",type(serializer2.data))
+    for i in range(0, len(serializer2.data)):
+        a = Course.objects.filter(course_id=serializer2.data[i]["course_id"])
+        aa = Course_serializerr(a, many=True)
+        serializer2.data[i].update(course_name=aa.data[0]["course_name"])
+        serializer2.data[i].update(thumbnail=aa.data[0]["thumbnail"])
+        serializer2.data[i].update(author=aa.data[0]["author"])
+        serializer2.data[i].update(activation_duration=(Course.objects.get(course_id=serializer2.data[i]["course_id"])).activation_duration)
+        # serializer2.data[i].update({"lesson_id": 1})
+    # print("type-----------",type(serializer2.data))
 
-        # print("----------serializer3----------------------",serializer3.data)
-        for i in range(0, len(serializer3.data)):
-            for k in list(serializer3.data[i].keys()):
-                if k in ["subscription_datetime", "deactivation_days_left", "percentage_completed", "minutes_left","course_id",'last_viewed_lesson_id']:
-                    continue
-                else:
-                    serializer3.data[i].pop(k)
+    # print("----------serializer3----------------------",serializer3.data)
+    for i in range(0, len(serializer3.data)):
+        for k in list(serializer3.data[i].keys()):
+            if k in ["subscription_datetime", "deactivation_days_left", "percentage_completed", "minutes_left","course_id",'last_viewed_lesson_id']:
+                continue
+            else:
+                serializer3.data[i].pop(k)
 
-        for i in range(0, len(serializer3.data)):
-            a = Course.objects.filter(course_id=serializer3.data[i]["course_id"])
-            aa = Course_serializerr(a, many=True)
-            serializer3.data[i].update(course_name=aa.data[0]["course_name"])
-            serializer3.data[i].update(thumbnail=aa.data[0]["thumbnail"])
-            serializer3.data[i].update(author=aa.data[0]["author"])
-            serializer3.data[i].update(activation_duration=(Course.objects.get(course_id=serializer3.data[i]["course_id"])).activation_duration)
-            # serializer3.data[i].update({"lesson_id":1})
+    for i in range(0, len(serializer3.data)):
+        a = Course.objects.filter(course_id=serializer3.data[i]["course_id"])
+        aa = Course_serializerr(a, many=True)
+        serializer3.data[i].update(course_name=aa.data[0]["course_name"])
+        serializer3.data[i].update(thumbnail=aa.data[0]["thumbnail"])
+        serializer3.data[i].update(author=aa.data[0]["author"])
+        serializer3.data[i].update(activation_duration=(Course.objects.get(course_id=serializer3.data[i]["course_id"])).activation_duration)
+        # serializer3.data[i].update({"lesson_id":1})
 
-        # print('serializer2.data',serializer2.data)
-        serializer1_data=list(serializer1.data)
-        serializer2_data=list(serializer2.data)
-        history_data=serializer1_data+serializer2_data
-        # print('history_data',history_data)
+    # print('serializer2.data',serializer2.data)
+    serializer1_data=list(serializer1.data)
+    serializer2_data=list(serializer2.data)
+    history_data=serializer1_data+serializer2_data
+    # print('history_data',history_data)
 
-        # dict(serializer1.data).update(dict(serializer2.data))
-        return JsonResponse({"In_Progress":serializer3.data, "History":history_data})
-        # return JsonResponse({"In_Progress":serializer3.data, "History":serializer1.data})
-    else:
-        return JsonResponse({"status":"unauthorized_user"})
+    # dict(serializer1.data).update(dict(serializer2.data))
+    return JsonResponse({"In_Progress":serializer3.data, "History":history_data})
+    # return JsonResponse({"In_Progress":serializer3.data, "History":serializer1.data})
+    # else:
+    #     return JsonResponse({"status":"unauthorized_user"})
 
 
 
@@ -392,7 +392,9 @@ def usr_course_page(request):
     if request.user.is_authenticated:
         if request.method=='GET':
             user_id=request.user
+
             # user_id=2
+            # print(request.user)
             course_id = request.query_params.get('course_id')
             lesson_id = request.query_params.get('lesson_id')
 
@@ -557,7 +559,8 @@ def usr_course_page_lesson(request):
 
             #----watch time  and minutes left SAVING
 
-                old_watch_time = User_Lessons.objects.get(lesson_id=lesson_id,course_id=course_id)
+                old_watch_time = User_Lessons.objects.get(user_id=user_id,lesson_id=lesson_id,course_id=course_id)
+                print("old_watch_time",old_watch_time)
                 total_duration_of_lesson=old_watch_time.lesson_id.lesson_duration
                 # print('total_duration_of_lesson',total_duration_of_lesson,type(total_duration_of_lesson))
                 if old_watch_time is not None:
@@ -618,41 +621,43 @@ def usr_course_page_lesson(request):
                             old_watch_time.save()
                             # print('after saving',old_watch_time.minutes_left)
 
-                            course_lessons=User_Lessons.objects.filter(course_id=course_id)
+                            course_lessons=User_Lessons.objects.filter(user_id=user_id,course_id=course_id)
 
                             # print('course_lessons',course_lessons[0].minutes_completed,course_lessons[0].minutes_completed)
                             list_of_minutes_completed=[]
                             list_of_total_duration=[]
+                            print("lennnnnnnnnnnnn",len(course_lessons))
                             for i in range(len(course_lessons)):
                                 # print(course_lessons[i].minutes_completed.hour,course_lessons[i].minutes_completed.minute,course_lessons[i].minutes_completed.second)
                                 #
                                 # print('lesson and its total duration',course_lessons[i].lesson_id.lesson_name,course_lessons[i].lesson_id.lesson_duration)
-
+                                print("iiiiiiiiiiiii",i)
                                 total_duration_timedelta_object=timedelta(hours=course_lessons[i].lesson_id.lesson_duration.hour,minutes=course_lessons[i].lesson_id.lesson_duration.minute,seconds=course_lessons[i].lesson_id.lesson_duration.second)
                                 minutes_completed_timedelta_object = timedelta(hours=course_lessons[i].minutes_completed.hour,minutes=course_lessons[i].minutes_completed.minute,seconds=course_lessons[i].minutes_completed.second)
-                                # print('timedelta_object',minutes_completed_timedelta_object)
+                                print('timedelta_object',minutes_completed_timedelta_object)
 
                                 list_of_total_duration.append(total_duration_timedelta_object)
                                 list_of_minutes_completed.append(minutes_completed_timedelta_object)
-                            # print(list_of_total_duration)
+                            print("list------------------",list_of_total_duration)
                             # print(list_of_minutes_completed)
                             all_lessons_minutes_completed=reduce(lambda n,m:n+m,list_of_minutes_completed)
+                            print('all_lessons_minutes_completed',all_lessons_minutes_completed)
                             course_total_duration=reduce(lambda a,b:a+b,list_of_total_duration)
                             # print('course_total_duration',course_total_duration,type(course_total_duration))
                             # print('reducing_minutes_completed',all_lessons_minutes_completed,type(all_lessons_minutes_completed))
                             # print((common_date+course_total_duration-all_lessons_minutes_completed).time())
                             course_minutes_left_datetime=common_date + course_total_duration - all_lessons_minutes_completed
                             course_minutes_left_time=course_minutes_left_datetime.time()
-                            # print('/////course_minutes_left for a course////////',course_minutes_left_time,type(course_minutes_left_time))
+                            print('/////course_minutes_left for a course////////',course_minutes_left_time,type(course_minutes_left_time))
                             # print((common_date+course_total_duration).time())
                             course_total_duration_date_time=common_date+course_total_duration
                             course_total_duration_time=course_total_duration_date_time.time()
-                            # print('^^^^^^^^ dynamic total course duration^^^^^^^^^^^^',course_total_duration_time)
+                            print('^^^^^^^^ dynamic total course duration^^^^^^^^^^^^',course_total_duration_time)
                             course_minutes_completed_datetime=common_date+all_lessons_minutes_completed
                             course_minutes_completed_time=course_minutes_completed_datetime.time()
                             # print('$$$$$$$$$ course_minutes_completed for a course $$$$$$$$', course_minutes_completed_time,type(course_minutes_completed_time))
 
-                            user_course_queryset=usr_course.objects.get(user_id=2,course_id=course_id)
+                            user_course_queryset=usr_course.objects.get(user_id=user_id,course_id=course_id)
                             # user_course_queryset=usr_course.objects.get(user=request.user,course=course_id)
                             # print('user_course_queryset',user_course_queryset)
 
@@ -932,7 +937,7 @@ def usr_course_page_lesson(request):
             # print('-------******* lesson id exists in request fetching lesson details---------------')
 
             # user_id =  2
-            user_id =  request.user
+            user_id = request.user
             course_id = request.query_params.get('course_id')
             lesson_id = request.query_params.get('lesson_id')
             # print(user_id, course_id, lesson_id)
@@ -1412,7 +1417,7 @@ def quiz_attempt(request):
             elif int(lesson_id)==max_lesson_id and queryset.quiz_attempt_status==True and queryset.quiz_score>70:
                 #no next lesson is present and user is in last lesson scenario
                 # print('--------------updating max lesson data-----------------------------------------------------------------------------')
-                current_lesson = User_Lessons.objects.get(lesson_id=lesson_id)
+                current_lesson = User_Lessons.objects.get(user_id=user_id,lesson_id=lesson_id)
                 # print('current lesson id', current_lesson.lesson_id.lesson_id, current_lesson)
                 current_lesson.lesson_status = 'completed'
                 current_lesson.save()

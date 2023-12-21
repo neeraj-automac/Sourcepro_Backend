@@ -27,6 +27,7 @@ urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html')),
 
     path('home/', TemplateView.as_view(template_name='index.html')),
+    path('home/<int:course_id>/<int:lesson_id>/', TemplateView.as_view(template_name='index.html')),
     path('mycourses/', TemplateView.as_view(template_name='index.html')),
     path('changepassword', TemplateView.as_view(template_name='index.html')),
     path('mydetails/', TemplateView.as_view(template_name='index.html')),
