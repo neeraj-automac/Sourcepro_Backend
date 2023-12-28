@@ -25,7 +25,7 @@ app.config_from_object(settings, namespace='CELERY')
 app.conf.beat_schedule={
     'sending_periodically':{
         'task':'sourcepro.tasks.tes_fun',
-        'schedule':timedelta(seconds=2),
+        'schedule':timedelta(days=1),
     }
 }
 

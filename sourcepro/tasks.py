@@ -46,22 +46,23 @@ def tes_fun(self):
 
     # print('request',request.user)
     # print(datetime.datetime.now())
-    # usr_course_queryset=usr_course.objects.all()
-    #
-    # print('--------------------usr_course_queryset------------------')
-    # a=usr_course_serializer(usr_course_queryset,many=True)
-    # for i in range(len(a.data)):
-    #     print('before'+str(a.data[i]['deactivation_days_left']))
-    #     a.data[i]['deactivation_days_left']=a.data[i]['deactivation_days_left']-1
-    #     print('after'+str(a.data[i]['deactivation_days_left']))
-    # for i in range(len(usr_course_queryset)):
-    #     b=usr_course_queryset[i]
-    #     if b.deactivation_days_left>0:
-    #         b.deactivation_days_left=b.deactivation_days_left-1
-    #         b.save()
-    #
-    #     else:
-    #         print('days left is zero or less than zero')
-    #         pass
+    usr_course_queryset=usr_course.objects.all()
 
-    return 'Done'
+    print('--------------------usr_course_queryset------------------')
+    a=usr_course_serializer(usr_course_queryset,many=True)
+    for i in range(len(a.data)):
+        print('before'+str(a.data[i]['deactivation_days_left']))
+        a.data[i]['deactivation_days_left']=a.data[i]['deactivation_days_left']-1
+        print('after'+str(a.data[i]['deactivation_days_left']))
+    for i in range(len(usr_course_queryset)):
+        b=usr_course_queryset[i]
+        if b.deactivation_days_left>0:
+            b.deactivation_days_left=b.deactivation_days_left-1
+            print('b.deactivation_days_left',b.deactivation_days_left)
+            b.save()
+
+        else:
+            print('days left is zero or less than zero')
+            pass
+
+    # return 'Done'
