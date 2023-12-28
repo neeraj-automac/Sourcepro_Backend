@@ -1449,12 +1449,13 @@ def quiz_attempt(request):
 # @authentication_classes([SessionAuthentication, BasicAuthentication])
 # @permission_classes([IsAuthenticated])
 def user_details(request):
-    """assuming that post will always come after get. So that there is no need to ask for user-id again in
-    the elif statement in order to compare the existing record and the changed data of that record(that comes
-    from the post request)"""
+    # """assuming that post will always come after get. So that there is no need to ask for user-id again in
+    # the elif statement in order to compare the existing record and the changed data of that record(that comes
+    # from the post request)"""
     if request.user.is_authenticated:
         if request.method == 'GET':
             user_id = request.user
+            print("user_id check",user_id)
             # user_id = 2
             d = User_details.objects.filter(user_id = user_id)
             # print("read the record")
