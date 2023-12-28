@@ -285,81 +285,81 @@ def mycourses(request):
     # screens 9,10
     # print('8888888',usr_course.objects.filter(course_id=2),request.user)
 
-    # if request.user.is_authenticated:
-    user_id = request.user #expects user_id
-    # user_id = 2 #expects user_id
-    info1 = usr_course.objects.filter(user_id = user_id, deactivation_days_left = 0) #this belongs to history tab
-    serializer1 = usr_course_serializer(info1, many=True)
+    if request.user.is_authenticated:
+        user_id = request.user #expects user_id
+        # user_id = 2 #expects user_id
+        info1 = usr_course.objects.filter(user_id = user_id, deactivation_days_left = 0) #this belongs to history tab
+        serializer1 = usr_course_serializer(info1, many=True)
 
-    info2 = usr_course.objects.filter(user_id = user_id,deactivation_days_left__in = range(1,100), course_status = "Completed") #this bwelongs to History tab
-    serializer2 = usr_course_serializer(info2, many = True)
-    # print('info2',info2)
-    info3 = usr_course.objects.filter(user_id = user_id, deactivation_days_left__in = range(1,100), course_status = "Inprogress") #this belongs to in progress tab
-    serializer3 = usr_course_serializer(info3, many = True)
+        info2 = usr_course.objects.filter(user_id = user_id,deactivation_days_left__in = range(1,100), course_status = "Completed") #this bwelongs to History tab
+        serializer2 = usr_course_serializer(info2, many = True)
+        # print('info2',info2)
+        info3 = usr_course.objects.filter(user_id = user_id, deactivation_days_left__in = range(1,100), course_status = "Inprogress") #this belongs to in progress tab
+        serializer3 = usr_course_serializer(info3, many = True)
 
 
-    for i in range(0, len(serializer1.data)):
-        for k in list(serializer1.data[i].keys()):
-            if k in ["subscription_datetime", "deactivation_days_left", "course_id", "course_status",'last_viewed_lesson_id']:
-                continue
-            else:
-                serializer1.data[i].pop(k)
+        for i in range(0, len(serializer1.data)):
+            for k in list(serializer1.data[i].keys()):
+                if k in ["subscription_datetime", "deactivation_days_left", "course_id", "course_status",'last_viewed_lesson_id']:
+                    continue
+                else:
+                    serializer1.data[i].pop(k)
 
-    for i in range(0, len(serializer1.data)):
-        # print('len',serializer2.data)
-        a = Course.objects.filter(course_id=serializer1.data[i]["course_id"])
-        aa = Course_serializerr(a, many=True)
-        # print("aa-----------------------", aa.data)
-        serializer1.data[i].update(course_name=aa.data[0]["course_name"])
-        serializer1.data[i].update(thumbnail=aa.data[0]["thumbnail"])
-        serializer1.data[i].update(author=aa.data[0]["author"])
-        serializer1.data[i].update(activation_duration=(Course.objects.get(course_id=serializer1.data[i]["course_id"])).activation_duration)
-        # serializer1.data[i].update({"lesson_id": 1})
-    for i in range(0, len(serializer2.data)):
-        for k in list(serializer2.data[i].keys()):
-            if k in ["subscription_datetime", "deactivation_days_left", "course_id", "course_status",'last_viewed_lesson_id']:
-                continue
-            else:
-                serializer2.data[i].pop(k)
+        for i in range(0, len(serializer1.data)):
+            # print('len',serializer2.data)
+            a = Course.objects.filter(course_id=serializer1.data[i]["course_id"])
+            aa = Course_serializerr(a, many=True)
+            # print("aa-----------------------", aa.data)
+            serializer1.data[i].update(course_name=aa.data[0]["course_name"])
+            serializer1.data[i].update(thumbnail=aa.data[0]["thumbnail"])
+            serializer1.data[i].update(author=aa.data[0]["author"])
+            serializer1.data[i].update(activation_duration=(Course.objects.get(course_id=serializer1.data[i]["course_id"])).activation_duration)
+            # serializer1.data[i].update({"lesson_id": 1})
+        for i in range(0, len(serializer2.data)):
+            for k in list(serializer2.data[i].keys()):
+                if k in ["subscription_datetime", "deactivation_days_left", "course_id", "course_status",'last_viewed_lesson_id']:
+                    continue
+                else:
+                    serializer2.data[i].pop(k)
 
-    for i in range(0, len(serializer2.data)):
-        a = Course.objects.filter(course_id=serializer2.data[i]["course_id"])
-        aa = Course_serializerr(a, many=True)
-        serializer2.data[i].update(course_name=aa.data[0]["course_name"])
-        serializer2.data[i].update(thumbnail=aa.data[0]["thumbnail"])
-        serializer2.data[i].update(author=aa.data[0]["author"])
-        serializer2.data[i].update(activation_duration=(Course.objects.get(course_id=serializer2.data[i]["course_id"])).activation_duration)
-        # serializer2.data[i].update({"lesson_id": 1})
-    # print("type-----------",type(serializer2.data))
+        for i in range(0, len(serializer2.data)):
+            a = Course.objects.filter(course_id=serializer2.data[i]["course_id"])
+            aa = Course_serializerr(a, many=True)
+            serializer2.data[i].update(course_name=aa.data[0]["course_name"])
+            serializer2.data[i].update(thumbnail=aa.data[0]["thumbnail"])
+            serializer2.data[i].update(author=aa.data[0]["author"])
+            serializer2.data[i].update(activation_duration=(Course.objects.get(course_id=serializer2.data[i]["course_id"])).activation_duration)
+            # serializer2.data[i].update({"lesson_id": 1})
+        # print("type-----------",type(serializer2.data))
 
-    # print("----------serializer3----------------------",serializer3.data)
-    for i in range(0, len(serializer3.data)):
-        for k in list(serializer3.data[i].keys()):
-            if k in ["subscription_datetime", "deactivation_days_left", "percentage_completed", "minutes_left","course_id",'last_viewed_lesson_id']:
-                continue
-            else:
-                serializer3.data[i].pop(k)
+        # print("----------serializer3----------------------",serializer3.data)
+        for i in range(0, len(serializer3.data)):
+            for k in list(serializer3.data[i].keys()):
+                if k in ["subscription_datetime", "deactivation_days_left", "percentage_completed", "minutes_left","course_id",'last_viewed_lesson_id']:
+                    continue
+                else:
+                    serializer3.data[i].pop(k)
 
-    for i in range(0, len(serializer3.data)):
-        a = Course.objects.filter(course_id=serializer3.data[i]["course_id"])
-        aa = Course_serializerr(a, many=True)
-        serializer3.data[i].update(course_name=aa.data[0]["course_name"])
-        serializer3.data[i].update(thumbnail=aa.data[0]["thumbnail"])
-        serializer3.data[i].update(author=aa.data[0]["author"])
-        serializer3.data[i].update(activation_duration=(Course.objects.get(course_id=serializer3.data[i]["course_id"])).activation_duration)
-        # serializer3.data[i].update({"lesson_id":1})
+        for i in range(0, len(serializer3.data)):
+            a = Course.objects.filter(course_id=serializer3.data[i]["course_id"])
+            aa = Course_serializerr(a, many=True)
+            serializer3.data[i].update(course_name=aa.data[0]["course_name"])
+            serializer3.data[i].update(thumbnail=aa.data[0]["thumbnail"])
+            serializer3.data[i].update(author=aa.data[0]["author"])
+            serializer3.data[i].update(activation_duration=(Course.objects.get(course_id=serializer3.data[i]["course_id"])).activation_duration)
+            # serializer3.data[i].update({"lesson_id":1})
 
-    # print('serializer2.data',serializer2.data)
-    serializer1_data=list(serializer1.data)
-    serializer2_data=list(serializer2.data)
-    history_data=serializer1_data+serializer2_data
-    # print('history_data',history_data)
+        # print('serializer2.data',serializer2.data)
+        serializer1_data=list(serializer1.data)
+        serializer2_data=list(serializer2.data)
+        history_data=serializer1_data+serializer2_data
+        # print('history_data',history_data)
 
-    # dict(serializer1.data).update(dict(serializer2.data))
-    return JsonResponse({"In_Progress":serializer3.data, "History":history_data})
-    # return JsonResponse({"In_Progress":serializer3.data, "History":serializer1.data})
-    # else:
-    #     return JsonResponse({"status":"unauthorized_user"})
+        # dict(serializer1.data).update(dict(serializer2.data))
+        return JsonResponse({"In_Progress":serializer3.data, "History":history_data})
+        # return JsonResponse({"In_Progress":serializer3.data, "History":serializer1.data})
+    else:
+        return JsonResponse({"status":"unauthorized_user"})
 
 
 
@@ -1088,58 +1088,58 @@ def learners_count(request):
 # @authentication_classes([SessionAuthentication, BasicAuthentication])
 # @permission_classes([IsAuthenticated])
 def likes_count(request):
-    if request.user.is_authenticated:
-        user_id=request.user
-        # user_id = 2
-        course_id = request.data.get('course_id')
+    # if request.user.is_authenticated:
+    # user_id=request.user
+    user_id = 2
+    course_id = request.data.get('course_id')
 
-        # course_id =2
+    # course_id =2
 
-        try:
-            course_queryset=Course.objects.get(course_id=course_id)
+    try:
+        course_queryset=Course.objects.get(course_id=course_id)
 
-            user_queryset = usr_course.objects.filter(user_id=user_id,course_id=course_id)
-        except:
-            return JsonResponse({"status": "course_id_does_not_exist"})
+        user_queryset = usr_course.objects.filter(user_id=user_id,course_id=course_id)
+    except:
+        return JsonResponse({"status": "course_id_does_not_exist"})
 
-        if user_queryset.exists():
-            for i in range(0,len(user_queryset)):
-                # print(user_queryset[i].like_status)
-                status=user_queryset[i].like_status
-                if status==False:
-                    # print('status',status)
-                    user_queryset[i].like_status=True
-                    user_queryset[i].save()
-                    # print('after like the status is', user_queryset[i].like_status)
+    if user_queryset.exists():
+        for i in range(0,len(user_queryset)):
+            # print(user_queryset[i].like_status)
+            status=user_queryset[i].like_status
+            if status==False:
+                # print('status',status)
+                user_queryset[i].like_status=True
+                user_queryset[i].save()
+                # print('after like the status is', user_queryset[i].like_status)
 
-                    # print('course_queryset.likes',course_queryset.likes)
-                    course_queryset.likes+=1
+                # print('course_queryset.likes',course_queryset.likes)
+                course_queryset.likes+=1
+                course_queryset.save()
+                # print('after increment of likes count', course_queryset.likes)
+
+                return JsonResponse({"status":user_queryset[i].like_status,"Likes": course_queryset.likes})
+
+
+            elif status==True:
+                # print('status', status)
+                user_queryset[i].like_status = False
+                user_queryset[i].save()
+                # print('after like the status is', user_queryset[i].like_status)
+
+                # print('course_queryset.likes', course_queryset.likes)
+                if course_queryset.likes>0:
+                    course_queryset.likes -= 1
                     course_queryset.save()
                     # print('after increment of likes count', course_queryset.likes)
-
-                    return JsonResponse({"status":user_queryset[i].like_status,"Likes": course_queryset.likes})
-
-
-                elif status==True:
-                    # print('status', status)
-                    user_queryset[i].like_status = False
-                    user_queryset[i].save()
-                    # print('after like the status is', user_queryset[i].like_status)
-
-                    # print('course_queryset.likes', course_queryset.likes)
-                    if course_queryset.likes>0:
-                        course_queryset.likes -= 1
-                        course_queryset.save()
-                        # print('after increment of likes count', course_queryset.likes)
-                        return JsonResponse({"status":user_queryset[i].like_status,"Likes":course_queryset.likes})
-                    else:
-                        pass
-
-        else:
-            return JsonResponse({"status":"matching_query_set_does_not_exists"})
+                    return JsonResponse({"status":user_queryset[i].like_status,"Likes":course_queryset.likes})
+                else:
+                    pass
 
     else:
-        return JsonResponse({'status':"unauthorized_user"})
+        return JsonResponse({"status":"matching_query_set_does_not_exists"})
+
+    # else:
+    #     return JsonResponse({'status':"unauthorized_user"})
 
 
 @api_view(['GET'])
@@ -1467,8 +1467,8 @@ def user_details(request):
         elif request.method == 'PUT':
 
             ds = request.data  # expects a dictionary with user details as per the user_details model
-            # user_id = request.user
-            user_id = 2
+            user_id = request.user
+            # user_id = 2
             try:
                 rec = User_details.objects.get(user_id = user_id)#ds["user_id"]
 
