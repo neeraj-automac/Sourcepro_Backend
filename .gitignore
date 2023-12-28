@@ -1,0 +1,7 @@
+/venv/
+/spvenv/
+/media/
+/.ebextensions/
+/.elasticbeanstalk/
+/sourcepro/migrations/
+

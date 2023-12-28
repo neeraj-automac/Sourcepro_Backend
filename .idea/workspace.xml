@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="8874304f-f0b0-4860-b485-77da2784f76b" name="Changes" comment="with authentication">
+      <change beforePath="$PROJECT_DIR$/sourcepro/tasks.py" beforeDir="false" afterPath="$PROJECT_DIR$/sourcepro/tasks.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sourcepro2/celery.py" beforeDir="false" afterPath="$PROJECT_DIR$/sourcepro2/celery.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2YqUzZUhuWA5Lif5G2QGdGZDgN5" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/media" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\all_projects\sourcepro\media" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="8874304f-f0b0-4860-b485-77da2784f76b" name="Changes" comment="" />
+      <created>1701252870810</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1701252870810</updated>
+    </task>
+    <task id="LOCAL-00001" summary="apis_with_authentication_working(for_deployment)">
+      <created>1701948779897</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1701948779897</updated>
+    </task>
+    <task id="LOCAL-00002" summary="adding public ip of aws">
+      <created>1702469138175</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1702469138175</updated>
+    </task>
+    <task id="LOCAL-00003" summary="adding public ipv4 of aws">
+      <created>1702470156191</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1702470156191</updated>
+    </task>
+    <task id="LOCAL-00004" summary="pushing views and urls and apis without authetication">
+      <created>1702471772181</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1702471772181</updated>
+    </task>
+    <task id="LOCAL-00005" summary="removing from . import views as it causing error">
+      <created>1702471952295</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1702471952295</updated>
+    </task>
+    <task id="LOCAL-00006" summary="removing from . import views as it causing error">
+      <created>1702471985705</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1702471985705</updated>
+    </task>
+    <task id="LOCAL-00007" summary="addding local host 3000 in allowed origin">
+      <created>1702472435809</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1702472435809</updated>
+    </task>
+    <task id="LOCAL-00008" summary="addding local host 3000 in allowed origin again">
+      <created>1702472471574</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1702472471574</updated>
+    </task>
+    <task id="LOCAL-00009" summary="build">
+      <created>1702558479604</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1702558479604</updated>
+    </task>
+    <task id="LOCAL-00010" summary="session auth working (with build folder) with local ip address">
+      <created>1702716478220</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1702716478220</updated>
+    </task>
+    <task id="LOCAL-00011" summary="build folder with aws ip address">
+      <created>1702717534259</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1702717534259</updated>
+    </task>
+    <task id="LOCAL-00012" summary="build folder with aws ip address and port as 8000">
+      <created>1702722085316</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1702722085316</updated>
+    </task>
+    <task id="LOCAL-00013" summary="adding js file to git">
+      <created>1702729618359</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1702729618359</updated>
+    </task>
+    <task id="LOCAL-00014" summary="changing ip address in build at backend and forget and change password api integration at frontend(no auth at backend to otp sending api and password change using otp at backend)">
+      <created>1702974175708</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1702974175708</updated>
+    </task>
+    <task id="LOCAL-00015" summary="adding js files to git as they didnot get added again">
+      <created>1702974490524</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1702974490524</updated>
+    </task>
+    <task id="LOCAL-00016" summary="with autehntication without retake quiz  and clipboard">
+      <created>1703166943953</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1703166943953</updated>
+    </task>
+    <task id="LOCAL-00017" summary="with authentication">
+      <created>1703755994712</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1703755994712</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="apis_with_authentication_working(for_deployment)" />
+    <MESSAGE value="adding public ip of aws" />
+    <MESSAGE value="adding public ipv4 of aws" />
+    <MESSAGE value="pushing views and urls and apis without authetication" />
+    <MESSAGE value="removing from . import views as it causing error" />
+    <MESSAGE value="addding local host 3000 in allowed origin" />
+    <MESSAGE value="addding local host 3000 in allowed origin again" />
+    <MESSAGE value="build" />
+    <MESSAGE value="session auth working (with build folder) with local ip address" />
+    <MESSAGE value="build folder with aws ip address" />
+    <MESSAGE value="build folder with aws ip address and port as 8000" />
+    <MESSAGE value="adding js file to git" />
+    <MESSAGE value="changing ip address in build at backend and forget and change password api integration at frontend(no auth at backend to otp sending api and password change using otp at backend)" />
+    <MESSAGE value="adding js files to git as they didnot get added again" />
+    <MESSAGE value="with autehntication without retake quiz  and clipboard" />
+    <MESSAGE value="with authentication" />
+    <option name="LAST_COMMIT_MESSAGE" value="with authentication" />
+  </component>
+</project>
