@@ -4,4 +4,8 @@
 /.ebextensions/
 /.elasticbeanstalk/
 /sourcepro/migrations/
+.idea
+/sourcepro/__pycache__
+/sourcepro2/__pycache__
+
 
