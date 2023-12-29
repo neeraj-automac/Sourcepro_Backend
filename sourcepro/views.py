@@ -1088,58 +1088,58 @@ def learners_count(request):
 # @authentication_classes([SessionAuthentication, BasicAuthentication])
 # @permission_classes([IsAuthenticated])
 def likes_count(request):
-    # if request.user.is_authenticated:
-    # user_id=request.user
-    user_id = 2
-    course_id = request.data.get('course_id')
+    if request.user.is_authenticated:
+        user_id=request.user
+        # user_id = 2
+        course_id = request.data.get('course_id')
 
-    # course_id =2
+        # course_id =2
 
-    try:
-        course_queryset=Course.objects.get(course_id=course_id)
+        try:
+            course_queryset=Course.objects.get(course_id=course_id)
 
-        user_queryset = usr_course.objects.filter(user_id=user_id,course_id=course_id)
-    except:
-        return JsonResponse({"status": "course_id_does_not_exist"})
+            user_queryset = usr_course.objects.filter(user_id=user_id,course_id=course_id)
+        except:
+            return JsonResponse({"status": "course_id_does_not_exist"})
 
-    if user_queryset.exists():
-        for i in range(0,len(user_queryset)):
-            # print(user_queryset[i].like_status)
-            status=user_queryset[i].like_status
-            if status==False:
-                # print('status',status)
-                user_queryset[i].like_status=True
-                user_queryset[i].save()
-                # print('after like the status is', user_queryset[i].like_status)
+        if user_queryset.exists():
+            for i in range(0,len(user_queryset)):
+                # print(user_queryset[i].like_status)
+                status=user_queryset[i].like_status
+                if status==False:
+                    # print('status',status)
+                    user_queryset[i].like_status=True
+                    user_queryset[i].save()
+                    # print('after like the status is', user_queryset[i].like_status)
 
-                # print('course_queryset.likes',course_queryset.likes)
-                course_queryset.likes+=1
-                course_queryset.save()
-                # print('after increment of likes count', course_queryset.likes)
-
-                return JsonResponse({"status":user_queryset[i].like_status,"Likes": course_queryset.likes})
-
-
-            elif status==True:
-                # print('status', status)
-                user_queryset[i].like_status = False
-                user_queryset[i].save()
-                # print('after like the status is', user_queryset[i].like_status)
-
-                # print('course_queryset.likes', course_queryset.likes)
-                if course_queryset.likes>0:
-                    course_queryset.likes -= 1
+                    # print('course_queryset.likes',course_queryset.likes)
+                    course_queryset.likes+=1
                     course_queryset.save()
                     # print('after increment of likes count', course_queryset.likes)
-                    return JsonResponse({"status":user_queryset[i].like_status,"Likes":course_queryset.likes})
-                else:
-                    pass
+
+                    return JsonResponse({"status":user_queryset[i].like_status,"Likes": course_queryset.likes})
+
+
+                elif status==True:
+                    # print('status', status)
+                    user_queryset[i].like_status = False
+                    user_queryset[i].save()
+                    # print('after like the status is', user_queryset[i].like_status)
+
+                    # print('course_queryset.likes', course_queryset.likes)
+                    if course_queryset.likes>0:
+                        course_queryset.likes -= 1
+                        course_queryset.save()
+                        # print('after increment of likes count', course_queryset.likes)
+                        return JsonResponse({"status":user_queryset[i].like_status,"Likes":course_queryset.likes})
+                    else:
+                        pass
+
+        else:
+            return JsonResponse({"status":"matching_query_set_does_not_exists"})
 
     else:
-        return JsonResponse({"status":"matching_query_set_does_not_exists"})
-
-    # else:
-    #     return JsonResponse({'status':"unauthorized_user"})
+        return JsonResponse({'status':"unauthorized_user"})
 
 
 @api_view(['GET'])

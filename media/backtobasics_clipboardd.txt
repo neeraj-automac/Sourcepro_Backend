@@ -1,0 +1,19 @@
+java AND j2ee AND spring
+java AND (j2ee OR spring OR hibernate)
+java AND (j2ee OR spring OR hibernate) AND (engineer OR programmer) NOT tester NOT recruitment NOT recruiter NOT quality
+java AND (j2ee OR spring OR hibernate) AND (engineer OR programmer) -tester -recruitment -recruiter -quality
+"software engineer"
+"software development engineer"
+"technical support engineer"
+"sales * manager"
+"* engineer" AND ("works at google" OR "working at google")
+"software engineer" AND ("works at " OR "working at ")
+"  engineer" AND ("works at google" OR "working at google")
+"  engineer"
+~cv AND "java developer" AND (bangalore OR bengaluru)
+~cv AND "java developer" AND chennai
+~cv AND "java developer" AND 560001..560100
+~cv AND "java developer" AND 600001..600100
+site:linkedin.com/in AND ("computer science" OR bcs) AROUND(5) 2019
+site:linkedin.com/in AND japanese AROUND(1) native
+site:linkedin.com/in AND "till date" AROUND(2) 2014
