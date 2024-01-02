@@ -7,7 +7,7 @@ from django.db.models.fields import EmailField
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
+from django.db.models import Min, Max
 
 class User_details(models.Model):
     objects = models.Manager()
@@ -106,6 +106,15 @@ def set_deactivation_datetime(sender, instance, created, **kwargs):
         instance.deactivation_days_left = activation_duration
         # print('instance.deactivation_days_left',instance.deactivation_days_left)
         # print("assigning deactivation_days_left")
+        #------------------storing minimum lesson id of a course--------------------
+        get_course=Lessons.objects.filter(course_id=COURSE)
+        print('get_course',get_course)
+        min_lesson_id=get_course.aggregate(Min('lesson_id'))
+        print('min_lesson_id',min_lesson_id)
+        instance.last_viewed_lesson_id=min_lesson_id['lesson_id__min']
+        print('instance.last_viewed_lesson_id',instance.last_viewed_lesson_id)
+
+
         instance.save()
         # print('saved deactivation_datetime as:',deactivation_datetime)
         # print('saved instance.deactivation_days_left',instance.deactivation_days_left)

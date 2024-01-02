@@ -257,8 +257,8 @@ def home(request):
         old_courses_serializer = Course_serializer(old_courses, many=True)
         print("old_courses_serializer:::::", old_courses_serializer,old_courses)
 
-        user_id = request.user
-        # user_id = 2
+        # user_id = request.user
+        user_id = 2
         inprogress = usr_course.objects.filter(user_id = user_id ,course_status='Inprogress')
         # print('2222222222222',inprogress)
 
@@ -709,229 +709,236 @@ def usr_course_page_lesson(request):
 
                 return JsonResponse({"status":"storing_empty_lesson_id_and_watch_time_00:00:00_for_user"})
 
-        elif request.method=="GET" and  request.query_params.get('lesson_id')=='':
-            # user_id = 2
-            user_id = request.user
-            course_id = request.query_params.get('course_id')
-
-            # lesson_id_query_set = User_Lessons.objects.filter(user_id=user_id, course=course_id).values('course_lesson_id')
-            lesson_id_query = User_Lessons.objects.filter(user_id=user_id, course_id=course_id)
-            if lesson_id_query.exists():
-                lesson_id_query_set=lesson_id_query.aggregate(Min('lesson_id'))
-                # print('lesson_id_query_set',lesson_id_query_set['lesson_id__min'])
-                lesson_id = lesson_id_query_set['lesson_id__min']
-                # print('lesson_id_query_set',lesson_id_query_set.aggregate(Min('course_lesson_id')))
-                # print('user_id',user_id,'course_id' ,course_id,'lesson_id', lesson_id)
-                u=usr_course.objects.get(user_id=user_id,course_id=course_id)
-                if u is not None:
-                    # print(u.last_viewed_lesson_id,type(u.last_viewed_lesson_duration))
-                    if u.last_viewed_lesson_id is None and u.last_viewed_lesson_duration==time(0,0,0):
-                        # print('--------------------No lesson_id in db and time zero---------------------')
-
-                        # -----current lesson data
-                        try:
-                            data = course_page_lesson_id(user_id, course_id, lesson_id)
-                            return JsonResponse({'all_lessons': data})
-                        except:
-                            return JsonResponse({'status':'Invalid_user_id_or_course_id_or_lesson_id'})
-                        # current_user_lesson = User_Lessons.objects.get(user_id=user_id, course=course_id,
-                        #                                                course_lesson_id=lesson_id)
-                        # print('current_user_lesson', current_user_lesson, current_user_lesson.course_lesson_id.lesson_name,
-                        #       current_user_lesson.course_lesson_id.lesson_url, current_user_lesson.course_lesson_id.lesson_duration)
-                        # lesson_details_serializer = User_Lessons_info_serializer(current_user_lesson)
-                        # lesson_details_serializer_data = lesson_details_serializer.data
-                        # adding_lesson_data = {'lesson_name': current_user_lesson.course_lesson_id.lesson_name,
-                        #                       'lesson_url': current_user_lesson.course_lesson_id.lesson_url,
-                        #                       'lesson_duration': current_user_lesson.course_lesson_id.lesson_duration}  # 'lesson_material':current_user_lesson.course_lesson_id.material_url
-                        # lesson_details_serializer_data.update(adding_lesson_data)
-                        # print('lesson_details_serializer.data)))))', lesson_details_serializer.data)
-                        # print('lesson_details_serializer.data)))))', type(lesson_details_serializer.data))
-                        #
-                        # current_user_lesson_material = Material.objects.filter(lesson=lesson_id)
-                        # print('current_user_lesson_material:::', current_user_lesson_material)
-                        # current_user_lesson_material_serializer = User_Lessons_material_serializer(current_user_lesson_material,
-                        #                                                                            many=True)
-                        # current_user_lesson_material_serializer_data = current_user_lesson_material_serializer.data
-                        # print('current_user_lesson_material_serializer', current_user_lesson_material_serializer_data, '^^^^^^')
-                        #
-                        # current_user_lesson_clipboard = Clipboard.objects.filter(lesson=lesson_id)
-                        # print('current_user_lesson_clipboard:::', current_user_lesson_clipboard)
-                        # current_user_lesson_clipboard_serializer = User_Lessons_clipboard_serializer(current_user_lesson_clipboard,
-                        #                                                                              many=True)
-                        # current_user_lesson_clipboard_serializer_data = current_user_lesson_clipboard_serializer.data
-                        # print('current_user_lesson_clipboard_serializer_data', current_user_lesson_clipboard_serializer_data,
-                        #       '^^^^^^')
-                        #
-                        # lesson_material_list = []
-                        # lesson_clipboard_list = []
-                        #
-                        # # material data
-                        # for i in range(0, len(current_user_lesson_material)):
-                        #     print(len(current_user_lesson_material_serializer_data))
-                        #     lesson_material_list.append(current_user_lesson_material_serializer_data[i]['material_url'])
-                        # lesson_details_serializer_data.update({'materials': lesson_material_list})
-                        #
-                        # # clipboard data
-                        # for i in range(0, len(current_user_lesson_clipboard)):
-                        #     lesson_clipboard_list.append(current_user_lesson_clipboard_serializer_data[i]['clipboard_url'])
-                        # lesson_details_serializer_data.update({'clipboards': lesson_clipboard_list})
-                        #
-                        # all_lessons_data = []
-                        # all_lessons_data.append(lesson_details_serializer_data)
-                        #
-                        # all_lesson_queryset = User_Lessons.objects.filter(user_id=user_id, course=course_id)
-                        # print('all_lesson_queryset', all_lesson_queryset)
-                        # print('current_user_lesson_lesson_name', all_lesson_queryset[0].course_lesson_id.lesson_name)
-                        #
-                        # all_lesson_details_serializer = User_lesson_data_serializer(all_lesson_queryset, many=True)
-                        # all_lesson_details_serializer_data = all_lesson_details_serializer.data
-                        # print('all_lesson_details_serializer', all_lesson_details_serializer_data)
-                        #
-                        # for i in range(0, len(all_lesson_queryset)):
-                        #     print('current_user_lesson lesson name', all_lesson_queryset[i].course_lesson_id.lesson_name)
-                        #     # print('current_user_lesson lesson duration', current_user_lesson[i].course_lesson_id.lesson_duration)
-                        #     # print('current_user_lesson lesson video', current_user_lesson[i].course_lesson_id.lesson_url)
-                        #     all_lesson_details_serializer_data[i].update({
-                        #         'lesson_name': all_lesson_queryset[i].course_lesson_id.lesson_name,
-                        #         'lesson_duration': all_lesson_queryset[i].course_lesson_id.lesson_duration,
-                        #         # 'lesson_duration': current_user_lesson[i].course_lesson_id.lesson_duration,
-                        #         # 'lesson_video':current_user_lesson[i].course_lesson_id.lesson_url
-                        #
-                        #     })
-                        # print('all_lesson_details_serializer_after_adding_lesson_name', all_lesson_details_serializer_data)
-                        # for i in range(0, len(all_lesson_details_serializer_data)):
-                        #     print(all_lesson_details_serializer_data[i]['course_lesson_id'])
-                        #     if all_lesson_details_serializer_data[i]['course_lesson_id'] == int(lesson_id):
-                        #         print('True')
-                        #         print('111111111111', type(all_lesson_details_serializer_data[i]))
-                        #         print('2', type(lesson_details_serializer_data))
-                        #         all_lesson_details_serializer_data[i] = lesson_details_serializer_data
-                        #         print(all_lesson_details_serializer_data)
-                        #     else:
-                        #         print('False')
-                        #
-                        # return JsonResponse({'all_lessons': all_lesson_details_serializer_data})
-
-
-                    elif u.last_viewed_lesson_id is not None and u.last_viewed_lesson_duration != time(0, 0, 0):
-                        # print('------------lesson_id in db and time not zero-------------')
-                        lesson_id=u.last_viewed_lesson_id
-                        try:
-                            data = course_page_lesson_id(user_id, course_id, lesson_id)
-                            return JsonResponse({'all_lessons': data})
-                        except:
-                            return JsonResponse({'status': 'Invalid_user_id_or_course_id_or_lesson_id'})
-
-
-
-                    elif u.last_viewed_lesson_id is not None and u.last_viewed_lesson_duration == time(0, 0, 0):
-
-                        # print('------------lesson_id in db and time also zero-------------')
-
-                        lesson_id = u.last_viewed_lesson_id
-
-                        try:
-
-                            data = course_page_lesson_id(user_id, course_id, lesson_id)
-
-                            return JsonResponse({'all_lessons': data})
-
-                        except:
-
-                            return JsonResponse({'status': 'Invalid_user_id_or_course_id_or_lesson_id'})
-                    else:
-                        # print("no two cases belongs to empty lesson id were satisfied ")
-                        return JsonResponse({"status": "no_two_cases_belongs_to_empty_lesson_id_were_satisfied"})
-                else:
-                    return JsonResponse({"status": "Invalid_user_id"})
-            else:
-                return JsonResponse({"status": "Invalid_user_id_or_course_id"})
-
-            #             current_user_lesson = User_Lessons.objects.get(user_id=user_id, course=course_id,
-            #                                                            course_lesson_id=lesson_id)
-            #             print('current_user_lesson', current_user_lesson, current_user_lesson.course_lesson_id.lesson_name,
-            #                   current_user_lesson.course_lesson_id.lesson_url, current_user_lesson.course_lesson_id.lesson_duration)
-            #             lesson_details_serializer = User_Lessons_info_serializer(current_user_lesson)
-            #             lesson_details_serializer_data = lesson_details_serializer.data
-            #             adding_lesson_data = {'lesson_name': current_user_lesson.course_lesson_id.lesson_name,
-            #                                   'lesson_url': current_user_lesson.course_lesson_id.lesson_url,
-            #                                   'lesson_duration': current_user_lesson.course_lesson_id.lesson_duration}  # 'lesson_material':current_user_lesson.course_lesson_id.material_url
-            #             lesson_details_serializer_data.update(adding_lesson_data)
-            #             print('lesson_details_serializer.data)))))', lesson_details_serializer.data)
-            #             print('lesson_details_serializer.data)))))', type(lesson_details_serializer.data))
-            #
-            #             current_user_lesson_material = Material.objects.filter(lesson=lesson_id)
-            #             print('current_user_lesson_material:::', current_user_lesson_material)
-            #             current_user_lesson_material_serializer = User_Lessons_material_serializer(current_user_lesson_material,
-            #                                                                                        many=True)
-            #             current_user_lesson_material_serializer_data = current_user_lesson_material_serializer.data
-            #             print('current_user_lesson_material_serializer', current_user_lesson_material_serializer_data, '^^^^^^')
-            #
-            #             current_user_lesson_clipboard = Clipboard.objects.filter(lesson=lesson_id)
-            #             print('current_user_lesson_clipboard:::', current_user_lesson_clipboard)
-            #             current_user_lesson_clipboard_serializer = User_Lessons_clipboard_serializer(current_user_lesson_clipboard,
-            #                                                                                          many=True)
-            #             current_user_lesson_clipboard_serializer_data = current_user_lesson_clipboard_serializer.data
-            #             print('current_user_lesson_clipboard_serializer_data', current_user_lesson_clipboard_serializer_data,
-            #                   '^^^^^^')
-            #
-            #             lesson_material_list = []
-            #             lesson_clipboard_list = []
-            #
-            #             # material data
-            #             for i in range(0, len(current_user_lesson_material)):
-            #                 print(len(current_user_lesson_material_serializer_data))
-            #                 lesson_material_list.append(current_user_lesson_material_serializer_data[i]['material_url'])
-            #             lesson_details_serializer_data.update({'materials': lesson_material_list})
-            #
-            #             # clipboard data
-            #             for i in range(0, len(current_user_lesson_clipboard)):
-            #                 lesson_clipboard_list.append(current_user_lesson_clipboard_serializer_data[i]['clipboard_url'])
-            #             lesson_details_serializer_data.update({'clipboards': lesson_clipboard_list})
-            #
-            #             all_lessons_data = []
-            #             all_lessons_data.append(lesson_details_serializer_data)
-            #
-            #             all_lesson_queryset = User_Lessons.objects.filter(user_id=user_id, course=course_id)
-            #             print('all_lesson_queryset', all_lesson_queryset)
-            #             print('current_user_lesson_lesson_name', all_lesson_queryset[0].course_lesson_id.lesson_name)
-            #
-            #             all_lesson_details_serializer = User_lesson_data_serializer(all_lesson_queryset, many=True)
-            #             all_lesson_details_serializer_data = all_lesson_details_serializer.data
-            #             print('all_lesson_details_serializer', all_lesson_details_serializer_data)
-            #
-            #             for i in range(0, len(all_lesson_queryset)):
-            #                 print('current_user_lesson lesson name', all_lesson_queryset[i].course_lesson_id.lesson_name)
-            #                 # print('current_user_lesson lesson duration', current_user_lesson[i].course_lesson_id.lesson_duration)
-            #                 # print('current_user_lesson lesson video', current_user_lesson[i].course_lesson_id.lesson_url)
-            #                 all_lesson_details_serializer_data[i].update({
-            #                     'lesson_name': all_lesson_queryset[i].course_lesson_id.lesson_name,
-            #                     'lesson_duration': all_lesson_queryset[i].course_lesson_id.lesson_duration,
-            #                     # 'lesson_duration': current_user_lesson[i].course_lesson_id.lesson_duration,
-            #                     # 'lesson_video':current_user_lesson[i].course_lesson_id.lesson_url
-            #
-            #                 })
-            #             print('all_lesson_details_serializer_after_adding_lesson_name', all_lesson_details_serializer_data)
-            #             for i in range(0, len(all_lesson_details_serializer_data)):
-            #                 print(all_lesson_details_serializer_data[i]['course_lesson_id'])
-            #                 if all_lesson_details_serializer_data[i]['course_lesson_id'] == int(lesson_id):
-            #                     print('True')
-            #                     print('111111111111', type(all_lesson_details_serializer_data[i]))
-            #                     print('2', type(lesson_details_serializer_data))
-            #                     all_lesson_details_serializer_data[i] = lesson_details_serializer_data
-            #                     print(all_lesson_details_serializer_data)
-            #                 else:
-            #                     print('False')
-            #
-            #             return JsonResponse({'all_lessons': all_lesson_details_serializer_data})
-            #     else:
-            #         print('----------u---------')
-            #         return JsonResponse({"status": "Invalid_course_id_or_lesson_id"})
-            #
-            #
-            # else:
-            #     print('-----------lesson_id_query-----------')
-            #     return JsonResponse({"status":"Invalid_course_id_or_user_id"})
+        # elif request.method=="GET" and  request.query_params.get('lesson_id')=='':
+        #     # print('--------dataaaaaaaaaaaaaaaaaa--------', type(request.query_params.get('lesson_id')))
+        #     # print('--------dataaaaaaaaaaaaaaaaaa--------', request.query_params.get('lesson_id')=="")
+        #     # print('--------dat--------', type(request.query_params.get('course_id')))
+        #
+        #     user_id = 2
+        #     # user_id = request.user
+        #     course_id = request.query_params.get('course_id')
+        #
+        #     # lesson_id_query_set = User_Lessons.objects.filter(user_id=user_id, course=course_id).values('course_lesson_id')
+        #     lesson_id_query = User_Lessons.objects.filter(user_id=user_id, course_id=course_id)
+        #     # print('lesson_id_query',lesson_id_query)
+        #     if lesson_id_query.exists():
+        #         lesson_id_query_set=lesson_id_query.aggregate(Min('lesson_id'))
+        #         # print('lesson_id_query_set',lesson_id_query_set['lesson_id__min'])
+        #         lesson_id = lesson_id_query_set['lesson_id__min']
+        #         # print('lesson_id_query_set',lesson_id_query_set.aggregate(Min('course_lesson_id')))
+        #         # print('user_id',user_id,'course_id' ,course_id,'lesson_id', lesson_id)
+        #         u=usr_course.objects.get(user_id=user_id,course_id=course_id)
+        #         # print('uuuuu',u)
+        #         print(u.last_viewed_lesson_id, type(u.last_viewed_lesson_duration))
+        #         if u is not None:
+        #             print(u.last_viewed_lesson_id,type(u.last_viewed_lesson_duration))
+        #             if u.last_viewed_lesson_id is None and u.last_viewed_lesson_duration==time(0,0,0):
+        #                 print('--------------------No lesson_id in db and time zero---------------------')
+        #
+        #                 # -----current lesson data
+        #                 try:
+        #                     data = course_page_lesson_id(user_id, course_id, lesson_id)
+        #                     return JsonResponse({'all_lessons': data})
+        #                 except:
+        #                     return JsonResponse({'status':'Invalid_user_id_or_course_id_or_lesson_id'})
+        #                 # current_user_lesson = User_Lessons.objects.get(user_id=user_id, course=course_id,
+        #                 #                                                course_lesson_id=lesson_id)
+        #                 # print('current_user_lesson', current_user_lesson, current_user_lesson.course_lesson_id.lesson_name,
+        #                 #       current_user_lesson.course_lesson_id.lesson_url, current_user_lesson.course_lesson_id.lesson_duration)
+        #                 # lesson_details_serializer = User_Lessons_info_serializer(current_user_lesson)
+        #                 # lesson_details_serializer_data = lesson_details_serializer.data
+        #                 # adding_lesson_data = {'lesson_name': current_user_lesson.course_lesson_id.lesson_name,
+        #                 #                       'lesson_url': current_user_lesson.course_lesson_id.lesson_url,
+        #                 #                       'lesson_duration': current_user_lesson.course_lesson_id.lesson_duration}  # 'lesson_material':current_user_lesson.course_lesson_id.material_url
+        #                 # lesson_details_serializer_data.update(adding_lesson_data)
+        #                 # print('lesson_details_serializer.data)))))', lesson_details_serializer.data)
+        #                 # print('lesson_details_serializer.data)))))', type(lesson_details_serializer.data))
+        #                 #
+        #                 # current_user_lesson_material = Material.objects.filter(lesson=lesson_id)
+        #                 # print('current_user_lesson_material:::', current_user_lesson_material)
+        #                 # current_user_lesson_material_serializer = User_Lessons_material_serializer(current_user_lesson_material,
+        #                 #                                                                            many=True)
+        #                 # current_user_lesson_material_serializer_data = current_user_lesson_material_serializer.data
+        #                 # print('current_user_lesson_material_serializer', current_user_lesson_material_serializer_data, '^^^^^^')
+        #                 #
+        #                 # current_user_lesson_clipboard = Clipboard.objects.filter(lesson=lesson_id)
+        #                 # print('current_user_lesson_clipboard:::', current_user_lesson_clipboard)
+        #                 # current_user_lesson_clipboard_serializer = User_Lessons_clipboard_serializer(current_user_lesson_clipboard,
+        #                 #                                                                              many=True)
+        #                 # current_user_lesson_clipboard_serializer_data = current_user_lesson_clipboard_serializer.data
+        #                 # print('current_user_lesson_clipboard_serializer_data', current_user_lesson_clipboard_serializer_data,
+        #                 #       '^^^^^^')
+        #                 #
+        #                 # lesson_material_list = []
+        #                 # lesson_clipboard_list = []
+        #                 #
+        #                 # # material data
+        #                 # for i in range(0, len(current_user_lesson_material)):
+        #                 #     print(len(current_user_lesson_material_serializer_data))
+        #                 #     lesson_material_list.append(current_user_lesson_material_serializer_data[i]['material_url'])
+        #                 # lesson_details_serializer_data.update({'materials': lesson_material_list})
+        #                 #
+        #                 # # clipboard data
+        #                 # for i in range(0, len(current_user_lesson_clipboard)):
+        #                 #     lesson_clipboard_list.append(current_user_lesson_clipboard_serializer_data[i]['clipboard_url'])
+        #                 # lesson_details_serializer_data.update({'clipboards': lesson_clipboard_list})
+        #                 #
+        #                 # all_lessons_data = []
+        #                 # all_lessons_data.append(lesson_details_serializer_data)
+        #                 #
+        #                 # all_lesson_queryset = User_Lessons.objects.filter(user_id=user_id, course=course_id)
+        #                 # print('all_lesson_queryset', all_lesson_queryset)
+        #                 # print('current_user_lesson_lesson_name', all_lesson_queryset[0].course_lesson_id.lesson_name)
+        #                 #
+        #                 # all_lesson_details_serializer = User_lesson_data_serializer(all_lesson_queryset, many=True)
+        #                 # all_lesson_details_serializer_data = all_lesson_details_serializer.data
+        #                 # print('all_lesson_details_serializer', all_lesson_details_serializer_data)
+        #                 #
+        #                 # for i in range(0, len(all_lesson_queryset)):
+        #                 #     print('current_user_lesson lesson name', all_lesson_queryset[i].course_lesson_id.lesson_name)
+        #                 #     # print('current_user_lesson lesson duration', current_user_lesson[i].course_lesson_id.lesson_duration)
+        #                 #     # print('current_user_lesson lesson video', current_user_lesson[i].course_lesson_id.lesson_url)
+        #                 #     all_lesson_details_serializer_data[i].update({
+        #                 #         'lesson_name': all_lesson_queryset[i].course_lesson_id.lesson_name,
+        #                 #         'lesson_duration': all_lesson_queryset[i].course_lesson_id.lesson_duration,
+        #                 #         # 'lesson_duration': current_user_lesson[i].course_lesson_id.lesson_duration,
+        #                 #         # 'lesson_video':current_user_lesson[i].course_lesson_id.lesson_url
+        #                 #
+        #                 #     })
+        #                 # print('all_lesson_details_serializer_after_adding_lesson_name', all_lesson_details_serializer_data)
+        #                 # for i in range(0, len(all_lesson_details_serializer_data)):
+        #                 #     print(all_lesson_details_serializer_data[i]['course_lesson_id'])
+        #                 #     if all_lesson_details_serializer_data[i]['course_lesson_id'] == int(lesson_id):
+        #                 #         print('True')
+        #                 #         print('111111111111', type(all_lesson_details_serializer_data[i]))
+        #                 #         print('2', type(lesson_details_serializer_data))
+        #                 #         all_lesson_details_serializer_data[i] = lesson_details_serializer_data
+        #                 #         print(all_lesson_details_serializer_data)
+        #                 #     else:
+        #                 #         print('False')
+        #                 #
+        #                 # return JsonResponse({'all_lessons': all_lesson_details_serializer_data})
+        #
+        #
+        #             elif u.last_viewed_lesson_id is not None and u.last_viewed_lesson_duration != time(0, 0, 0):
+        #                 # print('------------lesson_id in db and time not zero-------------')
+        #                 lesson_id=u.last_viewed_lesson_id
+        #                 try:
+        #                     data = course_page_lesson_id(user_id, course_id, lesson_id)
+        #                     return JsonResponse({'all_lessons': data})
+        #                 except:
+        #                     return JsonResponse({'status': 'Invalid_user_id_or_course_id_or_lesson_id'})
+        #
+        #
+        #
+        #             elif u.last_viewed_lesson_id is not None and u.last_viewed_lesson_duration == time(0, 0, 0):
+        #
+        #                 # print('------------lesson_id in db and time also zero-------------')
+        #
+        #                 lesson_id = u.last_viewed_lesson_id
+        #
+        #                 try:
+        #
+        #                     data = course_page_lesson_id(user_id, course_id, lesson_id)
+        #
+        #                     return JsonResponse({'all_lessons': data})
+        #
+        #                 except:
+        #
+        #                     return JsonResponse({'status': 'Invalid_user_id_or_course_id_or_lesson_id'})
+        #             else:
+        #                 # print("no two cases belongs to empty lesson id were satisfied ")
+        #                 return JsonResponse({"status": "no_two_cases_belongs_to_empty_lesson_id_were_satisfied"})
+        #         else:
+        #             return JsonResponse({"status": "Invalid_user_id"})
+        #     else:
+        #         return JsonResponse({"status": "Invalid_user_id_or_course_id"})
+        #
+        #     #             current_user_lesson = User_Lessons.objects.get(user_id=user_id, course=course_id,
+        #     #                                                            course_lesson_id=lesson_id)
+        #     #             print('current_user_lesson', current_user_lesson, current_user_lesson.course_lesson_id.lesson_name,
+        #     #                   current_user_lesson.course_lesson_id.lesson_url, current_user_lesson.course_lesson_id.lesson_duration)
+        #     #             lesson_details_serializer = User_Lessons_info_serializer(current_user_lesson)
+        #     #             lesson_details_serializer_data = lesson_details_serializer.data
+        #     #             adding_lesson_data = {'lesson_name': current_user_lesson.course_lesson_id.lesson_name,
+        #     #                                   'lesson_url': current_user_lesson.course_lesson_id.lesson_url,
+        #     #                                   'lesson_duration': current_user_lesson.course_lesson_id.lesson_duration}  # 'lesson_material':current_user_lesson.course_lesson_id.material_url
+        #     #             lesson_details_serializer_data.update(adding_lesson_data)
+        #     #             print('lesson_details_serializer.data)))))', lesson_details_serializer.data)
+        #     #             print('lesson_details_serializer.data)))))', type(lesson_details_serializer.data))
+        #     #
+        #     #             current_user_lesson_material = Material.objects.filter(lesson=lesson_id)
+        #     #             print('current_user_lesson_material:::', current_user_lesson_material)
+        #     #             current_user_lesson_material_serializer = User_Lessons_material_serializer(current_user_lesson_material,
+        #     #                                                                                        many=True)
+        #     #             current_user_lesson_material_serializer_data = current_user_lesson_material_serializer.data
+        #     #             print('current_user_lesson_material_serializer', current_user_lesson_material_serializer_data, '^^^^^^')
+        #     #
+        #     #             current_user_lesson_clipboard = Clipboard.objects.filter(lesson=lesson_id)
+        #     #             print('current_user_lesson_clipboard:::', current_user_lesson_clipboard)
+        #     #             current_user_lesson_clipboard_serializer = User_Lessons_clipboard_serializer(current_user_lesson_clipboard,
+        #     #                                                                                          many=True)
+        #     #             current_user_lesson_clipboard_serializer_data = current_user_lesson_clipboard_serializer.data
+        #     #             print('current_user_lesson_clipboard_serializer_data', current_user_lesson_clipboard_serializer_data,
+        #     #                   '^^^^^^')
+        #     #
+        #     #             lesson_material_list = []
+        #     #             lesson_clipboard_list = []
+        #     #
+        #     #             # material data
+        #     #             for i in range(0, len(current_user_lesson_material)):
+        #     #                 print(len(current_user_lesson_material_serializer_data))
+        #     #                 lesson_material_list.append(current_user_lesson_material_serializer_data[i]['material_url'])
+        #     #             lesson_details_serializer_data.update({'materials': lesson_material_list})
+        #     #
+        #     #             # clipboard data
+        #     #             for i in range(0, len(current_user_lesson_clipboard)):
+        #     #                 lesson_clipboard_list.append(current_user_lesson_clipboard_serializer_data[i]['clipboard_url'])
+        #     #             lesson_details_serializer_data.update({'clipboards': lesson_clipboard_list})
+        #     #
+        #     #             all_lessons_data = []
+        #     #             all_lessons_data.append(lesson_details_serializer_data)
+        #     #
+        #     #             all_lesson_queryset = User_Lessons.objects.filter(user_id=user_id, course=course_id)
+        #     #             print('all_lesson_queryset', all_lesson_queryset)
+        #     #             print('current_user_lesson_lesson_name', all_lesson_queryset[0].course_lesson_id.lesson_name)
+        #     #
+        #     #             all_lesson_details_serializer = User_lesson_data_serializer(all_lesson_queryset, many=True)
+        #     #             all_lesson_details_serializer_data = all_lesson_details_serializer.data
+        #     #             print('all_lesson_details_serializer', all_lesson_details_serializer_data)
+        #     #
+        #     #             for i in range(0, len(all_lesson_queryset)):
+        #     #                 print('current_user_lesson lesson name', all_lesson_queryset[i].course_lesson_id.lesson_name)
+        #     #                 # print('current_user_lesson lesson duration', current_user_lesson[i].course_lesson_id.lesson_duration)
+        #     #                 # print('current_user_lesson lesson video', current_user_lesson[i].course_lesson_id.lesson_url)
+        #     #                 all_lesson_details_serializer_data[i].update({
+        #     #                     'lesson_name': all_lesson_queryset[i].course_lesson_id.lesson_name,
+        #     #                     'lesson_duration': all_lesson_queryset[i].course_lesson_id.lesson_duration,
+        #     #                     # 'lesson_duration': current_user_lesson[i].course_lesson_id.lesson_duration,
+        #     #                     # 'lesson_video':current_user_lesson[i].course_lesson_id.lesson_url
+        #     #
+        #     #                 })
+        #     #             print('all_lesson_details_serializer_after_adding_lesson_name', all_lesson_details_serializer_data)
+        #     #             for i in range(0, len(all_lesson_details_serializer_data)):
+        #     #                 print(all_lesson_details_serializer_data[i]['course_lesson_id'])
+        #     #                 if all_lesson_details_serializer_data[i]['course_lesson_id'] == int(lesson_id):
+        #     #                     print('True')
+        #     #                     print('111111111111', type(all_lesson_details_serializer_data[i]))
+        #     #                     print('2', type(lesson_details_serializer_data))
+        #     #                     all_lesson_details_serializer_data[i] = lesson_details_serializer_data
+        #     #                     print(all_lesson_details_serializer_data)
+        #     #                 else:
+        #     #                     print('False')
+        #     #
+        #     #             return JsonResponse({'all_lessons': all_lesson_details_serializer_data})
+        #     #     else:
+        #     #         print('----------u---------')
+        #     #         return JsonResponse({"status": "Invalid_course_id_or_lesson_id"})
+        #     #
+        #     #
+        #     # else:
+        #     #     print('-----------lesson_id_query-----------')
+        #     #     return JsonResponse({"status":"Invalid_course_id_or_user_id"})
 
         elif request.method=="GET" and request.query_params.get('lesson_id')!='':
             # print('-------******* lesson id exists in request fetching lesson details---------------')
