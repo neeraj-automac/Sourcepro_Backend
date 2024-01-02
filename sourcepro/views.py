@@ -1560,8 +1560,8 @@ def change_password(request):
                 return JsonResponse({"status":"you_have_entered_wrong_password"})
             if new_password!=confirm_new_password:
                 return JsonResponse({"status":"password_do_not_match"})
-            # if new_password == current_password:
-            #     return JsonResponse({"status": "New_password_cannot_be_the_same_as_the_old_password"})
+            if new_password == current_password:
+                return JsonResponse({"status": "New_password_cannot_be_the_same_as_the_old_password"})
 
             user.set_password(new_password)
             user.save()
