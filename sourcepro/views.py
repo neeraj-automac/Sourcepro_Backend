@@ -45,76 +45,94 @@ print('^^^^ in views ^^^^^^^')
 tes_fun.apply_async()
 @api_view(['GET'])
 def download_certificate(request):
-    # user_id= request.query_params.get('user_id')
-    # user_id = request.query_params.get('user_id')
-    # user_course_data=usr_course.objects.filter(user_id=2).values('course','certificate_url')
-    # print(user_course_data)
-    # # user_assigned_course_ids=[ i['course'] for i in user_course_data]
-    # # user_course_certificates=Course.objects.filter(id__in=user_assigned_course_ids).values('certificate')
-    # ser_course_data=usr_course_certificate_serializer(user_course_data,many=True)
-    # print('ser_course_data',ser_course_data)
-    # print( ser_course_data.data)
-    # user_course_data = usr_course.objects.filter(user_id=2)
+    if request.user.is_authenticated:
+        if request.method=='GET':
+            course_id= request.query_params.get('course_id')
+            print("000000",request.user)
+            # user_id=2
+            user_id=request.user
+            namee=User_details.objects.get(user_id=user_id)
+            print('namee',namee.name)
 
-    # Create a list to hold the data for each course
-    # course_data_list = []
+            return JsonResponse({'name': namee.name})
 
-    # Iterate through the queryset and extract the necessary fields for each course
-    # for user_course in user_course_data:
-    #     course_data = {
-    #         'course': user_course.course,  # Assuming 'course' is a ForeignKey
-    #         'certificate_url': user_course.certificate_url
-    #     }
-    #     course_data_list.append(course_data)
-    #     for i in range(len(course_data_list)):
-    #         course_value=course_data_list[i]['course']
-    #         print(course_value)
-    #         print(type(course_value))
-    #         certificate_value= course_data_list[i]['certificate_url']
-    # user_course_data = usr_course.objects.filter(user_id=2).values('course','certificate_url')
-    # print('user_course_data',type(user_course_data[0]))
-    # ser_course_data = usr_course_certificate_serializer(course_data_list, many=True)
-    # print(ser_course_data.data[0]['course'])
-    #
-    # print(ser_course_data.data[0].keys())
-    user_id = request.query_params.get('user_id')
-    filter_data=usr_course.objects.filter(user_id=user_id)
-    print(filter_data)
-    print(type(filter_data))
-    ser_filter_data=usr_course_serializer(filter_data,many=True)
-    print('ser_filter_data',ser_filter_data)# returns all fields of model
-    print('type----ser_filter_data',type(ser_filter_data))# <class 'rest_framework.serializers.ListSerializer'>
-    ser_filter_data_data= ser_filter_data.data
-    print('ser_filter_data_data',ser_filter_data_data)#order dict-----------
-    print('****type***ser_filter_data_data',type(ser_filter_data_data))#return list
 
-    for i in range(0,len(ser_filter_data_data)):
-        print('-------------------------------------------------------------------------------------')
-        print(i,ser_filter_data_data)
-        print('&&&&&&&&--list$$$$$',list(ser_filter_data_data))
-        print('@@@@@@@--listkeys@@@@@@@',list(ser_filter_data_data)[i].keys())#odict_keys
-        print('-------------------------------------------------------------------------------------')
-        for k in list(ser_filter_data_data[i].keys()):
-            if k in ['course_id','certificate_url']:
-                continue
-            ser_filter_data_data[i].pop(k)
-        print('after pop ser_filter_data_data',ser_filter_data_data)
-        print('^^^^^^^^----type after pop ser_filter_data_data^^^^^^---------',type(ser_filter_data_data))#return_list
 
-    for i in range(0,len(ser_filter_data_data)):
-        filtered_data=Course.objects.filter(course_id=ser_filter_data_data[i]['course_id'])
-        print('filtered_data',filtered_data)#queryset
-        print('type of filtered_data',type(filtered_data))#queryset
-        ser_filtered_data=Course_serializerr(filtered_data,many=True)
-        ser_filtered_data_data=ser_filtered_data.data
-        print('$$$$$$$$$$*****ser_filtered_data_data',ser_filtered_data_data)#orderdict
-        print('type of ser_filtered_data_data',type(ser_filtered_data_data))#return_list
-        ser_filter_data_data[i].update(course_id=ser_filtered_data_data[0]['course_name'])
-        print('$$$$$$$$$$*****ser_filter_data_data', ser_filter_data_data)
-        # crs=ser_filtered_data_data[1].pop('course_name')
-        # ces=ser_filtered_data_data[i].pop('certificate_url')
 
-    return JsonResponse({'course_certificate':ser_filter_data_data})
+
+        # user_id = request.query_params.get('user_id')
+        # user_course_data=usr_course.objects.filter(user_id=2).values('course','certificate_url')
+        # print(user_course_data)
+        # # user_assigned_course_ids=[ i['course'] for i in user_course_data]
+        # # user_course_certificates=Course.objects.filter(id__in=user_assigned_course_ids).values('certificate')
+        # ser_course_data=usr_course_certificate_serializer(user_course_data,many=True)
+        # print('ser_course_data',ser_course_data)
+        # print( ser_course_data.data)
+        # user_course_data = usr_course.objects.filter(user_id=2)
+
+        # Create a list to hold the data for each course
+        # course_data_list = []
+
+        # Iterate through the queryset and extract the necessary fields for each course
+        # for user_course in user_course_data:
+        #     course_data = {
+        #         'course': user_course.course,  # Assuming 'course' is a ForeignKey
+        #         'certificate_url': user_course.certificate_url
+        #     }
+        #     course_data_list.append(course_data)
+        #     for i in range(len(course_data_list)):
+        #         course_value=course_data_list[i]['course']
+        #         print(course_value)
+        #         print(type(course_value))
+        #         certificate_value= course_data_list[i]['certificate_url']
+        # user_course_data = usr_course.objects.filter(user_id=2).values('course','certificate_url')
+        # print('user_course_data',type(user_course_data[0]))
+        # ser_course_data = usr_course_certificate_serializer(course_data_list, many=True)
+        # print(ser_course_data.data[0]['course'])
+        #
+        # print(ser_course_data.data[0].keys())
+
+
+
+        # user_id = request.query_params.get('user_id')
+        # filter_data=usr_course.objects.filter(user_id=user_id)
+        # print(filter_data)
+        # print(type(filter_data))
+        # ser_filter_data=usr_course_serializer(filter_data,many=True)
+        # print('ser_filter_data',ser_filter_data)# returns all fields of model
+        # print('type----ser_filter_data',type(ser_filter_data))# <class 'rest_framework.serializers.ListSerializer'>
+        # ser_filter_data_data= ser_filter_data.data
+        # print('ser_filter_data_data',ser_filter_data_data)#order dict-----------
+        # print('****type***ser_filter_data_data',type(ser_filter_data_data))#return list
+        #
+        # for i in range(0,len(ser_filter_data_data)):
+        #     print('-------------------------------------------------------------------------------------')
+        #     print(i,ser_filter_data_data)
+        #     print('&&&&&&&&--list$$$$$',list(ser_filter_data_data))
+        #     print('@@@@@@@--listkeys@@@@@@@',list(ser_filter_data_data)[i].keys())#odict_keys
+        #     print('-------------------------------------------------------------------------------------')
+        #     for k in list(ser_filter_data_data[i].keys()):
+        #         if k in ['course_id','certificate_url']:
+        #             continue
+        #         ser_filter_data_data[i].pop(k)
+        #     print('after pop ser_filter_data_data',ser_filter_data_data)
+        #     print('^^^^^^^^----type after pop ser_filter_data_data^^^^^^---------',type(ser_filter_data_data))#return_list
+        #
+        # for i in range(0,len(ser_filter_data_data)):
+        #     filtered_data=Course.objects.filter(course_id=ser_filter_data_data[i]['course_id'])
+        #     print('filtered_data',filtered_data)#queryset
+        #     print('type of filtered_data',type(filtered_data))#queryset
+        #     ser_filtered_data=Course_serializerr(filtered_data,many=True)
+        #     ser_filtered_data_data=ser_filtered_data.data
+        #     print('$$$$$$$$$$*****ser_filtered_data_data',ser_filtered_data_data)#orderdict
+        #     print('type of ser_filtered_data_data',type(ser_filtered_data_data))#return_list
+        #     ser_filter_data_data[i].update(course_id=ser_filtered_data_data[0]['course_name'])
+        #     print('$$$$$$$$$$*****ser_filter_data_data', ser_filter_data_data)
+        #     # crs=ser_filtered_data_data[1].pop('course_name')
+        #     # ces=ser_filtered_data_data[i].pop('certificate_url')
+
+
+    return JsonResponse({'status':"unauthorized_user"})
 
 
 
@@ -257,8 +275,8 @@ def home(request):
         old_courses_serializer = Course_serializer(old_courses, many=True)
         print("old_courses_serializer:::::", old_courses_serializer,old_courses)
 
-        # user_id = request.user
-        user_id = 2
+        user_id = request.user
+        # user_id = 2
         inprogress = usr_course.objects.filter(user_id = user_id ,course_status='Inprogress')
         # print('2222222222222',inprogress)
 
@@ -408,7 +426,7 @@ def usr_course_page(request):
                 serializer_data=serializer.data
                 # print(serializer_data)
                 course_data_result={}
-
+                print("course_data_result",course_data_result)
 
 
                 for i in range(0,len(serializer_data)):
@@ -420,7 +438,8 @@ def usr_course_page(request):
                         "creation_date":current_user_courses[i].course_id.created_date,
                         "course_likes":current_user_courses[i].course_id.likes,
                         "course_views":current_user_courses[i].course_id.views,
-                        "like_status":current_user_courses[i].like_status
+                        "like_status":current_user_courses[i].like_status,
+                        "course_status":current_user_courses[i].course_status
                         # "faq_question":faq_queryset[i].question
 
                     })
@@ -1446,7 +1465,7 @@ def quiz_attempt(request):
         # if len(a[i].correct_answer) == len(u_correct_answer):
         #     print(len(a[i].correct_answer),len(u_correct_answer),a[i].correct_answer,u_correct_answer)
         return JsonResponse({'answer_status':final_response,'quiz_score':quiz_percentage,'quiz_status':quiz_status})
-        # return JsonResponse({'answer_status':final_response})
+        #return JsonResponse({'answer_status':final_response})
     else:
         return  JsonResponse({'status':'unauthorized_user'})
 
