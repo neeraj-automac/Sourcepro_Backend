@@ -1491,15 +1491,15 @@ def user_details(request):
             # d_s.data[0].pop("password")
             return JsonResponse({"user_details": ds_data[0]})
         elif request.method == 'PUT':
-
+    
             ds = request.data  # expects a dictionary with user details as per the user_details model
             user_id = request.user
             # user_id = 2
             try:
                 rec = User_details.objects.get(user_id = user_id)#ds["user_id"]
-
+    
                 rec_list = json.loads(serializers.serialize('json', [rec, ]))
-
+    
                 for item in ds and rec_list[0]["fields"]:
                     # print('(((((((((((', ds[item], rec_list[0]["fields"][item])
                     # if ds[item] == rec_list[0]["fields"][item]:
@@ -1508,7 +1508,7 @@ def user_details(request):
                     #     continue
                     # else:
                     if item == "name" and ds[item]!="":
-
+    
                         rec.name = ds[item]
                     else:
                         rec.name =  rec.name
@@ -1528,18 +1528,18 @@ def user_details(request):
                         rec.years_of_experience = ds[item]
                     else:
                         rec.years_of_experience=rec.years_of_experience
-
+    
                     if item == "job_position" and ds[item]!="":
                         rec.job_position = ds[item]
                     else:
                         rec.job_position=rec.job_position
-
+    
                     if item == "location" and ds[item]!="":
                         rec.location = ds[item]
                     else:
                         rec.location=rec.location
-
-
+    
+    
                     # else:
                     #     continue
                     rec.save()
