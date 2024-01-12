@@ -269,14 +269,42 @@ def home(request):
     if request.user.is_authenticated:
         new_courses = Course.objects.filter(type="new")
         new_courses_serializer= Course_serializer(new_courses, many=True)
-        print("new_courses_serializer:::::",new_courses_serializer.data,new_courses)
+        # print("new_courses_serializer:::::",new_courses_serializer.data,new_courses)
 
         old_courses = Course.objects.filter(type="old")
         old_courses_serializer = Course_serializer(old_courses, many=True)
-        print("old_courses_serializer:::::", old_courses_serializer,old_courses)
-
+        old_courses_serializer_data=old_courses_serializer.data
+        # print("old_courses_serializer:::::", old_courses_serializer,old_courses)
+        # print("old_courses_serializer_data:::::", old_courses_serializer.data)
         user_id = request.user
         # user_id = 2
+        user_courses = usr_course.objects.filter(user_id=user_id)
+        # print('user_courses',user_courses)
+        user_courses_serializer=usr_course_course_page(user_courses,many=True)
+        user_courses_serializer_data=user_courses_serializer.data
+        print(">>>>>>>>>>",old_courses_serializer_data)
+        print("<<<<<<<<<<<",user_courses_serializer_data)
+        # Remove courses from oldcourse based on user courses using list comprehension
+
+        courses_to_remove = {course['course_id'] for course in old_courses_serializer_data}
+        # print('courses_to_remove',courses_to_remove)
+
+        remaining_courses = [course for course in  user_courses_serializer_data if course['course_id'] not in courses_to_remove]
+        remaining_courses_ids=[]
+        for i in range(len(remaining_courses)):
+            print(remaining_courses[i]['course_id'])
+            remaining_courses_ids.append(remaining_courses[i]['course_id'])
+
+        all_courses_data=Course.objects.filter(course_id__in=remaining_courses_ids).values('course_id','thumbnail', 'course_name', 'total_duration')
+        # Print the result
+        # print('all_courses_data',all_courses_data)
+        all_courses_data_serializer=Course_serializer(all_courses_data,many=True)
+        all_courses_data_serializer_data=all_courses_data_serializer.data
+
+
+
+
+
         inprogress = usr_course.objects.filter(user_id = user_id ,course_status='Inprogress')
         # print('2222222222222',inprogress)
 
@@ -292,7 +320,7 @@ def home(request):
 
         return JsonResponse({"Continue_Learning": continue_learning_data,
                              "New_Courses": new_courses_serializer.data,
-                             "All_Courses":old_courses_serializer.data })#
+                             "All_Courses":all_courses_data_serializer_data})#
     else:
         return JsonResponse({"status":"unauthorized_user"})
 #
