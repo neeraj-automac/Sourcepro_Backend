@@ -45,94 +45,94 @@ print('^^^^ in views ^^^^^^^')
 tes_fun.apply_async()
 @api_view(['GET'])
 def download_certificate(request):
-    # if request.user.is_authenticated:
-    if request.method=='GET':
-        course_id= request.query_params.get('course_id')
-        print("000000",request.user)
-        user_id=2
-        # user_id=request.user
-        namee=User_details.objects.get(user_id=user_id)
-        print('namee',namee.name)
+    if request.user.is_authenticated:
+        if request.method=='GET':
+            course_id= request.query_params.get('course_id')
+            print("000000",request.user)
+            # user_id=2
+            user_id=request.user
+            namee=User_details.objects.get(user_id=user_id)
+            print('namee',namee.name)
 
-        return JsonResponse({'name': namee.name})
-
-
+            return JsonResponse({'name': namee.name})
 
 
 
-    # user_id = request.query_params.get('user_id')
-    # user_course_data=usr_course.objects.filter(user_id=2).values('course','certificate_url')
-    # print(user_course_data)
-    # # user_assigned_course_ids=[ i['course'] for i in user_course_data]
-    # # user_course_certificates=Course.objects.filter(id__in=user_assigned_course_ids).values('certificate')
-    # ser_course_data=usr_course_certificate_serializer(user_course_data,many=True)
-    # print('ser_course_data',ser_course_data)
-    # print( ser_course_data.data)
-    # user_course_data = usr_course.objects.filter(user_id=2)
-
-    # Create a list to hold the data for each course
-    # course_data_list = []
-
-    # Iterate through the queryset and extract the necessary fields for each course
-    # for user_course in user_course_data:
-    #     course_data = {
-    #         'course': user_course.course,  # Assuming 'course' is a ForeignKey
-    #         'certificate_url': user_course.certificate_url
-    #     }
-    #     course_data_list.append(course_data)
-    #     for i in range(len(course_data_list)):
-    #         course_value=course_data_list[i]['course']
-    #         print(course_value)
-    #         print(type(course_value))
-    #         certificate_value= course_data_list[i]['certificate_url']
-    # user_course_data = usr_course.objects.filter(user_id=2).values('course','certificate_url')
-    # print('user_course_data',type(user_course_data[0]))
-    # ser_course_data = usr_course_certificate_serializer(course_data_list, many=True)
-    # print(ser_course_data.data[0]['course'])
-    #
-    # print(ser_course_data.data[0].keys())
 
 
+        # user_id = request.query_params.get('user_id')
+        # user_course_data=usr_course.objects.filter(user_id=2).values('course','certificate_url')
+        # print(user_course_data)
+        # # user_assigned_course_ids=[ i['course'] for i in user_course_data]
+        # # user_course_certificates=Course.objects.filter(id__in=user_assigned_course_ids).values('certificate')
+        # ser_course_data=usr_course_certificate_serializer(user_course_data,many=True)
+        # print('ser_course_data',ser_course_data)
+        # print( ser_course_data.data)
+        # user_course_data = usr_course.objects.filter(user_id=2)
 
-    # user_id = request.query_params.get('user_id')
-    # filter_data=usr_course.objects.filter(user_id=user_id)
-    # print(filter_data)
-    # print(type(filter_data))
-    # ser_filter_data=usr_course_serializer(filter_data,many=True)
-    # print('ser_filter_data',ser_filter_data)# returns all fields of model
-    # print('type----ser_filter_data',type(ser_filter_data))# <class 'rest_framework.serializers.ListSerializer'>
-    # ser_filter_data_data= ser_filter_data.data
-    # print('ser_filter_data_data',ser_filter_data_data)#order dict-----------
-    # print('****type***ser_filter_data_data',type(ser_filter_data_data))#return list
-    #
-    # for i in range(0,len(ser_filter_data_data)):
-    #     print('-------------------------------------------------------------------------------------')
-    #     print(i,ser_filter_data_data)
-    #     print('&&&&&&&&--list$$$$$',list(ser_filter_data_data))
-    #     print('@@@@@@@--listkeys@@@@@@@',list(ser_filter_data_data)[i].keys())#odict_keys
-    #     print('-------------------------------------------------------------------------------------')
-    #     for k in list(ser_filter_data_data[i].keys()):
-    #         if k in ['course_id','certificate_url']:
-    #             continue
-    #         ser_filter_data_data[i].pop(k)
-    #     print('after pop ser_filter_data_data',ser_filter_data_data)
-    #     print('^^^^^^^^----type after pop ser_filter_data_data^^^^^^---------',type(ser_filter_data_data))#return_list
-    #
-    # for i in range(0,len(ser_filter_data_data)):
-    #     filtered_data=Course.objects.filter(course_id=ser_filter_data_data[i]['course_id'])
-    #     print('filtered_data',filtered_data)#queryset
-    #     print('type of filtered_data',type(filtered_data))#queryset
-    #     ser_filtered_data=Course_serializerr(filtered_data,many=True)
-    #     ser_filtered_data_data=ser_filtered_data.data
-    #     print('$$$$$$$$$$*****ser_filtered_data_data',ser_filtered_data_data)#orderdict
-    #     print('type of ser_filtered_data_data',type(ser_filtered_data_data))#return_list
-    #     ser_filter_data_data[i].update(course_id=ser_filtered_data_data[0]['course_name'])
-    #     print('$$$$$$$$$$*****ser_filter_data_data', ser_filter_data_data)
-    #     # crs=ser_filtered_data_data[1].pop('course_name')
-    #     # ces=ser_filtered_data_data[i].pop('certificate_url')
+        # Create a list to hold the data for each course
+        # course_data_list = []
+
+        # Iterate through the queryset and extract the necessary fields for each course
+        # for user_course in user_course_data:
+        #     course_data = {
+        #         'course': user_course.course,  # Assuming 'course' is a ForeignKey
+        #         'certificate_url': user_course.certificate_url
+        #     }
+        #     course_data_list.append(course_data)
+        #     for i in range(len(course_data_list)):
+        #         course_value=course_data_list[i]['course']
+        #         print(course_value)
+        #         print(type(course_value))
+        #         certificate_value= course_data_list[i]['certificate_url']
+        # user_course_data = usr_course.objects.filter(user_id=2).values('course','certificate_url')
+        # print('user_course_data',type(user_course_data[0]))
+        # ser_course_data = usr_course_certificate_serializer(course_data_list, many=True)
+        # print(ser_course_data.data[0]['course'])
+        #
+        # print(ser_course_data.data[0].keys())
 
 
-    # return JsonResponse({'status':"unauthorized_user"})
+
+        # user_id = request.query_params.get('user_id')
+        # filter_data=usr_course.objects.filter(user_id=user_id)
+        # print(filter_data)
+        # print(type(filter_data))
+        # ser_filter_data=usr_course_serializer(filter_data,many=True)
+        # print('ser_filter_data',ser_filter_data)# returns all fields of model
+        # print('type----ser_filter_data',type(ser_filter_data))# <class 'rest_framework.serializers.ListSerializer'>
+        # ser_filter_data_data= ser_filter_data.data
+        # print('ser_filter_data_data',ser_filter_data_data)#order dict-----------
+        # print('****type***ser_filter_data_data',type(ser_filter_data_data))#return list
+        #
+        # for i in range(0,len(ser_filter_data_data)):
+        #     print('-------------------------------------------------------------------------------------')
+        #     print(i,ser_filter_data_data)
+        #     print('&&&&&&&&--list$$$$$',list(ser_filter_data_data))
+        #     print('@@@@@@@--listkeys@@@@@@@',list(ser_filter_data_data)[i].keys())#odict_keys
+        #     print('-------------------------------------------------------------------------------------')
+        #     for k in list(ser_filter_data_data[i].keys()):
+        #         if k in ['course_id','certificate_url']:
+        #             continue
+        #         ser_filter_data_data[i].pop(k)
+        #     print('after pop ser_filter_data_data',ser_filter_data_data)
+        #     print('^^^^^^^^----type after pop ser_filter_data_data^^^^^^---------',type(ser_filter_data_data))#return_list
+        #
+        # for i in range(0,len(ser_filter_data_data)):
+        #     filtered_data=Course.objects.filter(course_id=ser_filter_data_data[i]['course_id'])
+        #     print('filtered_data',filtered_data)#queryset
+        #     print('type of filtered_data',type(filtered_data))#queryset
+        #     ser_filtered_data=Course_serializerr(filtered_data,many=True)
+        #     ser_filtered_data_data=ser_filtered_data.data
+        #     print('$$$$$$$$$$*****ser_filtered_data_data',ser_filtered_data_data)#orderdict
+        #     print('type of ser_filtered_data_data',type(ser_filtered_data_data))#return_list
+        #     ser_filter_data_data[i].update(course_id=ser_filtered_data_data[0]['course_name'])
+        #     print('$$$$$$$$$$*****ser_filter_data_data', ser_filter_data_data)
+        #     # crs=ser_filtered_data_data[1].pop('course_name')
+        #     # ces=ser_filtered_data_data[i].pop('certificate_url')
+
+
+    return JsonResponse({'status':"unauthorized_user"})
 
 
 
@@ -1222,44 +1222,44 @@ def FAQ_API(request):
 # @permission_classes([IsAuthenticated])
 def quiz(request):
     # screens 14,15
-    # if request.user.is_authenticated:
-        # print()
-    course_id = request.query_params.get('course_id')  # expects course_id
-    lesson_id = request.query_params.get('lesson_id')  # expects lesson_id
-    # user_id=request.user# e
-    user_id=2# e
-    # user_id=request.query_params.get('user_id')
-    # print("COURSE_ID", course_id)
-    # print("LESSON_ID", lesson_id)
-    # print("USER_ID", user_id)
+    if request.user.is_authenticated:
+            # print()
+        course_id = request.query_params.get('course_id')  # expects course_id
+        lesson_id = request.query_params.get('lesson_id')  # expects lesson_id
+        user_id=request.user# e
+        # user_id=2# e
+        # user_id=request.query_params.get('user_id')
+        # print("COURSE_ID", course_id)
+        # print("LESSON_ID", lesson_id)
+        # print("USER_ID", user_id)
 
-    info = QnA.objects.filter(course_id = course_id, lesson_id = lesson_id)
-    # print('info',info)
-    sinfo = QnA_serializer2(info, many=True)
-    # print('sinfo_data',sinfo.data)
+        info = QnA.objects.filter(course_id = course_id, lesson_id = lesson_id)
+        # print('info',info)
+        sinfo = QnA_serializer2(info, many=True)
+        # print('sinfo_data',sinfo.data)
 
-    # info2 = User_answers.objects.filter(user_id = user_id, Course_id = course_id, lesson_id = lesson_id)
-    # print('info2',info2)
-    # sinfo2 = User_answers_serializer2(info2, many=True)
-    # print("sinfo2.data --------------------------------",sinfo2.data)
-    # print(info2[0].answer,info2[0].status)
+        # info2 = User_answers.objects.filter(user_id = user_id, Course_id = course_id, lesson_id = lesson_id)
+        # print('info2',info2)
+        # sinfo2 = User_answers_serializer2(info2, many=True)
+        # print("sinfo2.data --------------------------------",sinfo2.data)
+        # print(info2[0].answer,info2[0].status)
 
 
-    for i in range(0,len(sinfo.data)):
+        for i in range(0,len(sinfo.data)):
 
-        # sinfo.data[i].update({'user_entered_answer':info2[i].answer,'answer_status':info2[i].status})
-        sinfo.data[i].pop("correct_answer")
-        sinfo.data[i].pop("lesson_id")
-        sinfo.data[i].pop("course_id")
-        qsn_optn=sinfo.data[i].pop('question_options')
-        sinfo.data[i].update({'question':qsn_optn['qsn'],'options':qsn_optn['options']})
-        # print('///////////////////////////////',qsn_optn)
+            # sinfo.data[i].update({'user_entered_answer':info2[i].answer,'answer_status':info2[i].status})
+            sinfo.data[i].pop("correct_answer")
+            sinfo.data[i].pop("lesson_id")
+            sinfo.data[i].pop("course_id")
+            qsn_optn=sinfo.data[i].pop('question_options')
+            sinfo.data[i].update({'question':qsn_optn['qsn'],'options':qsn_optn['options']})
+            # print('///////////////////////////////',qsn_optn)
 
-    # print(sinfo.data)
+        # print(sinfo.data)
 
-    return JsonResponse({'quiz': sinfo.data})#'course_id': course_id, 'lesson_id': lesson_id
-    # else:
-    #     return JsonResponse({'status':'unauthorized_user'})
+        return JsonResponse({'quiz': sinfo.data})#'course_id': course_id, 'lesson_id': lesson_id
+    else:
+        return JsonResponse({'status':'unauthorized_user'})
 
 
 
@@ -1267,235 +1267,235 @@ def quiz(request):
 # @authentication_classes([SessionAuthentication, BasicAuthentication])
 # @permission_classes([IsAuthenticated])
 def quiz_attempt(request):
-    # if request.user.is_authenticated:
-    attempt_info=request.data
-    # print('attemp_info',attempt_info)
-    # print(lesson_id)
-    final_response = []
-    # lesson_id = attempt_info[0]['lesson_id']
-    lesson_id = request.data['lesson_id']
-    max_lesson_id = User_Lessons.objects.filter(course_id=request.data.get('course_id')).aggregate(Max('lesson_id'))['lesson_id__max']
-    # print('max_lesson_id',max_lesson_id,type(max_lesson_id))
-    # for i in range(1,len(attempt_info)):
-    for i in range(0,len(request.data['questions'])):
-        # print('*****request.dataquestions',request.data['questions'])
+    if request.user.is_authenticated:
+        attempt_info=request.data
+        # print('attemp_info',attempt_info)
+        # print(lesson_id)
+        final_response = []
+        # lesson_id = attempt_info[0]['lesson_id']
+        lesson_id = request.data['lesson_id']
+        max_lesson_id = User_Lessons.objects.filter(course_id=request.data.get('course_id')).aggregate(Max('lesson_id'))['lesson_id__max']
+        # print('max_lesson_id',max_lesson_id,type(max_lesson_id))
+        # for i in range(1,len(attempt_info)):
+        for i in range(0,len(request.data['questions'])):
+            # print('*****request.dataquestions',request.data['questions'])
 
-        # print('lllllllll',len(attempt_info))
-        # lesson_id = attempt_info[i]['lesson_id']
-        question_id=int(request.data['questions'][i]['question_id'])
+            # print('lllllllll',len(attempt_info))
+            # lesson_id = attempt_info[i]['lesson_id']
+            question_id=int(request.data['questions'][i]['question_id'])
 
-        u_correct_answer=request.data['questions'][i]['option']
-        # print('question_id', question_id,lesson_id,u_correct_answer)
-        # print(type(u_correct_answer))
-        a = QnA.objects.filter( question_id=question_id)  # ,correct_answer=u_correct_answer
-        quiz_serializer=QnA_serializer(a,many=True)
-        quiz_serializer_data=quiz_serializer.data
-        # print('.........',a)
-        # print('--------',quiz_serializer_data)
-        for i in range(0,len(quiz_serializer_data)):
+            u_correct_answer=request.data['questions'][i]['option']
+            # print('question_id', question_id,lesson_id,u_correct_answer)
+            # print(type(u_correct_answer))
+            a = QnA.objects.filter( question_id=question_id)  # ,correct_answer=u_correct_answer
+            quiz_serializer=QnA_serializer(a,many=True)
+            quiz_serializer_data=quiz_serializer.data
+            # print('.........',a)
+            # print('--------',quiz_serializer_data)
+            for i in range(0,len(quiz_serializer_data)):
 
-            # print('a',a[i].correct_answer)
-            # print('ahhhhh',len(quiz_serializer_data))
-            # print('answer in db',a[i].correct_answer)
-            # print('user answer',u_correct_answer)
-            if len(a[i].correct_answer)==1:#scq
-                # print(type(a[i].correct_answer))
+                # print('a',a[i].correct_answer)
+                # print('ahhhhh',len(quiz_serializer_data))
+                # print('answer in db',a[i].correct_answer)
+                # print('user answer',u_correct_answer)
+                if len(a[i].correct_answer)==1:#scq
+                    # print(type(a[i].correct_answer))
 
-                if len(a[i].correct_answer) == len(u_correct_answer):
-                    if a[i].correct_answer == u_correct_answer:
+                    if len(a[i].correct_answer) == len(u_correct_answer):
+                        if a[i].correct_answer == u_correct_answer:
 
-                        # print('True')
-                        final_response.append({"question_id": question_id,"user_answer":u_correct_answer ,"status": "True"})
-                        # break
+                            # print('True')
+                            final_response.append({"question_id": question_id,"user_answer":u_correct_answer ,"status": "True"})
+                            # break
+                        else:
+
+                            # print('false')
+                            final_response.append({"question_id": question_id, "user_answer":u_correct_answer ,"status": "False"})
+                    # else:
+                    #     final_response.append(f'please select {len(a[i].correct_answer)} option')
+
+                elif len(a[i].correct_answer)==2:
+                    # res = []
+                    # if len(a[i].correct_answer) == len(u_correct_answer):
+
+                    # print('mcq',a[i].correct_answer,u_correct_answer)
+                    if a[i].correct_answer==u_correct_answer :
+                        final_response.append({"question_id":question_id,"user_answer":u_correct_answer ,"status":"True"})
+                        # print("appended true for mcq")
                     else:
+                        final_response.append({"question_id":question_id,"user_answer":u_correct_answer ,"status":"False"})
+                        # print("appended False for mcq")
+                    # for x,y in list(zip(a[i].correct_answer,u_correct_answer)):
+                    #     print(list(zip(a[i].correct_answer,u_correct_answer)))
+                    #     print('xy',x,y)
+                    #     if x == y:
+                    #         res.append('True')
+                    #     else:
+                    #         res.append('False')
+                    # print('res',res)
+                    # final_response.append(res)
+                    # else:
+                    #     res.append(f'please select {len(a[i].correct_answer)} options')
+                    #     final_response.append(res)
 
-                        # print('false')
-                        final_response.append({"question_id": question_id, "user_answer":u_correct_answer ,"status": "False"})
-                # else:
-                #     final_response.append(f'please select {len(a[i].correct_answer)} option')
-
-            elif len(a[i].correct_answer)==2:
-                # res = []
-                # if len(a[i].correct_answer) == len(u_correct_answer):
-
-                # print('mcq',a[i].correct_answer,u_correct_answer)
-                if a[i].correct_answer==u_correct_answer :
-                    final_response.append({"question_id":question_id,"user_answer":u_correct_answer ,"status":"True"})
-                    # print("appended true for mcq")
+                        # return JsonResponse()
+                # elif len(u_correct_answer)==0:
+                #     print('---------------------------------i am else')
+                #     for j in range(len(request.data['questions'])):
+                #         print(len(request.data['questions']))
+                #         final_response.append({"question_id":request.data['questions'][j]['question_id'], "user_answer": u_correct_answer, "status": "False"})
                 else:
-                    final_response.append({"question_id":question_id,"user_answer":u_correct_answer ,"status":"False"})
-                    # print("appended False for mcq")
-                # for x,y in list(zip(a[i].correct_answer,u_correct_answer)):
-                #     print(list(zip(a[i].correct_answer,u_correct_answer)))
-                #     print('xy',x,y)
-                #     if x == y:
-                #         res.append('True')
-                #     else:
-                #         res.append('False')
-                # print('res',res)
-                # final_response.append(res)
-                # else:
-                #     res.append(f'please select {len(a[i].correct_answer)} options')
-                #     final_response.append(res)
+                    return JsonResponse({"status":"unexpected_response_from_user"})
+            # print(final_response,type(final_response))
+        response = {"answer_status":final_response}
 
-                    # return JsonResponse()
-            # elif len(u_correct_answer)==0:
-            #     print('---------------------------------i am else')
-            #     for j in range(len(request.data['questions'])):
-            #         print(len(request.data['questions']))
-            #         final_response.append({"question_id":request.data['questions'][j]['question_id'], "user_answer": u_correct_answer, "status": "False"})
+
+        total_questions = len(response["answer_status"])
+        total_correct = 0
+
+        for answer_status in response["answer_status"]:
+            # print('00000000000000', answer_status)
+            for k, v in answer_status.items():
+                # print(k, v)
+            # print(answer_status)
+                if isinstance(v, str):  # Single choice question/blank(single word(single blank _ ),sentence)/question answer in text box
+                    # print('answer_status',answer_status,type(answer_status))
+                    # print('****', isinstance(v, str))
+                    if v == "True":
+                        total_correct += 1
+            # elif isinstance(answer_status, list):#mcq/blank(multiple blanks _ , _ , _)
+            #     print('&&&&&&', isinstance(answer_status, list))
+            #     correct_choices = answer_status.count("True")
+            #     if correct_choices == len(answer_status):
+            #         print('answer_status list',answer_status,type(answer_status))
+            #         total_correct += 1
+            #     elif correct_choices > 0 and correct_choices < len(answer_status):
+            #         print(len(answer_status))
+            #         partial_credit = correct_choices / len(answer_status)  # Calculate dynamic partial credit
+            #         total_correct += partial_credit
+        # print('total_correct',total_correct,total_questions)
+        quiz_percentage = int((total_correct / total_questions * 100))
+        # print(quiz_percentage)
+        quiz_status="Fail"
+        if quiz_percentage>70:
+            quiz_status="Pass"
+
+
+
+
+        # print(f"Total Correct: {total_correct}")
+        # print(f"Total Questions: {total_questions}")
+        # print(f"Quiz Percentage: {quiz_percentage}%")
+        # print('final_response',final_response)
+
+        user_id=request.user
+        # user_id=2
+        # print('user_id',user_id)
+        # course_id=attempt_info[0]['course_id']
+        # print('course_id',course_id)
+        lesson_id = request.data['lesson_id']
+        # print('lesson_id',lesson_id)
+        queryset=User_Lessons.objects.get(user_id=user_id,lesson_id=lesson_id)#,course=course_id
+        # print(queryset)
+        serializer=User_Lessons_quiz_score_serializer(queryset,data={"quiz_score":quiz_percentage})
+        if serializer.is_valid():
+            # print('serializer',serializer,serializer.data,serializer.validated_data['quiz_score'])
+            queryset.quiz_attempt_status=True
+            queryset.save()
+            serializer.save()
+            lesson_scores=[]
+
+            course_status_queryset=User_Lessons.objects.filter(user_id=user_id,course_id=request.data.get('course_id'))
+
+            course_status_update=usr_course.objects.get(user_id=user_id, course_id=request.data.get('course_id'))
+            # print('course_status_update',course_status_update)
+
+            for i in range(len(course_status_queryset)):
+
+                # print('course_status_queryset',course_status_queryset[i].quiz_score)
+                lesson_scores.append(course_status_queryset[i].quiz_score)
+            print('lesson_scores',lesson_scores)
+
+            # for score in lesson_scores:
+            #     # print(i)
+            #     if score<70:
+            #
+            #         # print('inprogress')
+            #         # pass
+            #         course_status_update.course_status = 'Inprogress'
+            #         course_status_update.save()
+            #         print('course_status_update',course_status_update.course_status)
+            #     else:
+            #         course_status_update.course_status='Completed'
+            #         course_status_update.save()
+            #         print('course_status_update',course_status_update.course_status)
+
+            if all(score > 70 for score in lesson_scores):
+                course_status_update.course_status = 'Completed'
+                course_status_update.save()
+                print('course_status_update', course_status_update.course_status)
             else:
-                return JsonResponse({"status":"unexpected_response_from_user"})
-        # print(final_response,type(final_response))
-    response = {"answer_status":final_response}
+                course_status_update.course_status = 'Inprogress'
+                course_status_update.save()
+                print('course_status_update', course_status_update.course_status)
 
+            # user
+            # course
+            if queryset.quiz_attempt_status==True and queryset.quiz_score>70 and int(lesson_id)!=max_lesson_id:
+                # below lessons variable represents querying the next most greater lesson id based on request came on lesson id from frontend ,to update next lesson staus
+                lessons=User_Lessons.objects.filter(course_id=request.data.get('course_id'), lesson_id__gt=lesson_id).order_by('lesson_id').first()
 
-    total_questions = len(response["answer_status"])
-    total_correct = 0
+                # print(lessons,len(lessons))
+                # print('next lesson id from multiple lessons of course',lessons.lesson_id.lesson_id,lessons)
+                next_lesson=User_Lessons.objects.get(lesson_id=lessons.lesson_id.lesson_id)
+                # print('next_lesson single object',next_lesson.lesson_id.lesson_id,next_lesson)
+                # user_lesson_queryset=Lessons.objects.filter(course_in_lessons=course_id,lesson_id__gt=lesson_id).order_by('lesson_id').first()
+                if next_lesson.lesson_status=='locked':
+                    next_lesson.lesson_status='unlocked'
+                    next_lesson.save()
 
-    for answer_status in response["answer_status"]:
-        # print('00000000000000', answer_status)
-        for k, v in answer_status.items():
-            # print(k, v)
-        # print(answer_status)
-            if isinstance(v, str):  # Single choice question/blank(single word(single blank _ ),sentence)/question answer in text box
-                # print('answer_status',answer_status,type(answer_status))
-                # print('****', isinstance(v, str))
-                if v == "True":
-                    total_correct += 1
-        # elif isinstance(answer_status, list):#mcq/blank(multiple blanks _ , _ , _)
-        #     print('&&&&&&', isinstance(answer_status, list))
-        #     correct_choices = answer_status.count("True")
-        #     if correct_choices == len(answer_status):
-        #         print('answer_status list',answer_status,type(answer_status))
-        #         total_correct += 1
-        #     elif correct_choices > 0 and correct_choices < len(answer_status):
-        #         print(len(answer_status))
-        #         partial_credit = correct_choices / len(answer_status)  # Calculate dynamic partial credit
-        #         total_correct += partial_credit
-    # print('total_correct',total_correct,total_questions)
-    quiz_percentage = int((total_correct / total_questions * 100))
-    # print(quiz_percentage)
-    quiz_status="Fail"
-    if quiz_percentage>70:
-        quiz_status="Pass"
+                    current_lesson=User_Lessons.objects.get(lesson_id=lesson_id)
+                    # print('current lesson id',current_lesson.lesson_id.lesson_id,current_lesson)
+                    current_lesson.lesson_status='completed'
+                    current_lesson.save()
+                elif  next_lesson.lesson_status=='unlocked' or 'completed':
+                    pass
+                else:
+                    return JsonResponse({"status":"not_locked_not_unlocked_not_completed_got_diffrent_lesson_status_in_db"})
+                    # print('not locked not unlocked not completed got diffrent lesson status in db')
 
-
-
-
-    # print(f"Total Correct: {total_correct}")
-    # print(f"Total Questions: {total_questions}")
-    # print(f"Quiz Percentage: {quiz_percentage}%")
-    # print('final_response',final_response)
-
-    # user_id=request.user
-    user_id=2
-    # print('user_id',user_id)
-    # course_id=attempt_info[0]['course_id']
-    # print('course_id',course_id)
-    lesson_id = request.data['lesson_id']
-    # print('lesson_id',lesson_id)
-    queryset=User_Lessons.objects.get(user_id=user_id,lesson_id=lesson_id)#,course=course_id
-    # print(queryset)
-    serializer=User_Lessons_quiz_score_serializer(queryset,data={"quiz_score":quiz_percentage})
-    if serializer.is_valid():
-        # print('serializer',serializer,serializer.data,serializer.validated_data['quiz_score'])
-        queryset.quiz_attempt_status=True
-        queryset.save()
-        serializer.save()
-        lesson_scores=[]
-
-        course_status_queryset=User_Lessons.objects.filter(user_id=user_id,course_id=request.data.get('course_id'))
-
-        course_status_update=usr_course.objects.get(user_id=user_id, course_id=request.data.get('course_id'))
-        # print('course_status_update',course_status_update)
-
-        for i in range(len(course_status_queryset)):
-
-            # print('course_status_queryset',course_status_queryset[i].quiz_score)
-            lesson_scores.append(course_status_queryset[i].quiz_score)
-        print('lesson_scores',lesson_scores)
-
-        # for score in lesson_scores:
-        #     # print(i)
-        #     if score<70:
-        #
-        #         # print('inprogress')
-        #         # pass
-        #         course_status_update.course_status = 'Inprogress'
-        #         course_status_update.save()
-        #         print('course_status_update',course_status_update.course_status)
-        #     else:
-        #         course_status_update.course_status='Completed'
-        #         course_status_update.save()
-        #         print('course_status_update',course_status_update.course_status)
-
-        if all(score > 70 for score in lesson_scores):
-            course_status_update.course_status = 'Completed'
-            course_status_update.save()
-            print('course_status_update', course_status_update.course_status)
-        else:
-            course_status_update.course_status = 'Inprogress'
-            course_status_update.save()
-            print('course_status_update', course_status_update.course_status)
-
-        # user
-        # course
-        if queryset.quiz_attempt_status==True and queryset.quiz_score>70 and int(lesson_id)!=max_lesson_id:
-            # below lessons variable represents querying the next most greater lesson id based on request came on lesson id from frontend ,to update next lesson staus
-            lessons=User_Lessons.objects.filter(course_id=request.data.get('course_id'), lesson_id__gt=lesson_id).order_by('lesson_id').first()
-
-            # print(lessons,len(lessons))
-            # print('next lesson id from multiple lessons of course',lessons.lesson_id.lesson_id,lessons)
-            next_lesson=User_Lessons.objects.get(lesson_id=lessons.lesson_id.lesson_id)
-            # print('next_lesson single object',next_lesson.lesson_id.lesson_id,next_lesson)
-            # user_lesson_queryset=Lessons.objects.filter(course_in_lessons=course_id,lesson_id__gt=lesson_id).order_by('lesson_id').first()
-            if next_lesson.lesson_status=='locked':
-                next_lesson.lesson_status='unlocked'
-                next_lesson.save()
-
-                current_lesson=User_Lessons.objects.get(lesson_id=lesson_id)
-                # print('current lesson id',current_lesson.lesson_id.lesson_id,current_lesson)
-                current_lesson.lesson_status='completed'
+            # current_lesson = User_Lessons.objects.get(course_lesson_id=lesson_id)
+            # current_lesson_id=current_lesson.course_lesson_id.lesson_id
+            # print('current lesson id', current_lesson.course_lesson_id.lesson_id, current_lesson)
+            # max_lesson_id = User_Lessons.objects.filter(course=request.data.get('course_id')).aggregate(Max('course_lesson_id'))['course_lesson_id__max']
+            elif int(lesson_id)==max_lesson_id and queryset.quiz_attempt_status==True and queryset.quiz_score>70:
+                #no next lesson is present and user is in last lesson scenario
+                # print('--------------updating max lesson data-----------------------------------------------------------------------------')
+                current_lesson = User_Lessons.objects.get(user_id=user_id,lesson_id=lesson_id)
+                # print('current lesson id', current_lesson.lesson_id.lesson_id, current_lesson)
+                current_lesson.lesson_status = 'completed'
                 current_lesson.save()
-            elif  next_lesson.lesson_status=='unlocked' or 'completed':
-                pass
+
+
+
+
             else:
-                return JsonResponse({"status":"not_locked_not_unlocked_not_completed_got_diffrent_lesson_status_in_db"})
-                # print('not locked not unlocked not completed got diffrent lesson status in db')
+                # return JsonResponse({"status":"no_lesson_status_updated"})
+                # print("no lesson status updated")
+                pass
 
-        # current_lesson = User_Lessons.objects.get(course_lesson_id=lesson_id)
-        # current_lesson_id=current_lesson.course_lesson_id.lesson_id
-        # print('current lesson id', current_lesson.course_lesson_id.lesson_id, current_lesson)
-        # max_lesson_id = User_Lessons.objects.filter(course=request.data.get('course_id')).aggregate(Max('course_lesson_id'))['course_lesson_id__max']
-        elif int(lesson_id)==max_lesson_id and queryset.quiz_attempt_status==True and queryset.quiz_score>70:
-            #no next lesson is present and user is in last lesson scenario
-            # print('--------------updating max lesson data-----------------------------------------------------------------------------')
-            current_lesson = User_Lessons.objects.get(user_id=user_id,lesson_id=lesson_id)
-            # print('current lesson id', current_lesson.lesson_id.lesson_id, current_lesson)
-            current_lesson.lesson_status = 'completed'
-            current_lesson.save()
+            # print('sk')
 
 
+        # print(serializer.errors)
 
 
-        else:
-            # return JsonResponse({"status":"no_lesson_status_updated"})
-            # print("no lesson status updated")
-            pass
-
-        # print('sk')
-
-
-    # print(serializer.errors)
-
-
-    # if len(a[i].correct_answer) == len(u_correct_answer):
-    #     print(len(a[i].correct_answer),len(u_correct_answer),a[i].correct_answer,u_correct_answer)
-    return JsonResponse({'answer_status':final_response,'quiz_score':quiz_percentage,'quiz_status':quiz_status})
-    #return JsonResponse({'answer_status':final_response})
-    # else:
-    #     return  JsonResponse({'status':'unauthorized_user'})
+        # if len(a[i].correct_answer) == len(u_correct_answer):
+        #     print(len(a[i].correct_answer),len(u_correct_answer),a[i].correct_answer,u_correct_answer)
+        return JsonResponse({'answer_status':final_response,'quiz_score':quiz_percentage,'quiz_status':quiz_status})
+        #return JsonResponse({'answer_status':final_response})
+    else:
+        return  JsonResponse({'status':'unauthorized_user'})
 
 
 
