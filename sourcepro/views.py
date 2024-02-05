@@ -594,18 +594,18 @@ def usr_course_page_lesson(request):
                 l = request.data
                 # print('lllllllll', l)
                 lesson_watch_time = request.data.get('minutes_completed')
-
+    
                 d_lesson_watch_time = datetime.datetime.strptime(lesson_watch_time, '%H:%M:%S').time()
                 # print('d_lesson_watch_time', d_lesson_watch_time, type(d_lesson_watch_time))
                 # lesson_watch_time=d_lesson_watch_time
-
+    
                 # print('???', lesson_watch_time, type(lesson_watch_time))
                 converted_lesson_watch_time = {'minutes_completed': d_lesson_watch_time}
-
+    
             # l=request.data
-
+    
             #----watch time  and minutes left SAVING
-
+    
                 old_watch_time = User_Lessons.objects.get(user_id=user_id,lesson_id=lesson_id,course_id=course_id)
                 print("old_watch_time",old_watch_time)
                 total_duration_of_lesson=old_watch_time.lesson_id.lesson_duration
@@ -614,7 +614,7 @@ def usr_course_page_lesson(request):
                     # print('old_watch_time', old_watch_time.minutes_completed,type(old_watch_time.minutes_completed))
                     old_watch_time_serializer = User_Lessons_serializer_update_watch_time(old_watch_time,
                                                                                           data=converted_lesson_watch_time)
-
+    
                     if old_watch_time_serializer.is_valid():
                         old_watch_time_serializer.save()
                         queryset=usr_course.objects.get(user_id=user_id,course_id=course_id)
@@ -624,17 +624,17 @@ def usr_course_page_lesson(request):
                         queryset.last_viewed_lesson_id=int(lesson_id)
                         queryset.last_viewed_lesson_duration=d_lesson_watch_time
                         queryset.save()
-
+    
                         user_last_watched_course = User_details.objects.get(user_id=user_id)
                         # print('user_last_watched_course setting to None', user_last_watched_course)
                         # print(user_last_watched_course.course_id)
                         user_last_watched_course.course_id = int(course_id)
                         user_last_watched_course.save()
-
-
+    
+    
                         if total_duration_of_lesson >= d_lesson_watch_time:
                             # print(total_duration_of_lesson,d_lesson_watch_time)
-
+    
                             # print('minutes_left--------------',datetime.datetime.strptime(str(total_duration_of_lesson), '%H:%M:%S') - datetime.datetime.strptime(str(d_lesson_watch_time), '%H:%M:%S'))
                             # print('type_minutes_left--------------',type(datetime.datetime.strptime(str(total_duration_of_lesson), '%H:%M:%S') - datetime.datetime.strptime(str(d_lesson_watch_time), '%H:%M:%S')))
                             # print(total_duration_of_lesson,type(total_duration_of_lesson),d_lesson_watch_time,type(d_lesson_watch_time))
@@ -643,7 +643,7 @@ def usr_course_page_lesson(request):
                                                                     minute=total_duration_of_lesson.minute,
                                                                     second=total_duration_of_lesson.second)
                             # print('total_duration_dt',total_duration_dt,type(total_duration_dt))
-
+    
                             d_lesson_watch_dt = common_date.replace(hour=d_lesson_watch_time.hour,
                                                                     minute=d_lesson_watch_time.minute,
                                                                     second=d_lesson_watch_time.second)
@@ -652,14 +652,14 @@ def usr_course_page_lesson(request):
                             # Calculate the time difference as a timedelta
                             time_difference = total_duration_dt - d_lesson_watch_dt
                             # print('time_difference',time_difference,type(time_difference))
-
+    
                             # Convert the timedelta to a datetime.datetime object with a common date
                             time_difference_datetime = common_date + time_difference
                             # print('time_difference_datetime',time_difference_datetime,type(time_difference_datetime))
-
+    
                             # Extract the time component as a datetime.time object
                             new_watch_time_minutes_left = time_difference_datetime.time()
-
+    
                             # Print the time difference as a datetime.time object
                             # print('{{{}}}}}',new_watch_time_minutes_left,type(new_watch_time_minutes_left))
                             # print(old_watch_time.minutes_left)
@@ -667,9 +667,9 @@ def usr_course_page_lesson(request):
                             old_watch_time.minutes_left=new_watch_time_minutes_left
                             old_watch_time.save()
                             # print('after saving',old_watch_time.minutes_left)
-
+    
                             course_lessons=User_Lessons.objects.filter(user_id=user_id,course_id=course_id)
-
+    
                             # print('course_lessons',course_lessons[0].minutes_completed,course_lessons[0].minutes_completed)
                             list_of_minutes_completed=[]
                             list_of_total_duration=[]
@@ -682,7 +682,7 @@ def usr_course_page_lesson(request):
                                 total_duration_timedelta_object=timedelta(hours=course_lessons[i].lesson_id.lesson_duration.hour,minutes=course_lessons[i].lesson_id.lesson_duration.minute,seconds=course_lessons[i].lesson_id.lesson_duration.second)
                                 minutes_completed_timedelta_object = timedelta(hours=course_lessons[i].minutes_completed.hour,minutes=course_lessons[i].minutes_completed.minute,seconds=course_lessons[i].minutes_completed.second)
                                 print('timedelta_object',minutes_completed_timedelta_object)
-
+    
                                 list_of_total_duration.append(total_duration_timedelta_object)
                                 list_of_minutes_completed.append(minutes_completed_timedelta_object)
                             print("list------------------",list_of_total_duration)
@@ -703,44 +703,44 @@ def usr_course_page_lesson(request):
                             course_minutes_completed_datetime=common_date+all_lessons_minutes_completed
                             course_minutes_completed_time=course_minutes_completed_datetime.time()
                             # print('$$$$$$$$$ course_minutes_completed for a course $$$$$$$$', course_minutes_completed_time,type(course_minutes_completed_time))
-
+    
                             user_course_queryset=usr_course.objects.get(user_id=user_id,course_id=course_id)
                             # user_course_queryset=usr_course.objects.get(user=request.user,course=course_id)
                             # print('user_course_queryset',user_course_queryset)
-
+    
                             user_course_queryset.minutes_left=course_minutes_left_time
                             # print('user_course_queryset.minutes_left',user_course_queryset.minutes_left)
                             user_course_queryset.minutes_Completed = course_minutes_completed_time
                             # print('user_course_queryset.minutes_completed', user_course_queryset.minutes_Completed)
-
-
-
+    
+    
+    
                             # Calculate the total seconds for both time objects
                             total_duration_of_course_seconds = course_total_duration_time.hour * 3600 + course_total_duration_time.minute * 60 + course_total_duration_time.second
                             minutes_completed_of_course_seconds = course_minutes_completed_time.hour * 3600 + course_minutes_completed_time.minute * 60 + course_minutes_completed_time.second
-
+    
                             # Calculate the percentage of completion
                             percentage_completion = (minutes_completed_of_course_seconds / total_duration_of_course_seconds) * 100
                             # print(percentage_completion)
                             user_course_queryset.percentage_completed=percentage_completion
                             user_course_queryset.save()
-
+    
                             course_queryset_total_duration=Course.objects.get(course_id=course_id)
                             # print('course_queryset_total_duration',course_queryset_total_duration)
                             course_queryset_total_duration.total_duration=course_total_duration_time
                             course_queryset_total_duration.save()
                             return JsonResponse({'status': 'watch_time_updated'})
-
+    
                         else:
                             # print('******cant substract as minutes completed is greater than total duration of lesson ******')
                             return JsonResponse({'status':'cant_substract_as_minutes_completed_is_greater_than_total_duration_of_lesson'})
-
-
+    
+    
                     else:
                         # print('serializer_is_not_valid')
                         # print(old_watch_time_serializer.errors)
                         return JsonResponse({'status':old_watch_time_serializer.errors})
-
+    
                 else:
                     return JsonResponse({'status': 'Invalid_course_id_or_lesson_id'})
             elif lesson_id=='':
@@ -748,14 +748,14 @@ def usr_course_page_lesson(request):
                 queryset = usr_course.objects.get(user_id=user_id,course_id=course_id)
                 # print('*********', queryset.last_viewed_lesson_id)
                 # print('******', queryset.last_viewed_lesson_duration)
-
+    
                 queryset.last_viewed_lesson_id = None
                 queryset.last_viewed_lesson_duration = time(0,0,0)
                 queryset.save()
-
-
+    
+    
                 return JsonResponse({"status":"storing_empty_lesson_id_and_watch_time_00:00:00_for_user"})
-
+    
         # elif request.method=="GET" and  request.query_params.get('lesson_id')=='':
         #     # print('--------dataaaaaaaaaaaaaaaaaa--------', type(request.query_params.get('lesson_id')))
         #     # print('--------dataaaaaaaaaaaaaaaaaa--------', request.query_params.get('lesson_id')=="")
@@ -986,10 +986,10 @@ def usr_course_page_lesson(request):
         #     # else:
         #     #     print('-----------lesson_id_query-----------')
         #     #     return JsonResponse({"status":"Invalid_course_id_or_user_id"})
-
+    
         elif request.method=="GET" and request.query_params.get('lesson_id')!='':
             # print('-------******* lesson id exists in request fetching lesson details---------------')
-
+    
             # user_id =  2
             user_id = request.user
             course_id = request.query_params.get('course_id')
@@ -1000,20 +1000,20 @@ def usr_course_page_lesson(request):
                 lesson_status_queryset=User_Lessons.objects.get(user_id=user_id,lesson_id=lesson_id,course_id=course_id)
                 # print('lesson_status-----',lesson_status_queryset.lesson_status)
                 print('lesson_status-----',lesson_status_queryset.lesson_status)
-
+    
                 if lesson_status_queryset.lesson_status!='locked' and lesson_status_queryset.lesson_status=='unlocked':
                     print('unlocked',lesson_status_queryset.lesson_status)
                     print(lesson_status_queryset.lesson_status == 'locked')
                     data=course_page_lesson_id(user_id,course_id,lesson_id)
                     return JsonResponse({'all_lessons': data})
-
+    
                 elif lesson_status_queryset.lesson_status!='locked' and lesson_status_queryset.lesson_status=='completed':
                     print('completed',lesson_status_queryset.lesson_status)
                     print(lesson_status_queryset.lesson_status == 'locked')
                     data=course_page_lesson_id(user_id,course_id,lesson_id)
                     return JsonResponse({'all_lessons': data})
-
-
+    
+    
                 elif lesson_status_queryset.lesson_status=='locked' and lesson_status_queryset.lesson_status!='unlocked' and 'completed':
                     print('locked')
                     return JsonResponse({'status': 'please_complete_the_current_lesson_quiz_and_come_back'})
@@ -1100,8 +1100,8 @@ def usr_course_page_lesson(request):
             #         print('False')
             #
             # return JsonResponse({'all_lessons': all_lesson_details_serializer_data})
-
-
+    
+    
         else:
             # print("not get or put")
             return JsonResponse({"status": "other_scenario_not_get_or_put"})
