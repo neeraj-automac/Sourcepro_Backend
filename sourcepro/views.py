@@ -43,6 +43,8 @@ print('^^^^ in views ^^^^^^^')
 #
 # print(usr_course.objects.all())
 tes_fun.apply_async()
+
+
 @api_view(['GET'])
 def download_certificate(request):
     if request.user.is_authenticated:
