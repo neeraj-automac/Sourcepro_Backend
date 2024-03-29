@@ -1449,8 +1449,8 @@ def quiz_attempt(request):
 
                 # print(lessons,len(lessons))
                 # print('next lesson id from multiple lessons of course',lessons.lesson_id.lesson_id,lessons)
-                next_lesson=User_Lessons.objects.get(lesson_id=lessons.lesson_id.lesson_id)
-                # print('next_lesson single object',next_lesson.lesson_id.lesson_id,next_lesson)
+                next_lesson = User_Lessons.objects.get(lesson_id=lessons.lesson_id.lesson_id, user_id=2)
+                # print('next_lesson single object', next_lesson.lesson_id.lesson_id, next_lesson)
                 # user_lesson_queryset=Lessons.objects.filter(course_in_lessons=course_id,lesson_id__gt=lesson_id).order_by('lesson_id').first()
                 if next_lesson.lesson_status=='locked':
                     next_lesson.lesson_status='unlocked'
