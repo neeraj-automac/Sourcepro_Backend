@@ -47,94 +47,94 @@ tes_fun.apply_async()
 
 @api_view(['GET'])
 def download_certificate(request):
-    if request.user.is_authenticated:
-        if request.method=='GET':
-            course_id= request.query_params.get('course_id')
-            print("000000",request.user)
-            # user_id=2
-            user_id=request.user
-            namee=User_details.objects.get(user_id=user_id)
-            print('namee',namee.name)
+    # if request.user.is_authenticated:
+    if request.method=='GET':
+        course_id= request.query_params.get('course_id')
+        print("000000",request.user)
+        user_id=2
+        # user_id=request.user
+        namee=User_details.objects.get(user_id=user_id)
+        print('namee',namee.name)
 
-            return JsonResponse({'name': namee.name})
-
-
+        return JsonResponse({'name': namee.name})
 
 
 
-        # user_id = request.query_params.get('user_id')
-        # user_course_data=usr_course.objects.filter(user_id=2).values('course','certificate_url')
-        # print(user_course_data)
-        # # user_assigned_course_ids=[ i['course'] for i in user_course_data]
-        # # user_course_certificates=Course.objects.filter(id__in=user_assigned_course_ids).values('certificate')
-        # ser_course_data=usr_course_certificate_serializer(user_course_data,many=True)
-        # print('ser_course_data',ser_course_data)
-        # print( ser_course_data.data)
-        # user_course_data = usr_course.objects.filter(user_id=2)
-
-        # Create a list to hold the data for each course
-        # course_data_list = []
-
-        # Iterate through the queryset and extract the necessary fields for each course
-        # for user_course in user_course_data:
-        #     course_data = {
-        #         'course': user_course.course,  # Assuming 'course' is a ForeignKey
-        #         'certificate_url': user_course.certificate_url
-        #     }
-        #     course_data_list.append(course_data)
-        #     for i in range(len(course_data_list)):
-        #         course_value=course_data_list[i]['course']
-        #         print(course_value)
-        #         print(type(course_value))
-        #         certificate_value= course_data_list[i]['certificate_url']
-        # user_course_data = usr_course.objects.filter(user_id=2).values('course','certificate_url')
-        # print('user_course_data',type(user_course_data[0]))
-        # ser_course_data = usr_course_certificate_serializer(course_data_list, many=True)
-        # print(ser_course_data.data[0]['course'])
-        #
-        # print(ser_course_data.data[0].keys())
 
 
+    # user_id = request.query_params.get('user_id')
+    # user_course_data=usr_course.objects.filter(user_id=2).values('course','certificate_url')
+    # print(user_course_data)
+    # # user_assigned_course_ids=[ i['course'] for i in user_course_data]
+    # # user_course_certificates=Course.objects.filter(id__in=user_assigned_course_ids).values('certificate')
+    # ser_course_data=usr_course_certificate_serializer(user_course_data,many=True)
+    # print('ser_course_data',ser_course_data)
+    # print( ser_course_data.data)
+    # user_course_data = usr_course.objects.filter(user_id=2)
 
-        # user_id = request.query_params.get('user_id')
-        # filter_data=usr_course.objects.filter(user_id=user_id)
-        # print(filter_data)
-        # print(type(filter_data))
-        # ser_filter_data=usr_course_serializer(filter_data,many=True)
-        # print('ser_filter_data',ser_filter_data)# returns all fields of model
-        # print('type----ser_filter_data',type(ser_filter_data))# <class 'rest_framework.serializers.ListSerializer'>
-        # ser_filter_data_data= ser_filter_data.data
-        # print('ser_filter_data_data',ser_filter_data_data)#order dict-----------
-        # print('****type***ser_filter_data_data',type(ser_filter_data_data))#return list
-        #
-        # for i in range(0,len(ser_filter_data_data)):
-        #     print('-------------------------------------------------------------------------------------')
-        #     print(i,ser_filter_data_data)
-        #     print('&&&&&&&&--list$$$$$',list(ser_filter_data_data))
-        #     print('@@@@@@@--listkeys@@@@@@@',list(ser_filter_data_data)[i].keys())#odict_keys
-        #     print('-------------------------------------------------------------------------------------')
-        #     for k in list(ser_filter_data_data[i].keys()):
-        #         if k in ['course_id','certificate_url']:
-        #             continue
-        #         ser_filter_data_data[i].pop(k)
-        #     print('after pop ser_filter_data_data',ser_filter_data_data)
-        #     print('^^^^^^^^----type after pop ser_filter_data_data^^^^^^---------',type(ser_filter_data_data))#return_list
-        #
-        # for i in range(0,len(ser_filter_data_data)):
-        #     filtered_data=Course.objects.filter(course_id=ser_filter_data_data[i]['course_id'])
-        #     print('filtered_data',filtered_data)#queryset
-        #     print('type of filtered_data',type(filtered_data))#queryset
-        #     ser_filtered_data=Course_serializerr(filtered_data,many=True)
-        #     ser_filtered_data_data=ser_filtered_data.data
-        #     print('$$$$$$$$$$*****ser_filtered_data_data',ser_filtered_data_data)#orderdict
-        #     print('type of ser_filtered_data_data',type(ser_filtered_data_data))#return_list
-        #     ser_filter_data_data[i].update(course_id=ser_filtered_data_data[0]['course_name'])
-        #     print('$$$$$$$$$$*****ser_filter_data_data', ser_filter_data_data)
-        #     # crs=ser_filtered_data_data[1].pop('course_name')
-        #     # ces=ser_filtered_data_data[i].pop('certificate_url')
+    # Create a list to hold the data for each course
+    # course_data_list = []
+
+    # Iterate through the queryset and extract the necessary fields for each course
+    # for user_course in user_course_data:
+    #     course_data = {
+    #         'course': user_course.course,  # Assuming 'course' is a ForeignKey
+    #         'certificate_url': user_course.certificate_url
+    #     }
+    #     course_data_list.append(course_data)
+    #     for i in range(len(course_data_list)):
+    #         course_value=course_data_list[i]['course']
+    #         print(course_value)
+    #         print(type(course_value))
+    #         certificate_value= course_data_list[i]['certificate_url']
+    # user_course_data = usr_course.objects.filter(user_id=2).values('course','certificate_url')
+    # print('user_course_data',type(user_course_data[0]))
+    # ser_course_data = usr_course_certificate_serializer(course_data_list, many=True)
+    # print(ser_course_data.data[0]['course'])
+    #
+    # print(ser_course_data.data[0].keys())
 
 
-    return JsonResponse({'status':"unauthorized_user"})
+
+    # user_id = request.query_params.get('user_id')
+    # filter_data=usr_course.objects.filter(user_id=user_id)
+    # print(filter_data)
+    # print(type(filter_data))
+    # ser_filter_data=usr_course_serializer(filter_data,many=True)
+    # print('ser_filter_data',ser_filter_data)# returns all fields of model
+    # print('type----ser_filter_data',type(ser_filter_data))# <class 'rest_framework.serializers.ListSerializer'>
+    # ser_filter_data_data= ser_filter_data.data
+    # print('ser_filter_data_data',ser_filter_data_data)#order dict-----------
+    # print('****type***ser_filter_data_data',type(ser_filter_data_data))#return list
+    #
+    # for i in range(0,len(ser_filter_data_data)):
+    #     print('-------------------------------------------------------------------------------------')
+    #     print(i,ser_filter_data_data)
+    #     print('&&&&&&&&--list$$$$$',list(ser_filter_data_data))
+    #     print('@@@@@@@--listkeys@@@@@@@',list(ser_filter_data_data)[i].keys())#odict_keys
+    #     print('-------------------------------------------------------------------------------------')
+    #     for k in list(ser_filter_data_data[i].keys()):
+    #         if k in ['course_id','certificate_url']:
+    #             continue
+    #         ser_filter_data_data[i].pop(k)
+    #     print('after pop ser_filter_data_data',ser_filter_data_data)
+    #     print('^^^^^^^^----type after pop ser_filter_data_data^^^^^^---------',type(ser_filter_data_data))#return_list
+    #
+    # for i in range(0,len(ser_filter_data_data)):
+    #     filtered_data=Course.objects.filter(course_id=ser_filter_data_data[i]['course_id'])
+    #     print('filtered_data',filtered_data)#queryset
+    #     print('type of filtered_data',type(filtered_data))#queryset
+    #     ser_filtered_data=Course_serializerr(filtered_data,many=True)
+    #     ser_filtered_data_data=ser_filtered_data.data
+    #     print('$$$$$$$$$$*****ser_filtered_data_data',ser_filtered_data_data)#orderdict
+    #     print('type of ser_filtered_data_data',type(ser_filtered_data_data))#return_list
+    #     ser_filter_data_data[i].update(course_id=ser_filtered_data_data[0]['course_name'])
+    #     print('$$$$$$$$$$*****ser_filter_data_data', ser_filter_data_data)
+    #     # crs=ser_filtered_data_data[1].pop('course_name')
+    #     # ces=ser_filtered_data_data[i].pop('certificate_url')
+
+
+    # return JsonResponse({'status':"unauthorized_user"})
 
 
 
@@ -272,12 +272,12 @@ def home(request):
         new_courses = Course.objects.filter(type="new")
         new_courses_serializer= Course_serializer(new_courses, many=True)
         # print("new_courses_serializer:::::",new_courses_serializer.data,new_courses)
-
+    
         old_courses = Course.objects.filter(type="old")
         old_courses_serializer = Course_serializer(old_courses, many=True)
         old_courses_serializer_data=old_courses_serializer.data
-        # print("old_courses_serializer:::::", old_courses_serializer,old_courses)
-        # print("old_courses_serializer_data:::::", old_courses_serializer.data)
+        print("old_courses_serializer:::::", old_courses_serializer,old_courses)
+        print("old_courses_serializer_data:::::", old_courses_serializer.data)
         user_id = request.user
         # user_id = 2
         user_courses = usr_course.objects.filter(user_id=user_id)
@@ -287,30 +287,30 @@ def home(request):
         print(">>>>>>>>>>",old_courses_serializer_data)
         print("<<<<<<<<<<<",user_courses_serializer_data)
         # Remove courses from oldcourse based on user courses using list comprehension
-
+    
         courses_to_remove = {course['course_id'] for course in old_courses_serializer_data}
-        # print('courses_to_remove',courses_to_remove)
-
+        print('courses_to_remove',courses_to_remove)
+    
         remaining_courses = [course for course in  user_courses_serializer_data if course['course_id'] not in courses_to_remove]
         remaining_courses_ids=[]
         for i in range(len(remaining_courses)):
             print(remaining_courses[i]['course_id'])
             remaining_courses_ids.append(remaining_courses[i]['course_id'])
-
+    
         all_courses_data=Course.objects.filter(course_id__in=remaining_courses_ids).values('course_id','thumbnail', 'course_name', 'total_duration')
         # Print the result
-        # print('all_courses_data',all_courses_data)
+        print('all_courses_data',all_courses_data)
         all_courses_data_serializer=Course_serializer(all_courses_data,many=True)
         all_courses_data_serializer_data=all_courses_data_serializer.data
-
-
-
-
-
+    
+    
+    
+    
+    
         inprogress = usr_course.objects.filter(user_id = user_id ,course_status='Inprogress')
         # print('2222222222222',inprogress)
-
-
+    
+    
         continue_learning = usr_course_serializer2data(inprogress, many=True)
         # print('continue_learning',continue_learning)
         continue_learning_data=continue_learning.data
@@ -319,7 +319,7 @@ def home(request):
         for i in range(0, len(continue_learning.data)):
             continue_learning_data[i].update({'thumbnail':inprogress[i].course_id.thumbnail, 'course_name':inprogress[i].course_id.course_name})
         # print('continue_learning_data********',continue_learning_data)
-
+    
         return JsonResponse({"Continue_Learning": continue_learning_data,
                              "New_Courses": new_courses_serializer.data,
                              "All_Courses":all_courses_data_serializer_data})#
@@ -338,21 +338,21 @@ def mycourses(request):
         # user_id = 2 #expects user_id
         info1 = usr_course.objects.filter(user_id = user_id, deactivation_days_left = 0) #this belongs to history tab
         serializer1 = usr_course_serializer(info1, many=True)
-
+    
         info2 = usr_course.objects.filter(user_id = user_id,deactivation_days_left__in = range(1,100), course_status = "Completed") #this bwelongs to History tab
         serializer2 = usr_course_serializer(info2, many = True)
         # print('info2',info2)
         info3 = usr_course.objects.filter(user_id = user_id, deactivation_days_left__in = range(1,100), course_status = "Inprogress") #this belongs to in progress tab
         serializer3 = usr_course_serializer(info3, many = True)
-
-
+    
+    
         for i in range(0, len(serializer1.data)):
             for k in list(serializer1.data[i].keys()):
                 if k in ["subscription_datetime", "deactivation_days_left", "course_id", "course_status",'last_viewed_lesson_id']:
                     continue
                 else:
                     serializer1.data[i].pop(k)
-
+    
         for i in range(0, len(serializer1.data)):
             # print('len',serializer2.data)
             a = Course.objects.filter(course_id=serializer1.data[i]["course_id"])
@@ -369,7 +369,7 @@ def mycourses(request):
                     continue
                 else:
                     serializer2.data[i].pop(k)
-
+    
         for i in range(0, len(serializer2.data)):
             a = Course.objects.filter(course_id=serializer2.data[i]["course_id"])
             aa = Course_serializerr(a, many=True)
@@ -379,7 +379,7 @@ def mycourses(request):
             serializer2.data[i].update(activation_duration=(Course.objects.get(course_id=serializer2.data[i]["course_id"])).activation_duration)
             # serializer2.data[i].update({"lesson_id": 1})
         # print("type-----------",type(serializer2.data))
-
+    
         # print("----------serializer3----------------------",serializer3.data)
         for i in range(0, len(serializer3.data)):
             for k in list(serializer3.data[i].keys()):
@@ -387,7 +387,7 @@ def mycourses(request):
                     continue
                 else:
                     serializer3.data[i].pop(k)
-
+    
         for i in range(0, len(serializer3.data)):
             a = Course.objects.filter(course_id=serializer3.data[i]["course_id"])
             aa = Course_serializerr(a, many=True)
@@ -396,13 +396,13 @@ def mycourses(request):
             serializer3.data[i].update(author=aa.data[0]["author"])
             serializer3.data[i].update(activation_duration=(Course.objects.get(course_id=serializer3.data[i]["course_id"])).activation_duration)
             # serializer3.data[i].update({"lesson_id":1})
-
+    
         # print('serializer2.data',serializer2.data)
         serializer1_data=list(serializer1.data)
         serializer2_data=list(serializer2.data)
         history_data=serializer1_data+serializer2_data
         # print('history_data',history_data)
-
+    
         # dict(serializer1.data).update(dict(serializer2.data))
         return JsonResponse({"In_Progress":serializer3.data, "History":history_data})
         # return JsonResponse({"In_Progress":serializer3.data, "History":serializer1.data})
@@ -420,12 +420,12 @@ def Next_lesson(request):
         lesson_id= request.query_params.get('lesson_id')
         # next_lesson_id=int(lesson_id)+1
         user_lesson_queryset=Lessons.objects.filter(course_id=course_id,lesson_id__gt=lesson_id).order_by('lesson_id').first()
-
+    
         if user_lesson_queryset is not None:
-
-
+    
+    
             return JsonResponse({"course_id":user_lesson_queryset.course_id.pk,"next_lesson_id" :user_lesson_queryset.lesson_id})
-
+    
         else:
             return JsonResponse({"status":"Invalid_lesson_id_or_course_id"})
     else:
@@ -440,27 +440,27 @@ def usr_course_page(request):
     if request.user.is_authenticated:
         if request.method=='GET':
             user_id=request.user
-
+    
             # user_id=2
             # print(request.user)
             course_id = request.query_params.get('course_id')
             lesson_id = request.query_params.get('lesson_id')
-
+    
             current_user_courses=usr_course.objects.filter(user_id=user_id,course_id=course_id)
             if current_user_courses.exists():
-
+    
                 # print('current_user_courses',current_user_courses)
                 # print("ccccc", current_user_courses[0].course_id.course_name)
-
+    
                 serializer=usr_course_course_page(current_user_courses,many=True)
                 serializer_data=serializer.data
                 # print(serializer_data)
                 course_data_result={}
                 print("course_data_result",course_data_result)
-
-
+    
+    
                 for i in range(0,len(serializer_data)):
-
+    
                     course_data_result.update({
                         "course_name":current_user_courses[i].course_id.course_name,
                         "course_description":current_user_courses[i].course_id.course_description,
@@ -471,10 +471,10 @@ def usr_course_page(request):
                         "like_status":current_user_courses[i].like_status,
                         "course_status":current_user_courses[i].course_status
                         # "faq_question":faq_queryset[i].question
-
+    
                     })
-
-
+    
+    
                 return JsonResponse({'course_data':course_data_result})#,'lesson_data':lesson_details_serializer_data,'materials':current_user_lesson_material_serializer_data,'clipboards':current_user_lesson_clipboard_serializer_data
             return JsonResponse({'status':'Invalid_course_id_or_lesson_id'})
         else:
@@ -596,18 +596,18 @@ def usr_course_page_lesson(request):
                 l = request.data
                 # print('lllllllll', l)
                 lesson_watch_time = request.data.get('minutes_completed')
-    
+
                 d_lesson_watch_time = datetime.datetime.strptime(lesson_watch_time, '%H:%M:%S').time()
                 # print('d_lesson_watch_time', d_lesson_watch_time, type(d_lesson_watch_time))
                 # lesson_watch_time=d_lesson_watch_time
-    
+
                 # print('???', lesson_watch_time, type(lesson_watch_time))
                 converted_lesson_watch_time = {'minutes_completed': d_lesson_watch_time}
-    
+
             # l=request.data
-    
+
             #----watch time  and minutes left SAVING
-    
+
                 old_watch_time = User_Lessons.objects.get(user_id=user_id,lesson_id=lesson_id,course_id=course_id)
                 print("old_watch_time",old_watch_time)
                 total_duration_of_lesson=old_watch_time.lesson_id.lesson_duration
@@ -616,7 +616,7 @@ def usr_course_page_lesson(request):
                     # print('old_watch_time', old_watch_time.minutes_completed,type(old_watch_time.minutes_completed))
                     old_watch_time_serializer = User_Lessons_serializer_update_watch_time(old_watch_time,
                                                                                           data=converted_lesson_watch_time)
-    
+
                     if old_watch_time_serializer.is_valid():
                         old_watch_time_serializer.save()
                         queryset=usr_course.objects.get(user_id=user_id,course_id=course_id)
@@ -626,17 +626,17 @@ def usr_course_page_lesson(request):
                         queryset.last_viewed_lesson_id=int(lesson_id)
                         queryset.last_viewed_lesson_duration=d_lesson_watch_time
                         queryset.save()
-    
+
                         user_last_watched_course = User_details.objects.get(user_id=user_id)
                         # print('user_last_watched_course setting to None', user_last_watched_course)
                         # print(user_last_watched_course.course_id)
                         user_last_watched_course.course_id = int(course_id)
                         user_last_watched_course.save()
-    
-    
+
+
                         if total_duration_of_lesson >= d_lesson_watch_time:
                             # print(total_duration_of_lesson,d_lesson_watch_time)
-    
+
                             # print('minutes_left--------------',datetime.datetime.strptime(str(total_duration_of_lesson), '%H:%M:%S') - datetime.datetime.strptime(str(d_lesson_watch_time), '%H:%M:%S'))
                             # print('type_minutes_left--------------',type(datetime.datetime.strptime(str(total_duration_of_lesson), '%H:%M:%S') - datetime.datetime.strptime(str(d_lesson_watch_time), '%H:%M:%S')))
                             # print(total_duration_of_lesson,type(total_duration_of_lesson),d_lesson_watch_time,type(d_lesson_watch_time))
@@ -645,7 +645,7 @@ def usr_course_page_lesson(request):
                                                                     minute=total_duration_of_lesson.minute,
                                                                     second=total_duration_of_lesson.second)
                             # print('total_duration_dt',total_duration_dt,type(total_duration_dt))
-    
+
                             d_lesson_watch_dt = common_date.replace(hour=d_lesson_watch_time.hour,
                                                                     minute=d_lesson_watch_time.minute,
                                                                     second=d_lesson_watch_time.second)
@@ -654,14 +654,14 @@ def usr_course_page_lesson(request):
                             # Calculate the time difference as a timedelta
                             time_difference = total_duration_dt - d_lesson_watch_dt
                             # print('time_difference',time_difference,type(time_difference))
-    
+
                             # Convert the timedelta to a datetime.datetime object with a common date
                             time_difference_datetime = common_date + time_difference
                             # print('time_difference_datetime',time_difference_datetime,type(time_difference_datetime))
-    
+
                             # Extract the time component as a datetime.time object
                             new_watch_time_minutes_left = time_difference_datetime.time()
-    
+
                             # Print the time difference as a datetime.time object
                             # print('{{{}}}}}',new_watch_time_minutes_left,type(new_watch_time_minutes_left))
                             # print(old_watch_time.minutes_left)
@@ -669,9 +669,9 @@ def usr_course_page_lesson(request):
                             old_watch_time.minutes_left=new_watch_time_minutes_left
                             old_watch_time.save()
                             # print('after saving',old_watch_time.minutes_left)
-    
+
                             course_lessons=User_Lessons.objects.filter(user_id=user_id,course_id=course_id)
-    
+
                             # print('course_lessons',course_lessons[0].minutes_completed,course_lessons[0].minutes_completed)
                             list_of_minutes_completed=[]
                             list_of_total_duration=[]
@@ -684,7 +684,7 @@ def usr_course_page_lesson(request):
                                 total_duration_timedelta_object=timedelta(hours=course_lessons[i].lesson_id.lesson_duration.hour,minutes=course_lessons[i].lesson_id.lesson_duration.minute,seconds=course_lessons[i].lesson_id.lesson_duration.second)
                                 minutes_completed_timedelta_object = timedelta(hours=course_lessons[i].minutes_completed.hour,minutes=course_lessons[i].minutes_completed.minute,seconds=course_lessons[i].minutes_completed.second)
                                 print('timedelta_object',minutes_completed_timedelta_object)
-    
+
                                 list_of_total_duration.append(total_duration_timedelta_object)
                                 list_of_minutes_completed.append(minutes_completed_timedelta_object)
                             print("list------------------",list_of_total_duration)
@@ -705,44 +705,44 @@ def usr_course_page_lesson(request):
                             course_minutes_completed_datetime=common_date+all_lessons_minutes_completed
                             course_minutes_completed_time=course_minutes_completed_datetime.time()
                             # print('$$$$$$$$$ course_minutes_completed for a course $$$$$$$$', course_minutes_completed_time,type(course_minutes_completed_time))
-    
+
                             user_course_queryset=usr_course.objects.get(user_id=user_id,course_id=course_id)
                             # user_course_queryset=usr_course.objects.get(user=request.user,course=course_id)
                             # print('user_course_queryset',user_course_queryset)
-    
+
                             user_course_queryset.minutes_left=course_minutes_left_time
                             # print('user_course_queryset.minutes_left',user_course_queryset.minutes_left)
                             user_course_queryset.minutes_Completed = course_minutes_completed_time
                             # print('user_course_queryset.minutes_completed', user_course_queryset.minutes_Completed)
-    
-    
-    
+
+
+
                             # Calculate the total seconds for both time objects
                             total_duration_of_course_seconds = course_total_duration_time.hour * 3600 + course_total_duration_time.minute * 60 + course_total_duration_time.second
                             minutes_completed_of_course_seconds = course_minutes_completed_time.hour * 3600 + course_minutes_completed_time.minute * 60 + course_minutes_completed_time.second
-    
+
                             # Calculate the percentage of completion
                             percentage_completion = (minutes_completed_of_course_seconds / total_duration_of_course_seconds) * 100
                             # print(percentage_completion)
                             user_course_queryset.percentage_completed=percentage_completion
                             user_course_queryset.save()
-    
+
                             course_queryset_total_duration=Course.objects.get(course_id=course_id)
                             # print('course_queryset_total_duration',course_queryset_total_duration)
                             course_queryset_total_duration.total_duration=course_total_duration_time
                             course_queryset_total_duration.save()
                             return JsonResponse({'status': 'watch_time_updated'})
-    
+
                         else:
                             # print('******cant substract as minutes completed is greater than total duration of lesson ******')
                             return JsonResponse({'status':'cant_substract_as_minutes_completed_is_greater_than_total_duration_of_lesson'})
-    
-    
+
+
                     else:
                         # print('serializer_is_not_valid')
                         # print(old_watch_time_serializer.errors)
                         return JsonResponse({'status':old_watch_time_serializer.errors})
-    
+
                 else:
                     return JsonResponse({'status': 'Invalid_course_id_or_lesson_id'})
             elif lesson_id=='':
@@ -750,14 +750,14 @@ def usr_course_page_lesson(request):
                 queryset = usr_course.objects.get(user_id=user_id,course_id=course_id)
                 # print('*********', queryset.last_viewed_lesson_id)
                 # print('******', queryset.last_viewed_lesson_duration)
-    
+
                 queryset.last_viewed_lesson_id = None
                 queryset.last_viewed_lesson_duration = time(0,0,0)
                 queryset.save()
-    
-    
+
+
                 return JsonResponse({"status":"storing_empty_lesson_id_and_watch_time_00:00:00_for_user"})
-    
+
         # elif request.method=="GET" and  request.query_params.get('lesson_id')=='':
         #     # print('--------dataaaaaaaaaaaaaaaaaa--------', type(request.query_params.get('lesson_id')))
         #     # print('--------dataaaaaaaaaaaaaaaaaa--------', request.query_params.get('lesson_id')=="")
@@ -988,10 +988,10 @@ def usr_course_page_lesson(request):
         #     # else:
         #     #     print('-----------lesson_id_query-----------')
         #     #     return JsonResponse({"status":"Invalid_course_id_or_user_id"})
-    
+
         elif request.method=="GET" and request.query_params.get('lesson_id')!='':
             # print('-------******* lesson id exists in request fetching lesson details---------------')
-    
+
             # user_id =  2
             user_id = request.user
             course_id = request.query_params.get('course_id')
@@ -1002,20 +1002,20 @@ def usr_course_page_lesson(request):
                 lesson_status_queryset=User_Lessons.objects.get(user_id=user_id,lesson_id=lesson_id,course_id=course_id)
                 # print('lesson_status-----',lesson_status_queryset.lesson_status)
                 print('lesson_status-----',lesson_status_queryset.lesson_status)
-    
+
                 if lesson_status_queryset.lesson_status!='locked' and lesson_status_queryset.lesson_status=='unlocked':
                     print('unlocked',lesson_status_queryset.lesson_status)
                     print(lesson_status_queryset.lesson_status == 'locked')
                     data=course_page_lesson_id(user_id,course_id,lesson_id)
                     return JsonResponse({'all_lessons': data})
-    
+
                 elif lesson_status_queryset.lesson_status!='locked' and lesson_status_queryset.lesson_status=='completed':
                     print('completed',lesson_status_queryset.lesson_status)
                     print(lesson_status_queryset.lesson_status == 'locked')
                     data=course_page_lesson_id(user_id,course_id,lesson_id)
                     return JsonResponse({'all_lessons': data})
-    
-    
+
+
                 elif lesson_status_queryset.lesson_status=='locked' and lesson_status_queryset.lesson_status!='unlocked' and 'completed':
                     print('locked')
                     return JsonResponse({'status': 'please_complete_the_current_lesson_quiz_and_come_back'})
@@ -1102,8 +1102,8 @@ def usr_course_page_lesson(request):
             #         print('False')
             #
             # return JsonResponse({'all_lessons': all_lesson_details_serializer_data})
-    
-    
+
+
         else:
             # print("not get or put")
             return JsonResponse({"status": "other_scenario_not_get_or_put"})
@@ -1225,7 +1225,7 @@ def FAQ_API(request):
 def quiz(request):
     # screens 14,15
     if request.user.is_authenticated:
-            # print()
+        # print()
         course_id = request.query_params.get('course_id')  # expects course_id
         lesson_id = request.query_params.get('lesson_id')  # expects lesson_id
         user_id=request.user# e
@@ -1449,14 +1449,14 @@ def quiz_attempt(request):
 
                 # print(lessons,len(lessons))
                 # print('next lesson id from multiple lessons of course',lessons.lesson_id.lesson_id,lessons)
-                next_lesson = User_Lessons.objects.get(lesson_id=lessons.lesson_id.lesson_id, user_id=2)
+                next_lesson = User_Lessons.objects.get(lesson_id=lessons.lesson_id.lesson_id, user_id=user_id)
                 # print('next_lesson single object', next_lesson.lesson_id.lesson_id, next_lesson)
                 # user_lesson_queryset=Lessons.objects.filter(course_in_lessons=course_id,lesson_id__gt=lesson_id).order_by('lesson_id').first()
                 if next_lesson.lesson_status=='locked':
                     next_lesson.lesson_status='unlocked'
                     next_lesson.save()
 
-                    current_lesson=User_Lessons.objects.get(lesson_id=lesson_id)
+                    current_lesson=User_Lessons.objects.get(lesson_id=lesson_id,user_id=user_id)
                     # print('current lesson id',current_lesson.lesson_id.lesson_id,current_lesson)
                     current_lesson.lesson_status='completed'
                     current_lesson.save()
