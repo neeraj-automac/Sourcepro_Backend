@@ -1348,7 +1348,7 @@ def quiz_attempt(request):
                 #         final_response.append({"question_id":request.data['questions'][j]['question_id'], "user_answer": u_correct_answer, "status": "False"})
                 else:
                     return JsonResponse({"status":"unexpected_response_from_user"})
-            # print(final_response,type(final_response))
+            print(final_response,type(final_response))
         response = {"answer_status":final_response}
     
     
@@ -1375,9 +1375,9 @@ def quiz_attempt(request):
             #         print(len(answer_status))
             #         partial_credit = correct_choices / len(answer_status)  # Calculate dynamic partial credit
             #         total_correct += partial_credit
-        # print('total_correct',total_correct,total_questions)
+        print('total_correct',total_correct,total_questions)
         quiz_percentage = int((total_correct / total_questions * 100))
-        # print(quiz_percentage)
+        print(quiz_percentage)
         quiz_status="Fail"
         if quiz_percentage>70:
             quiz_status="Pass"
@@ -1445,27 +1445,33 @@ def quiz_attempt(request):
             # course
             if queryset.quiz_attempt_status==True and queryset.quiz_score>70 and int(lesson_id)!=max_lesson_id:
                 # below lessons variable represents querying the next most greater lesson id based on request came on lesson id from frontend ,to update next lesson staus
-                lessons=User_Lessons.objects.filter(course_id=request.data.get('course_id'), lesson_id__gt=lesson_id).order_by('lesson_id').first()
+                lessons=User_Lessons.objects.filter(course_id=request.data.get('course_id'), lesson_id__gt=lesson_id,user_id=user_id).order_by('lesson_id').first()
     
-                # print(lessons,len(lessons))
+                print(lessons)
+                # print(len(lessons))
                 # print('next lesson id from multiple lessons of course',lessons.lesson_id.lesson_id,lessons)
-                next_lesson = User_Lessons.objects.get(lesson_id=lessons.lesson_id.lesson_id, user_id=user_id)
-                # print('next_lesson single object', next_lesson.lesson_id.lesson_id, next_lesson)
-                # user_lesson_queryset=Lessons.objects.filter(course_in_lessons=course_id,lesson_id__gt=lesson_id).order_by('lesson_id').first()
-                if next_lesson.lesson_status=='locked':
-                    next_lesson.lesson_status='unlocked'
-                    next_lesson.save()
-    
-                    current_lesson=User_Lessons.objects.get(lesson_id=lesson_id,user_id=user_id)
-                    # print('current lesson id',current_lesson.lesson_id.lesson_id,current_lesson)
-                    current_lesson.lesson_status='completed'
-                    current_lesson.save()
-                elif  next_lesson.lesson_status=='unlocked' or 'completed':
-                    pass
+                if lessons is not None:
+                    next_lesson = User_Lessons.objects.get(lesson_id=lessons.lesson_id.lesson_id, user_id=user_id)
+                    # print('next_lesson single object', next_lesson.lesson_id.lesson_id, next_lesson)
+                    # user_lesson_queryset=Lessons.objects.filter(course_in_lessons=course_id,lesson_id__gt=lesson_id).order_by('lesson_id').first()
+
+                    if next_lesson.lesson_status=='locked':
+                        next_lesson.lesson_status='unlocked'
+                        next_lesson.save()
+
+                        current_lesson=User_Lessons.objects.get(lesson_id=lesson_id,user_id=user_id)
+                        # print('current lesson id',current_lesson.lesson_id.lesson_id,current_lesson)
+                        current_lesson.lesson_status='completed'
+                        current_lesson.save()
+                    elif  next_lesson.lesson_status=='unlocked' or 'completed':
+                        pass
+                    else:
+                        return JsonResponse({"status":"not_locked_not_unlocked_not_completed_got_diffrent_lesson_status_in_db"})
+                        # print('not locked not unlocked not completed got diffrent lesson status in db')
                 else:
-                    return JsonResponse({"status":"not_locked_not_unlocked_not_completed_got_diffrent_lesson_status_in_db"})
-                    # print('not locked not unlocked not completed got diffrent lesson status in db')
-    
+                    return JsonResponse(
+                        {'answer_status':final_response,'quiz_score':quiz_percentage,'quiz_status':quiz_status})
+
             # current_lesson = User_Lessons.objects.get(course_lesson_id=lesson_id)
             # current_lesson_id=current_lesson.course_lesson_id.lesson_id
             # print('current lesson id', current_lesson.course_lesson_id.lesson_id, current_lesson)
