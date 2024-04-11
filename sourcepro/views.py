@@ -55,13 +55,13 @@ def download_certificate(request):
             print("000000", request.user)
             namee=User_details.objects.get(user_id=user_id)
             print('namee',namee.name)
-
+    
             return JsonResponse({'name': namee.name})
-
-
-
-
-
+    
+    
+    
+    
+    
         # user_id = request.query_params.get('user_id')
         # user_course_data=usr_course.objects.filter(user_id=2).values('course','certificate_url')
         # print(user_course_data)
@@ -71,10 +71,10 @@ def download_certificate(request):
         # print('ser_course_data',ser_course_data)
         # print( ser_course_data.data)
         # user_course_data = usr_course.objects.filter(user_id=2)
-
+    
         # Create a list to hold the data for each course
         # course_data_list = []
-
+    
         # Iterate through the queryset and extract the necessary fields for each course
         # for user_course in user_course_data:
         #     course_data = {
@@ -93,9 +93,9 @@ def download_certificate(request):
         # print(ser_course_data.data[0]['course'])
         #
         # print(ser_course_data.data[0].keys())
-
-
-
+    
+    
+    
         # user_id = request.query_params.get('user_id')
         # filter_data=usr_course.objects.filter(user_id=user_id)
         # print(filter_data)
@@ -132,7 +132,7 @@ def download_certificate(request):
         #     print('$$$$$$$$$$*****ser_filter_data_data', ser_filter_data_data)
         #     # crs=ser_filtered_data_data[1].pop('course_name')
         #     # ces=ser_filtered_data_data[i].pop('certificate_url')
-
+    
 
     return JsonResponse({'status':"unauthorized_user"})
 
@@ -326,7 +326,7 @@ def home(request):
     else:
         return JsonResponse({"status":"unauthorized_user"})
 #
-# @api_view(['GET'])
+@api_view(['GET'])
 # @authentication_classes([SessionAuthentication, BasicAuthentication])
 # @permission_classes([IsAuthenticated])
 def mycourses(request):
@@ -596,18 +596,18 @@ def usr_course_page_lesson(request):
                 l = request.data
                 # print('lllllllll', l)
                 lesson_watch_time = request.data.get('minutes_completed')
-
+    
                 d_lesson_watch_time = datetime.datetime.strptime(lesson_watch_time, '%H:%M:%S').time()
                 # print('d_lesson_watch_time', d_lesson_watch_time, type(d_lesson_watch_time))
                 # lesson_watch_time=d_lesson_watch_time
-
+    
                 # print('???', lesson_watch_time, type(lesson_watch_time))
                 converted_lesson_watch_time = {'minutes_completed': d_lesson_watch_time}
-
+    
             # l=request.data
-
+    
             #----watch time  and minutes left SAVING
-
+    
                 old_watch_time = User_Lessons.objects.get(user_id=user_id,lesson_id=lesson_id,course_id=course_id)
                 print("old_watch_time",old_watch_time)
                 total_duration_of_lesson=old_watch_time.lesson_id.lesson_duration
@@ -616,7 +616,7 @@ def usr_course_page_lesson(request):
                     # print('old_watch_time', old_watch_time.minutes_completed,type(old_watch_time.minutes_completed))
                     old_watch_time_serializer = User_Lessons_serializer_update_watch_time(old_watch_time,
                                                                                           data=converted_lesson_watch_time)
-
+    
                     if old_watch_time_serializer.is_valid():
                         old_watch_time_serializer.save()
                         queryset=usr_course.objects.get(user_id=user_id,course_id=course_id)
@@ -626,17 +626,17 @@ def usr_course_page_lesson(request):
                         queryset.last_viewed_lesson_id=int(lesson_id)
                         queryset.last_viewed_lesson_duration=d_lesson_watch_time
                         queryset.save()
-
+    
                         user_last_watched_course = User_details.objects.get(user_id=user_id)
                         # print('user_last_watched_course setting to None', user_last_watched_course)
                         # print(user_last_watched_course.course_id)
                         user_last_watched_course.course_id = int(course_id)
                         user_last_watched_course.save()
-
-
+    
+    
                         if total_duration_of_lesson >= d_lesson_watch_time:
                             # print(total_duration_of_lesson,d_lesson_watch_time)
-
+    
                             # print('minutes_left--------------',datetime.datetime.strptime(str(total_duration_of_lesson), '%H:%M:%S') - datetime.datetime.strptime(str(d_lesson_watch_time), '%H:%M:%S'))
                             # print('type_minutes_left--------------',type(datetime.datetime.strptime(str(total_duration_of_lesson), '%H:%M:%S') - datetime.datetime.strptime(str(d_lesson_watch_time), '%H:%M:%S')))
                             # print(total_duration_of_lesson,type(total_duration_of_lesson),d_lesson_watch_time,type(d_lesson_watch_time))
@@ -645,7 +645,7 @@ def usr_course_page_lesson(request):
                                                                     minute=total_duration_of_lesson.minute,
                                                                     second=total_duration_of_lesson.second)
                             # print('total_duration_dt',total_duration_dt,type(total_duration_dt))
-
+    
                             d_lesson_watch_dt = common_date.replace(hour=d_lesson_watch_time.hour,
                                                                     minute=d_lesson_watch_time.minute,
                                                                     second=d_lesson_watch_time.second)
@@ -654,14 +654,14 @@ def usr_course_page_lesson(request):
                             # Calculate the time difference as a timedelta
                             time_difference = total_duration_dt - d_lesson_watch_dt
                             # print('time_difference',time_difference,type(time_difference))
-
+    
                             # Convert the timedelta to a datetime.datetime object with a common date
                             time_difference_datetime = common_date + time_difference
                             # print('time_difference_datetime',time_difference_datetime,type(time_difference_datetime))
-
+    
                             # Extract the time component as a datetime.time object
                             new_watch_time_minutes_left = time_difference_datetime.time()
-
+    
                             # Print the time difference as a datetime.time object
                             # print('{{{}}}}}',new_watch_time_minutes_left,type(new_watch_time_minutes_left))
                             # print(old_watch_time.minutes_left)
@@ -669,9 +669,9 @@ def usr_course_page_lesson(request):
                             old_watch_time.minutes_left=new_watch_time_minutes_left
                             old_watch_time.save()
                             # print('after saving',old_watch_time.minutes_left)
-
+    
                             course_lessons=User_Lessons.objects.filter(user_id=user_id,course_id=course_id)
-
+    
                             # print('course_lessons',course_lessons[0].minutes_completed,course_lessons[0].minutes_completed)
                             list_of_minutes_completed=[]
                             list_of_total_duration=[]
@@ -684,7 +684,7 @@ def usr_course_page_lesson(request):
                                 total_duration_timedelta_object=timedelta(hours=course_lessons[i].lesson_id.lesson_duration.hour,minutes=course_lessons[i].lesson_id.lesson_duration.minute,seconds=course_lessons[i].lesson_id.lesson_duration.second)
                                 minutes_completed_timedelta_object = timedelta(hours=course_lessons[i].minutes_completed.hour,minutes=course_lessons[i].minutes_completed.minute,seconds=course_lessons[i].minutes_completed.second)
                                 print('timedelta_object',minutes_completed_timedelta_object)
-
+    
                                 list_of_total_duration.append(total_duration_timedelta_object)
                                 list_of_minutes_completed.append(minutes_completed_timedelta_object)
                             print("list------------------",list_of_total_duration)
@@ -705,44 +705,44 @@ def usr_course_page_lesson(request):
                             course_minutes_completed_datetime=common_date+all_lessons_minutes_completed
                             course_minutes_completed_time=course_minutes_completed_datetime.time()
                             # print('$$$$$$$$$ course_minutes_completed for a course $$$$$$$$', course_minutes_completed_time,type(course_minutes_completed_time))
-
+    
                             user_course_queryset=usr_course.objects.get(user_id=user_id,course_id=course_id)
                             # user_course_queryset=usr_course.objects.get(user=request.user,course=course_id)
                             # print('user_course_queryset',user_course_queryset)
-
+    
                             user_course_queryset.minutes_left=course_minutes_left_time
                             # print('user_course_queryset.minutes_left',user_course_queryset.minutes_left)
                             user_course_queryset.minutes_Completed = course_minutes_completed_time
                             # print('user_course_queryset.minutes_completed', user_course_queryset.minutes_Completed)
-
-
-
+    
+    
+    
                             # Calculate the total seconds for both time objects
                             total_duration_of_course_seconds = course_total_duration_time.hour * 3600 + course_total_duration_time.minute * 60 + course_total_duration_time.second
                             minutes_completed_of_course_seconds = course_minutes_completed_time.hour * 3600 + course_minutes_completed_time.minute * 60 + course_minutes_completed_time.second
-
+    
                             # Calculate the percentage of completion
                             percentage_completion = (minutes_completed_of_course_seconds / total_duration_of_course_seconds) * 100
                             # print(percentage_completion)
                             user_course_queryset.percentage_completed=percentage_completion
                             user_course_queryset.save()
-
+    
                             course_queryset_total_duration=Course.objects.get(course_id=course_id)
                             # print('course_queryset_total_duration',course_queryset_total_duration)
                             course_queryset_total_duration.total_duration=course_total_duration_time
                             course_queryset_total_duration.save()
                             return JsonResponse({'status': 'watch_time_updated'})
-
+    
                         else:
                             # print('******cant substract as minutes completed is greater than total duration of lesson ******')
                             return JsonResponse({'status':'cant_substract_as_minutes_completed_is_greater_than_total_duration_of_lesson'})
-
-
+    
+    
                     else:
                         # print('serializer_is_not_valid')
                         # print(old_watch_time_serializer.errors)
                         return JsonResponse({'status':old_watch_time_serializer.errors})
-
+    
                 else:
                     return JsonResponse({'status': 'Invalid_course_id_or_lesson_id'})
             elif lesson_id=='':
@@ -750,14 +750,14 @@ def usr_course_page_lesson(request):
                 queryset = usr_course.objects.get(user_id=user_id,course_id=course_id)
                 # print('*********', queryset.last_viewed_lesson_id)
                 # print('******', queryset.last_viewed_lesson_duration)
-
+    
                 queryset.last_viewed_lesson_id = None
                 queryset.last_viewed_lesson_duration = time(0,0,0)
                 queryset.save()
-
-
+    
+    
                 return JsonResponse({"status":"storing_empty_lesson_id_and_watch_time_00:00:00_for_user"})
-
+    
         # elif request.method=="GET" and  request.query_params.get('lesson_id')=='':
         #     # print('--------dataaaaaaaaaaaaaaaaaa--------', type(request.query_params.get('lesson_id')))
         #     # print('--------dataaaaaaaaaaaaaaaaaa--------', request.query_params.get('lesson_id')=="")
@@ -988,10 +988,10 @@ def usr_course_page_lesson(request):
         #     # else:
         #     #     print('-----------lesson_id_query-----------')
         #     #     return JsonResponse({"status":"Invalid_course_id_or_user_id"})
-
+    
         elif request.method=="GET" and request.query_params.get('lesson_id')!='':
             # print('-------******* lesson id exists in request fetching lesson details---------------')
-
+    
             # user_id =  2
             user_id = request.user
             course_id = request.query_params.get('course_id')
@@ -1002,20 +1002,20 @@ def usr_course_page_lesson(request):
                 lesson_status_queryset=User_Lessons.objects.get(user_id=user_id,lesson_id=lesson_id,course_id=course_id)
                 # print('lesson_status-----',lesson_status_queryset.lesson_status)
                 print('lesson_status-----',lesson_status_queryset.lesson_status)
-
+    
                 if lesson_status_queryset.lesson_status!='locked' and lesson_status_queryset.lesson_status=='unlocked':
                     print('unlocked',lesson_status_queryset.lesson_status)
                     print(lesson_status_queryset.lesson_status == 'locked')
                     data=course_page_lesson_id(user_id,course_id,lesson_id)
                     return JsonResponse({'all_lessons': data})
-
+    
                 elif lesson_status_queryset.lesson_status!='locked' and lesson_status_queryset.lesson_status=='completed':
                     print('completed',lesson_status_queryset.lesson_status)
                     print(lesson_status_queryset.lesson_status == 'locked')
                     data=course_page_lesson_id(user_id,course_id,lesson_id)
                     return JsonResponse({'all_lessons': data})
-
-
+    
+    
                 elif lesson_status_queryset.lesson_status=='locked' and lesson_status_queryset.lesson_status!='unlocked' and 'completed':
                     print('locked')
                     return JsonResponse({'status': 'please_complete_the_current_lesson_quiz_and_come_back'})
@@ -1102,8 +1102,8 @@ def usr_course_page_lesson(request):
             #         print('False')
             #
             # return JsonResponse({'all_lessons': all_lesson_details_serializer_data})
-
-
+    
+    
         else:
             # print("not get or put")
             return JsonResponse({"status": "other_scenario_not_get_or_put"})
@@ -1118,10 +1118,10 @@ def usr_course_page_lesson(request):
 def learners_count(request):
     if request.user.is_authenticated:
         course_id=request.query_params.get('course_id')
-
+    
         queryset = usr_course.objects.filter(course_id=course_id)
-
-
+    
+    
         if queryset.exists():
             learners=len(queryset)
             # print('learners',type(learners))
@@ -1130,10 +1130,10 @@ def learners_count(request):
             for i in range(len(course_learners_count)):
                 course_learners_count[i].views=learners
                 course_learners_count[i].save()
-
-
+    
+    
             # return JsonResponse({'status':'Invalid course id'})
-
+    
             return JsonResponse({"Learners":len(queryset)})
         return JsonResponse({"status":"course_id_does_not_exist"})
     else:
@@ -1148,16 +1148,16 @@ def likes_count(request):
         user_id=request.user
         # user_id = 2
         course_id = request.data.get('course_id')
-
+    
         # course_id =2
-
+    
         try:
             course_queryset=Course.objects.get(course_id=course_id)
-
+    
             user_queryset = usr_course.objects.filter(user_id=user_id,course_id=course_id)
         except:
             return JsonResponse({"status": "course_id_does_not_exist"})
-
+    
         if user_queryset.exists():
             for i in range(0,len(user_queryset)):
                 # print(user_queryset[i].like_status)
@@ -1167,21 +1167,21 @@ def likes_count(request):
                     user_queryset[i].like_status=True
                     user_queryset[i].save()
                     # print('after like the status is', user_queryset[i].like_status)
-
+    
                     # print('course_queryset.likes',course_queryset.likes)
                     course_queryset.likes+=1
                     course_queryset.save()
                     # print('after increment of likes count', course_queryset.likes)
-
+    
                     return JsonResponse({"status":user_queryset[i].like_status,"Likes": course_queryset.likes})
-
-
+    
+    
                 elif status==True:
                     # print('status', status)
                     user_queryset[i].like_status = False
                     user_queryset[i].save()
                     # print('after like the status is', user_queryset[i].like_status)
-
+    
                     # print('course_queryset.likes', course_queryset.likes)
                     if course_queryset.likes>0:
                         course_queryset.likes -= 1
@@ -1190,7 +1190,7 @@ def likes_count(request):
                         return JsonResponse({"status":user_queryset[i].like_status,"Likes":course_queryset.likes})
                     else:
                         pass
-
+    
         else:
             return JsonResponse({"status":"matching_query_set_does_not_exists"})
 
@@ -1234,21 +1234,21 @@ def quiz(request):
         # print("COURSE_ID", course_id)
         # print("LESSON_ID", lesson_id)
         # print("USER_ID", user_id)
-
+    
         info = QnA.objects.filter(course_id = course_id, lesson_id = lesson_id)
         # print('info',info)
         sinfo = QnA_serializer2(info, many=True)
         # print('sinfo_data',sinfo.data)
-
+    
         # info2 = User_answers.objects.filter(user_id = user_id, Course_id = course_id, lesson_id = lesson_id)
         # print('info2',info2)
         # sinfo2 = User_answers_serializer2(info2, many=True)
         # print("sinfo2.data --------------------------------",sinfo2.data)
         # print(info2[0].answer,info2[0].status)
-
-
+    
+    
         for i in range(0,len(sinfo.data)):
-
+    
             # sinfo.data[i].update({'user_entered_answer':info2[i].answer,'answer_status':info2[i].status})
             sinfo.data[i].pop("correct_answer")
             sinfo.data[i].pop("lesson_id")
@@ -1256,9 +1256,9 @@ def quiz(request):
             qsn_optn=sinfo.data[i].pop('question_options')
             sinfo.data[i].update({'question':qsn_optn['qsn'],'options':qsn_optn['options']})
             # print('///////////////////////////////',qsn_optn)
-
+    
         # print(sinfo.data)
-
+    
         return JsonResponse({'quiz': sinfo.data})#'course_id': course_id, 'lesson_id': lesson_id
     else:
         return JsonResponse({'status':'unauthorized_user'})
@@ -1281,11 +1281,11 @@ def quiz_attempt(request):
         # for i in range(1,len(attempt_info)):
         for i in range(0,len(request.data['questions'])):
             # print('*****request.dataquestions',request.data['questions'])
-
+    
             # print('lllllllll',len(attempt_info))
             # lesson_id = attempt_info[i]['lesson_id']
             question_id=int(request.data['questions'][i]['question_id'])
-
+    
             u_correct_answer=request.data['questions'][i]['option']
             # print('question_id', question_id,lesson_id,u_correct_answer)
             # print(type(u_correct_answer))
@@ -1295,31 +1295,31 @@ def quiz_attempt(request):
             # print('.........',a)
             # print('--------',quiz_serializer_data)
             for i in range(0,len(quiz_serializer_data)):
-
+    
                 # print('a',a[i].correct_answer)
                 # print('ahhhhh',len(quiz_serializer_data))
                 # print('answer in db',a[i].correct_answer)
                 # print('user answer',u_correct_answer)
                 if len(a[i].correct_answer)==1:#scq
                     # print(type(a[i].correct_answer))
-
+    
                     if len(a[i].correct_answer) == len(u_correct_answer):
                         if a[i].correct_answer == u_correct_answer:
-
+    
                             # print('True')
                             final_response.append({"question_id": question_id,"user_answer":u_correct_answer ,"status": "True"})
                             # break
                         else:
-
+    
                             # print('false')
                             final_response.append({"question_id": question_id, "user_answer":u_correct_answer ,"status": "False"})
                     # else:
                     #     final_response.append(f'please select {len(a[i].correct_answer)} option')
-
+    
                 elif len(a[i].correct_answer)==2:
                     # res = []
                     # if len(a[i].correct_answer) == len(u_correct_answer):
-
+    
                     # print('mcq',a[i].correct_answer,u_correct_answer)
                     if a[i].correct_answer==u_correct_answer :
                         final_response.append({"question_id":question_id,"user_answer":u_correct_answer ,"status":"True"})
@@ -1339,7 +1339,7 @@ def quiz_attempt(request):
                     # else:
                     #     res.append(f'please select {len(a[i].correct_answer)} options')
                     #     final_response.append(res)
-
+    
                         # return JsonResponse()
                 # elif len(u_correct_answer)==0:
                 #     print('---------------------------------i am else')
@@ -1350,11 +1350,11 @@ def quiz_attempt(request):
                     return JsonResponse({"status":"unexpected_response_from_user"})
             # print(final_response,type(final_response))
         response = {"answer_status":final_response}
-
-
+    
+    
         total_questions = len(response["answer_status"])
         total_correct = 0
-
+    
         for answer_status in response["answer_status"]:
             # print('00000000000000', answer_status)
             for k, v in answer_status.items():
@@ -1381,15 +1381,15 @@ def quiz_attempt(request):
         quiz_status="Fail"
         if quiz_percentage>70:
             quiz_status="Pass"
-
-
-
-
+    
+    
+    
+    
         # print(f"Total Correct: {total_correct}")
         # print(f"Total Questions: {total_questions}")
         # print(f"Quiz Percentage: {quiz_percentage}%")
         # print('final_response',final_response)
-
+    
         user_id=request.user
         # user_id=2
         # print('user_id',user_id)
@@ -1406,18 +1406,18 @@ def quiz_attempt(request):
             queryset.save()
             serializer.save()
             lesson_scores=[]
-
+    
             course_status_queryset=User_Lessons.objects.filter(user_id=user_id,course_id=request.data.get('course_id'))
-
+    
             course_status_update=usr_course.objects.get(user_id=user_id, course_id=request.data.get('course_id'))
             # print('course_status_update',course_status_update)
-
+    
             for i in range(len(course_status_queryset)):
-
+    
                 # print('course_status_queryset',course_status_queryset[i].quiz_score)
                 lesson_scores.append(course_status_queryset[i].quiz_score)
             print('lesson_scores',lesson_scores)
-
+    
             # for score in lesson_scores:
             #     # print(i)
             #     if score<70:
@@ -1431,7 +1431,7 @@ def quiz_attempt(request):
             #         course_status_update.course_status='Completed'
             #         course_status_update.save()
             #         print('course_status_update',course_status_update.course_status)
-
+    
             if all(score > 70 for score in lesson_scores):
                 course_status_update.course_status = 'Completed'
                 course_status_update.save()
@@ -1440,13 +1440,13 @@ def quiz_attempt(request):
                 course_status_update.course_status = 'Inprogress'
                 course_status_update.save()
                 print('course_status_update', course_status_update.course_status)
-
+    
             # user
             # course
             if queryset.quiz_attempt_status==True and queryset.quiz_score>70 and int(lesson_id)!=max_lesson_id:
                 # below lessons variable represents querying the next most greater lesson id based on request came on lesson id from frontend ,to update next lesson staus
                 lessons=User_Lessons.objects.filter(course_id=request.data.get('course_id'), lesson_id__gt=lesson_id).order_by('lesson_id').first()
-
+    
                 # print(lessons,len(lessons))
                 # print('next lesson id from multiple lessons of course',lessons.lesson_id.lesson_id,lessons)
                 next_lesson = User_Lessons.objects.get(lesson_id=lessons.lesson_id.lesson_id, user_id=user_id)
@@ -1455,7 +1455,7 @@ def quiz_attempt(request):
                 if next_lesson.lesson_status=='locked':
                     next_lesson.lesson_status='unlocked'
                     next_lesson.save()
-
+    
                     current_lesson=User_Lessons.objects.get(lesson_id=lesson_id,user_id=user_id)
                     # print('current lesson id',current_lesson.lesson_id.lesson_id,current_lesson)
                     current_lesson.lesson_status='completed'
@@ -1465,7 +1465,7 @@ def quiz_attempt(request):
                 else:
                     return JsonResponse({"status":"not_locked_not_unlocked_not_completed_got_diffrent_lesson_status_in_db"})
                     # print('not locked not unlocked not completed got diffrent lesson status in db')
-
+    
             # current_lesson = User_Lessons.objects.get(course_lesson_id=lesson_id)
             # current_lesson_id=current_lesson.course_lesson_id.lesson_id
             # print('current lesson id', current_lesson.course_lesson_id.lesson_id, current_lesson)
@@ -1477,21 +1477,21 @@ def quiz_attempt(request):
                 # print('current lesson id', current_lesson.lesson_id.lesson_id, current_lesson)
                 current_lesson.lesson_status = 'completed'
                 current_lesson.save()
-
-
-
-
+    
+    
+    
+    
             else:
                 # return JsonResponse({"status":"no_lesson_status_updated"})
                 # print("no lesson status updated")
                 pass
-
+    
             # print('sk')
-
-
+    
+    
         # print(serializer.errors)
-
-
+    
+    
         # if len(a[i].correct_answer) == len(u_correct_answer):
         #     print(len(a[i].correct_answer),len(u_correct_answer),a[i].correct_answer,u_correct_answer)
         return JsonResponse({'answer_status':final_response,'quiz_score':quiz_percentage,'quiz_status':quiz_status})
