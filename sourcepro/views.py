@@ -1633,42 +1633,42 @@ def change_password(request):
 # @permission_classes([IsAuthenticated])
 def training_subscription(request):
     # this api sends subscription data of the courses user 1 has enrolled for
-    # if request.user.is_authenticated:
-    # user_id= request.user
-    user_id= 2
-    info1 = usr_course.objects.filter(user_id = user_id)
-    serializer1 = usr_course_serializer(info1, many = True)
-    # print('serializer1------------',serializer1)
-    # print('serializer1.data-----whole',serializer1.data)
+    if request.user.is_authenticated:
+        user_id= request.user
+        # user_id= 2
+        info1 = usr_course.objects.filter(user_id = user_id)
+        serializer1 = usr_course_serializer(info1, many = True)
+        # print('serializer1------------',serializer1)
+        # print('serializer1.data-----whole',serializer1.data)
 
-    for i in range(0, len(serializer1.data)):
-        for k in list(serializer1.data[i].keys()):
-            if k in ['course_id',"order_id","subscription_datetime","amount"]:
-                continue
-            else:
-                serializer1.data[i].pop(k)
-    # print('serializer1.data after pop keys-----------',serializer1.data)
-    for i in range(0, len(serializer1.data)):
-        # print('/////////',serializer1.data)
-        info2 = Course.objects.filter(course_id = serializer1.data[i]["course_id"])
-        # print('info2----',info2)
-        serializer2 = Course_serializerr(info2, many=True)
-        # print('serializer2****',serializer2.data)
-        serializer1.data[i].pop('course_id')
-        subscription_datetime = serializer1.data[i].pop("subscription_datetime")
-        # Extract date and time components separately
-        serializer1.data[i]["subscription_date"] = datetime.datetime.strptime(subscription_datetime,"%Y-%m-%dT%H:%M:%SZ").strftime("%Y-%m-%d")
-        serializer1.data[i]["subscription_time"] = datetime.datetime.strptime(subscription_datetime,"%Y-%m-%dT%H:%M:%SZ").strftime("%H:%M:%S")
-        serializer1.data[i].update(Course_name = serializer2.data[0]["course_name"])
-        serializer1.data[i].update({'amount':serializer2.data[0]["amount"]})
+        for i in range(0, len(serializer1.data)):
+            for k in list(serializer1.data[i].keys()):
+                if k in ['course_id',"order_id","subscription_datetime","amount"]:
+                    continue
+                else:
+                    serializer1.data[i].pop(k)
+        # print('serializer1.data after pop keys-----------',serializer1.data)
+        for i in range(0, len(serializer1.data)):
+            # print('/////////',serializer1.data)
+            info2 = Course.objects.filter(course_id = serializer1.data[i]["course_id"])
+            # print('info2----',info2)
+            serializer2 = Course_serializerr(info2, many=True)
+            # print('serializer2****',serializer2.data)
+            serializer1.data[i].pop('course_id')
+            subscription_datetime = serializer1.data[i].pop("subscription_datetime")
+            # Extract date and time components separately
+            serializer1.data[i]["subscription_date"] = datetime.datetime.strptime(subscription_datetime,"%Y-%m-%dT%H:%M:%SZ").strftime("%Y-%m-%d")
+            serializer1.data[i]["subscription_time"] = datetime.datetime.strptime(subscription_datetime,"%Y-%m-%dT%H:%M:%SZ").strftime("%H:%M:%S")
+            serializer1.data[i].update(Course_name = serializer2.data[0]["course_name"])
+            serializer1.data[i].update({'amount':serializer2.data[0]["amount"]})
 
 
-        # serializer1.data[i].update()
-    # print('serializer1.data after updating keys',serializer1.data)
+            # serializer1.data[i].update()
+        # print('serializer1.data after updating keys',serializer1.data)
 
-    return JsonResponse({"Training_Subscription" : serializer1.data})
-    # else:
-    #     return JsonResponse({"status":"unauthorized_user"})
+        return JsonResponse({"Training_Subscription" : serializer1.data})
+    else:
+        return JsonResponse({"status":"unauthorized_user"})
 
 
 
