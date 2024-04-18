@@ -36,6 +36,7 @@ urlpatterns = [
     path('mydetails/editdetails', TemplateView.as_view(template_name='index.html')),
     path('trainingsubscriptions/', TemplateView.as_view(template_name='index.html')),
     path('set-new-password/', TemplateView.as_view(template_name='index.html')),
+    path('forgot-password/', TemplateView.as_view(template_name='index.html')),
     # path('changepassword', TemplateView.as_view(template_name='index.html')),
 
     # path('quiz/',  TemplateView.as_view(template_name='index.html')),
