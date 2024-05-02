@@ -171,10 +171,10 @@ def login_view(request):
         if  user is not None:
             # print("not none")
             login(request, user)
-            print("logged in:", request.user.username)
+            print("logged in:", request.user.username, user.is_superuser)
             # print(request.user)
             # print(request.user.email)
-            return JsonResponse({"status": "user_validated"})
+            return JsonResponse({"status": "user_validated","admin":user.is_superuser})
 
         else:
             # print("none")
@@ -1671,5 +1671,30 @@ def training_subscription(request):
         return JsonResponse({"status":"unauthorized_user"})
 
 
+@api_view(['GET'])
 
+def all_users_status(request):
 
+    if request.user.is_authenticated:
+        if request.method == 'GET':
+    
+            all_users = User_details.objects.all()
+            total_user_count = User_details.objects.count()
+            print('all_users',all_users)
+            active_users = User_details.objects.filter(user_status='active').count()
+            print('active_users',active_users)
+            inactive_users = User_details.objects.filter(user_status='inactive').count()
+            print('inactive_users', inactive_users)
+    
+            # print("read the record")
+    
+            return JsonResponse({"status":{"total_users":total_user_count,"active":active_users,"inactive":inactive_users}})
+
+#
+# @api_view(['GET'])
+#
+# def add_delete_users(request):
+#
+#     # if request.user.is_authenticated:
+#     if request.method == 'GET':
+#         new_user=User_details.objects.create(user_id_id="nj",name="",contact_no=123456789,business_email=,location=)

@@ -14,13 +14,15 @@ class User_details(models.Model):
     user_id = models.OneToOneField(User, on_delete=models.CASCADE )
     name=models.CharField(max_length = 50,blank=False)
     contact_no = models.BigIntegerField()
-    company = models.CharField(max_length = 30,blank=False)
+    user_status=models.CharField(max_length = 50,blank=True)
+    company = models.CharField(max_length = 30,blank=True)#remove?
     business_email = models.EmailField(max_length = 254,blank=False)
-    years_of_experience = models.PositiveSmallIntegerField()
-    job_position = models.CharField(max_length = 30,blank=False)
+    years_of_experience = models.PositiveSmallIntegerField(null=True, blank=True)#remove?
+    job_position = models.CharField(max_length = 30,blank=True)#remove?
     location = models.CharField(max_length = 30,blank=False)
     otp = models.CharField(max_length=255, unique=True, blank=True, null=True)
     course_id=models.IntegerField(null=True, blank=True)
+
 
 
 

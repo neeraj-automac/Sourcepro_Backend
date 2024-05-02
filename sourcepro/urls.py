@@ -25,6 +25,7 @@ urlpatterns = [
     path('training_subscription/',views.training_subscription),
     path('next_lesson/',views.Next_lesson),
     path('download_certificate/',views.download_certificate),
+    path('all_users_status/',views.all_users_status),
 
     # path('training_subscription/', views.training_subscription),
     # path('update_user_course/', views.update_user_course),
