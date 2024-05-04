@@ -20,6 +20,7 @@ from django.conf import settings
 from django.db.models import Min, Max
 from functools import reduce
 from .tasks import*
+from django.core.paginator import Paginator
 # from datetime import date
 # import datetime
 # from datetime import datetime
@@ -42,7 +43,7 @@ print('^^^^ in views ^^^^^^^')
 
 #
 # print(usr_course.objects.all())
-tes_fun.apply_async()
+# tes_fun.apply_async()
 
 
 @api_view(['GET'])
@@ -1575,6 +1576,11 @@ def user_details(request):
                     else:
                         rec.location=rec.location
     
+                    if item == "user_status" and ds[item]!="":
+                        rec.user_status = ds[item]
+                    else:
+                        rec.user_status = rec.user_status
+    
     
                     # else:
                     #     continue
@@ -1677,7 +1683,7 @@ def all_users_status(request):
 
     if request.user.is_authenticated:
         if request.method == 'GET':
-    
+
             all_users = User_details.objects.all()
             total_user_count = User_details.objects.count()
             print('all_users',all_users)
@@ -1685,16 +1691,131 @@ def all_users_status(request):
             print('active_users',active_users)
             inactive_users = User_details.objects.filter(user_status='inactive').count()
             print('inactive_users', inactive_users)
-    
-            # print("read the record")
-    
-            return JsonResponse({"status":{"total_users":total_user_count,"active":active_users,"inactive":inactive_users}})
 
+            # print("read the record")
+
+
+            return JsonResponse({"status":{"total_users":total_user_count,"active":active_users,"inactive":inactive_users}})
+    else:
+        return JsonResponse({"status":"unauthorized_user"})
 #
-# @api_view(['GET'])
-#
-# def add_delete_users(request):
-#
-#     # if request.user.is_authenticated:
-#     if request.method == 'GET':
-#         new_user=User_details.objects.create(user_id_id="nj",name="",contact_no=123456789,business_email=,location=)
+@api_view(['POST',"DELETE"])
+
+def add_delete_users(request):
+
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            print(request.data)
+            user_create_Serializer=User_create_Serializer(data={"username":request.data.get('username'),"password":request.data.get('password')})
+            # User.objects.get
+            # new_user=User.objects.create(username="neerajpynam@gmail.com",password="Neeraj@584")
+            # new_user.save()
+            # new_user_details=User_details.objects.create(user_id_id="neerajpynam@gmail",name="neeru",contact_no=123456789,business_email="neerajpynam@gmail.com",location="hyd")
+            # new_user_details.save()
+
+            if user_create_Serializer.is_valid():
+                created_user=user_create_Serializer.save()
+                userdetails_create_Serializer = UserDetails_create_Serializer(
+                    data={"user_id":created_user.pk, "name": request.data.get('name'),
+                          "contact_no": request.data.get('contact_no'), "business_email": request.data.get('username'),
+                          "location": request.data.get('location'),"user_status":request.data.get('user_status')})
+
+                if userdetails_create_Serializer.is_valid():
+                    userdetails_create_Serializer.save()
+                else:
+                    print('ud',userdetails_create_Serializer.errors)
+
+            else:
+                print('u',user_create_Serializer.errors)
+            return JsonResponse({"status":"created"})
+        elif request.method=="DELETE":
+
+            try:
+                user_to_be_deleted = User.objects.get(username=request.query_params.get("username"))
+                user_to_be_deleted.delete()
+                return JsonResponse({"status":"user_deleted_sucessfully"})
+            except User.DoesNotExist:
+                return JsonResponse({"status": "user_does_not_exist"})
+        else:
+            return JsonResponse({"status":"not_post_not_delete"})
+    else:
+        return JsonResponse({"status": "unauthorized_user"})
+
+
+
+
+
+@api_view(['GET'])
+def pagination(request):
+    if request.user.is_authenticated:
+        if request.method=="GET":
+            if int(request.query_params.get("page"))>0:
+                #username,contact,email,dateofjoin,location
+                contact_list = User_details.objects.all().order_by('-id')
+
+                paginator = Paginator(contact_list, 2)  # Show 25 contacts per page.
+
+
+                page_number = request.query_params.get("page")
+                page_obj = paginator.get_page(page_number)
+                print("number of pages",paginator.num_pages)
+                # print("next page",page_obj.next_page_number())
+                # print("previous_page_number",page_obj.previous_page_number()())
+                pagination_serializer=user_details_serializer(page_obj,many=True)
+
+
+
+
+                for item in range(len(pagination_serializer.data)):
+                    print(item)
+                    user_id = pagination_serializer.data[item]['user_id']
+                    print(user_id)
+                    user_for_doj = User.objects.get(pk=user_id)
+                    user_doj_ser=User_doj_Serializer(user_for_doj)
+                    print(user_for_doj.date_joined,user_doj_ser.data)
+                    # item['date_of_joining'] = user_for_doj
+                    pagination_serializer.data[item].update(user_doj_ser.data)
+                    # pagination_serializer.data.append({
+                    #     "date_of_joining": contact_list[item].user_id.date_joined
+                    #
+                    # })
+
+                return JsonResponse({"number_of_pages":paginator.num_pages,"page_obj": pagination_serializer.data})
+            else:
+                return JsonResponse({"status":"invalid_page_number"})
+
+    else:
+        return JsonResponse({"status": "unauthorized_user"})
+
+
+@api_view(['PUT'])
+
+def update_user_status(request):
+    if request.user.is_authenticated:
+        if request.method=="PUT":
+    
+            try:
+                user_pk=User.objects.get(username=request.data.get("username")).pk
+                user_status_to_be_updated = User_details.objects.get(user_id_id=user_pk)
+                if user_status_to_be_updated.user_status=="inactive":
+                    user_status_to_be_updated.user_status="active"
+                    user_status_to_be_updated.save()
+                    return JsonResponse({"status": "user_status_inactive_to_active_updated_sucessfully"})
+                elif user_status_to_be_updated.user_status=="active":
+                    user_status_to_be_updated.user_status = "inactive"
+                    user_status_to_be_updated.save()
+                    return JsonResponse({"status": "user_status_active_to_inactive_updated_sucessfully"})
+                else:
+                    print("something else")
+    
+    
+    
+    
+                
+    
+            except User.DoesNotExist:
+                return JsonResponse({"status": "user_does_not_exist"})
+
+
+    else:
+        return JsonResponse({"status": "unauthorized_user"})

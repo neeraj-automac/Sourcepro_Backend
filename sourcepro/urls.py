@@ -26,6 +26,9 @@ urlpatterns = [
     path('next_lesson/',views.Next_lesson),
     path('download_certificate/',views.download_certificate),
     path('all_users_status/',views.all_users_status),
+    path('add_delete_users/',views.add_delete_users),
+    path('update_user_status/',views.update_user_status),
+    path('pagination/',views.pagination),
 
     # path('training_subscription/', views.training_subscription),
     # path('update_user_course/', views.update_user_course),

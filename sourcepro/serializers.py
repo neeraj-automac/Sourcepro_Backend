@@ -171,3 +171,19 @@ class FAQ_serializer(serializers.ModelSerializer):
     class Meta:
         model=FAQ
         fields=['question','answer']
+
+
+class User_create_Serializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['username','password']
+        
+class User_doj_Serializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['date_joined']
+
+class UserDetails_create_Serializer(serializers.ModelSerializer):
+    class Meta:
+        model = User_details
+        fields = ['user_id','name','contact_no','business_email','location','user_status']
