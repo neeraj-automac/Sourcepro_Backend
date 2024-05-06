@@ -187,3 +187,20 @@ class UserDetails_create_Serializer(serializers.ModelSerializer):
     class Meta:
         model = User_details
         fields = ['user_id','name','contact_no','business_email','location','user_status']
+
+
+
+class UserDetails_pagination_Serializer(serializers.ModelSerializer):
+    username = serializers.CharField(source='user.username', read_only=True)
+    user_details_user_id = serializers.CharField(source='user_details.user_id', read_only=True)
+    name = serializers.CharField(source='user_details.name')
+    contact_no = serializers.IntegerField(source='user_details.contact_no')
+    business_email = serializers.EmailField(source='user_details.business_email')
+    location = serializers.CharField(source='user_details.location')
+    user_status = serializers.CharField(source='user_details.user_status')
+
+
+    class Meta:
+
+        model = User
+        fields = ['username','user_details_user_id','name','contact_no','business_email','location','user_status']

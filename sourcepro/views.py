@@ -3,6 +3,7 @@ from django.contrib.auth.hashers import check_password, make_password
 from django.core.mail import send_mail
 from django.http import HttpResponse, JsonResponse
 import random
+from django.db.models import Q
 from . import models
 from .models import *
 import ast
@@ -1528,15 +1529,16 @@ def user_details(request):
             # d_s.data[0].pop("password")
             return JsonResponse({"user_details": ds_data[0]})
         elif request.method == 'PUT':
-    
+
             ds = request.data  # expects a dictionary with user details as per the user_details model
             user_id = request.user
+            # user_id = 19
             # user_id = 2
             try:
                 rec = User_details.objects.get(user_id = user_id)#ds["user_id"]
-    
+
                 rec_list = json.loads(serializers.serialize('json', [rec, ]))
-    
+
                 for item in ds and rec_list[0]["fields"]:
                     # print('(((((((((((', ds[item], rec_list[0]["fields"][item])
                     # if ds[item] == rec_list[0]["fields"][item]:
@@ -1545,7 +1547,7 @@ def user_details(request):
                     #     continue
                     # else:
                     if item == "name" and ds[item]!="":
-    
+
                         rec.name = ds[item]
                     else:
                         rec.name =  rec.name
@@ -1565,23 +1567,23 @@ def user_details(request):
                         rec.years_of_experience = ds[item]
                     else:
                         rec.years_of_experience=rec.years_of_experience
-    
+
                     if item == "job_position" and ds[item]!="":
                         rec.job_position = ds[item]
                     else:
                         rec.job_position=rec.job_position
-    
+
                     if item == "location" and ds[item]!="":
                         rec.location = ds[item]
                     else:
                         rec.location=rec.location
-    
+
                     if item == "user_status" and ds[item]!="":
                         rec.user_status = ds[item]
                     else:
                         rec.user_status = rec.user_status
-    
-    
+
+
                     # else:
                     #     continue
                     rec.save()
@@ -1684,8 +1686,8 @@ def all_users_status(request):
     if request.user.is_authenticated:
         if request.method == 'GET':
 
-            all_users = User_details.objects.all()
-            total_user_count = User_details.objects.count()
+            all_users = User_details.objects.filter(Q(user_status="active") | Q(user_status="inactive"))
+            total_user_count = len(all_users)
             print('all_users',all_users)
             active_users = User_details.objects.filter(user_status='active').count()
             print('active_users',active_users)
@@ -1705,8 +1707,12 @@ def add_delete_users(request):
 
     if request.user.is_authenticated:
         if request.method == 'POST':
+            username_for_user_table=request.data.get('business_email')
+            before_at_the_rate_part, domain = username_for_user_table.split("@")
+            final_username_for_user_table = f"{before_at_the_rate_part}_hct@{domain}"
+            print('*********',final_username_for_user_table)
             print(request.data)
-            user_create_Serializer=User_create_Serializer(data={"username":request.data.get('username'),"password":request.data.get('password')})
+            user_create_Serializer=User_create_Serializer(data={"username":final_username_for_user_table,"password":"hct_user"})#request.data.get('password')
             # User.objects.get
             # new_user=User.objects.create(username="neerajpynam@gmail.com",password="Neeraj@584")
             # new_user.save()
@@ -1717,7 +1723,7 @@ def add_delete_users(request):
                 created_user=user_create_Serializer.save()
                 userdetails_create_Serializer = UserDetails_create_Serializer(
                     data={"user_id":created_user.pk, "name": request.data.get('name'),
-                          "contact_no": request.data.get('contact_no'), "business_email": request.data.get('username'),
+                          "contact_no": request.data.get('contact_no'), "business_email": request.data.get('business_email'),
                           "location": request.data.get('location'),"user_status":request.data.get('user_status')})
 
                 if userdetails_create_Serializer.is_valid():
@@ -1726,7 +1732,7 @@ def add_delete_users(request):
                     print('ud',userdetails_create_Serializer.errors)
 
             else:
-                print('u',user_create_Serializer.errors)
+                print('errors------------',user_create_Serializer.errors)
             return JsonResponse({"status":"created"})
         elif request.method=="DELETE":
 
@@ -1751,28 +1757,33 @@ def pagination(request):
         if request.method=="GET":
             if int(request.query_params.get("page"))>0:
                 #username,contact,email,dateofjoin,location
-                contact_list = User_details.objects.all().order_by('-id')
+                # contact_list = User_details.objects.all().order_by('-id')
+                contact_list = User.objects.filter(username__contains='_hct').order_by('-id')
+                # print('contact_list',contact_list)
 
-                paginator = Paginator(contact_list, 2)  # Show 25 contacts per page.
+                paginator = Paginator(contact_list, 5)  # Show 25 contacts per page.
+                # print('paginator',paginator)
 
 
                 page_number = request.query_params.get("page")
                 page_obj = paginator.get_page(page_number)
-                print("number of pages",paginator.num_pages)
+                print("number of pages",paginator.num_pages,page_obj)
                 # print("next page",page_obj.next_page_number())
                 # print("previous_page_number",page_obj.previous_page_number()())
-                pagination_serializer=user_details_serializer(page_obj,many=True)
-
+                pagination_serializer=UserDetails_pagination_Serializer(page_obj,many=True)
+                # print(pagination_serializer.data)
+                # print(pagination_serializer)
 
 
 
                 for item in range(len(pagination_serializer.data)):
-                    print(item)
-                    user_id = pagination_serializer.data[item]['user_id']
-                    print(user_id)
-                    user_for_doj = User.objects.get(pk=user_id)
+                    # print(item)
+                    # print('----',pagination_serializer.data[item])
+                    user_id = pagination_serializer.data[item]['user_details_user_id']
+                    # print(user_id)
+                    user_for_doj = User.objects.get(username=user_id)
                     user_doj_ser=User_doj_Serializer(user_for_doj)
-                    print(user_for_doj.date_joined,user_doj_ser.data)
+                    # print(user_for_doj.date_joined,user_doj_ser.data)
                     # item['date_of_joining'] = user_for_doj
                     pagination_serializer.data[item].update(user_doj_ser.data)
                     # pagination_serializer.data.append({
@@ -1793,10 +1804,12 @@ def pagination(request):
 def update_user_status(request):
     if request.user.is_authenticated:
         if request.method=="PUT":
-    
+            print("inside putt")
+            print(request.data.get("username"))
             try:
-                user_pk=User.objects.get(username=request.data.get("username")).pk
-                user_status_to_be_updated = User_details.objects.get(user_id_id=user_pk)
+                # user_pk=User.objects.get(username=request.data.get("username")).pk
+                user_status_to_be_updated = User_details.objects.get(business_email=request.data.get("username"))
+                # print('00000',user_status_to_be_updated.user_status)
                 if user_status_to_be_updated.user_status=="inactive":
                     user_status_to_be_updated.user_status="active"
                     user_status_to_be_updated.save()
@@ -1807,12 +1820,12 @@ def update_user_status(request):
                     return JsonResponse({"status": "user_status_active_to_inactive_updated_sucessfully"})
                 else:
                     print("something else")
-    
-    
-    
-    
-                
-    
+
+
+
+
+
+
             except User.DoesNotExist:
                 return JsonResponse({"status": "user_does_not_exist"})
 
