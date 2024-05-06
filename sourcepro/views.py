@@ -1737,7 +1737,7 @@ def add_delete_users(request):
         elif request.method=="DELETE":
 
             try:
-                user_to_be_deleted = User.objects.get(username=request.query_params.get("username"))
+                user_to_be_deleted = User_details.objects.get(business_email=request.query_params.get("username"))
                 user_to_be_deleted.delete()
                 return JsonResponse({"status":"user_deleted_sucessfully"})
             except User.DoesNotExist:
