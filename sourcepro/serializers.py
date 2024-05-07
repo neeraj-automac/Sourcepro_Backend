@@ -191,16 +191,17 @@ class UserDetails_create_Serializer(serializers.ModelSerializer):
 
 
 class UserDetails_pagination_Serializer(serializers.ModelSerializer):
-    username = serializers.CharField(source='user.username', read_only=True)
-    user_details_user_id = serializers.CharField(source='user_details.user_id', read_only=True)
-    name = serializers.CharField(source='user_details.name')
-    contact_no = serializers.IntegerField(source='user_details.contact_no')
-    business_email = serializers.EmailField(source='user_details.business_email')
-    location = serializers.CharField(source='user_details.location')
-    user_status = serializers.CharField(source='user_details.user_status')
+    #----in order to access other model fileds in same serializer u are using u need to use nested serializer here we have 
+    date_joined = serializers.DateTimeField(source='user_id.date_joined', read_only=True)
+    u_name = serializers.CharField(source='name')
+    u_contact_no = serializers.IntegerField(source='contact_no')
+    u_user_status = serializers.CharField(source='user_status')
+    u_business_email = serializers.EmailField(source='business_email')
+    u_location = serializers.CharField(source='location')
+
 
 
     class Meta:
 
-        model = User
-        fields = ['username','user_details_user_id','name','contact_no','business_email','location','user_status']
+        model = User_details
+        fields = ['u_name','u_contact_no','u_user_status','u_business_email','u_location',"date_joined"]

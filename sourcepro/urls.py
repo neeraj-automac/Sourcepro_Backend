@@ -29,6 +29,7 @@ urlpatterns = [
     path('add_delete_users/',views.add_delete_users),
     path('update_user_status/',views.update_user_status),
     path('pagination/',views.pagination),
+    path('edit_user_details_hct/',views.edit_user_details_hct),
 
     # path('training_subscription/', views.training_subscription),
     # path('update_user_course/', views.update_user_course),

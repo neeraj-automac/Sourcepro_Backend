@@ -1578,10 +1578,7 @@ def user_details(request):
                     else:
                         rec.location=rec.location
 
-                    if item == "user_status" and ds[item]!="":
-                        rec.user_status = ds[item]
-                    else:
-                        rec.user_status = rec.user_status
+
 
 
                     # else:
@@ -1728,20 +1725,27 @@ def add_delete_users(request):
 
                 if userdetails_create_Serializer.is_valid():
                     userdetails_create_Serializer.save()
+                    return JsonResponse({"status": "created"})
+
                 else:
                     print('ud',userdetails_create_Serializer.errors)
 
             else:
                 print('errors------------',user_create_Serializer.errors)
-            return JsonResponse({"status":"created"})
+
         elif request.method=="DELETE":
 
-            try:
+            # try:
                 user_to_be_deleted = User_details.objects.get(business_email=request.query_params.get("username"))
-                user_to_be_deleted.delete()
-                return JsonResponse({"status":"user_deleted_sucessfully"})
-            except User.DoesNotExist:
-                return JsonResponse({"status": "user_does_not_exist"})
+                if user_to_be_deleted is not None:
+                    final_delete_usr=user_to_be_deleted.user_id
+                    final_delete_usr.delete()
+                    return JsonResponse({"status":"user_deleted_sucessfully"})
+                else:
+                    return JsonResponse({"status": "userdoesnot exist"})
+
+            # except User.DoesNotExist:
+            #     return JsonResponse({"status": "user_does_not_exist"})
         else:
             return JsonResponse({"status":"not_post_not_delete"})
     else:
@@ -1758,11 +1762,16 @@ def pagination(request):
             if int(request.query_params.get("page"))>0:
                 #username,contact,email,dateofjoin,location
                 # contact_list = User_details.objects.all().order_by('-id')
-                contact_list = User.objects.filter(username__contains='_hct').order_by('-id')
-                # print('contact_list',contact_list)
+                contact_list = User_details.objects.filter(user_id__username__contains='_hct').order_by('-id')
+                print('contact_list',contact_list)
 
-                paginator = Paginator(contact_list, 5)  # Show 25 contacts per page.
-                # print('paginator',paginator)
+                user_details_rec_serializer=UserDetails_pagination_Serializer(contact_list,many=True)
+                print('user_details_rec_serializer',user_details_rec_serializer)
+                print('user_details_rec_serializer_data',user_details_rec_serializer.data)
+
+
+                paginator = Paginator(user_details_rec_serializer.data, 30)  # Show 25 contacts per page.
+                print('paginator',paginator)
 
 
                 page_number = request.query_params.get("page")
@@ -1770,30 +1779,14 @@ def pagination(request):
                 print("number of pages",paginator.num_pages,page_obj)
                 # print("next page",page_obj.next_page_number())
                 # print("previous_page_number",page_obj.previous_page_number()())
-                pagination_serializer=UserDetails_pagination_Serializer(page_obj,many=True)
-                # print(pagination_serializer.data)
-                # print(pagination_serializer)
 
 
-
-                for item in range(len(pagination_serializer.data)):
-                    # print(item)
-                    # print('----',pagination_serializer.data[item])
-                    user_id = pagination_serializer.data[item]['user_details_user_id']
-                    # print(user_id)
-                    user_for_doj = User.objects.get(username=user_id)
-                    user_doj_ser=User_doj_Serializer(user_for_doj)
-                    # print(user_for_doj.date_joined,user_doj_ser.data)
-                    # item['date_of_joining'] = user_for_doj
-                    pagination_serializer.data[item].update(user_doj_ser.data)
-                    # pagination_serializer.data.append({
-                    #     "date_of_joining": contact_list[item].user_id.date_joined
-                    #
-                    # })
-
-                return JsonResponse({"number_of_pages":paginator.num_pages,"page_obj": pagination_serializer.data})
+                return JsonResponse({"number_of_pages":paginator.num_pages,"page_obj": user_details_rec_serializer.data})
+                # return JsonResponse({"number_of_pages":"yo"})
             else:
                 return JsonResponse({"status":"invalid_page_number"})
+        else:
+            return JsonResponse({"status": "not get req"})
 
     else:
         return JsonResponse({"status": "unauthorized_user"})
@@ -1830,5 +1823,62 @@ def update_user_status(request):
                 return JsonResponse({"status": "user_does_not_exist"})
 
 
+    else:
+        return JsonResponse({"status": "unauthorized_user"})
+
+@api_view(['GET', 'PUT'])
+def edit_user_details_hct(request):
+    if request.user.is_authenticated:
+        if request.method == 'PUT':
+
+                ds = request.data  # expects a dictionary with user details as per the user_details model
+
+                user_id = request.data.get("username")
+
+                try:
+                    rec = User_details.objects.get(user_id__username = user_id)#ds["user_id"]
+                    print(rec)
+
+                    rec_list = json.loads(serializers.serialize('json', [rec, ]))
+
+                    for item in ds and rec_list[0]["fields"]:
+
+                        if item == "name" and ds[item]!="":
+
+                            rec.name = ds[item]
+                        else:
+                            rec.name =  rec.name
+                        if item == "contact_no" and ds[item]!="":
+                            rec.contact_no = ds[item]
+                        else:
+                            rec.contact_no=rec.contact_no
+
+                        if item == "business_email" and ds[item]!="":
+                            rec.business_email = ds[item]
+                        else:
+                            rec.business_email = rec.business_email
+
+                        if item == "location" and ds[item]!="":
+                            rec.location = ds[item]
+                        else:
+                            rec.location=rec.location
+
+                        if item == "user_status" and ds[item]!="":
+                            rec.user_status = ds[item]
+                        else:
+                            rec.user_status = rec.user_status
+
+
+
+                        rec.save()
+                        # print("item found -->", item)
+                    de = User_details.objects.filter(user_id__username=user_id)#ds["user_id"]
+                    de_s = user_details_serializer(de, many=True)
+                    # print("d_s", de_s.data)
+                    return Response({"user_details":de_s.data})
+                except User_details.DoesNotExist:
+                    return JsonResponse({"status":"user_does_not_exist"})
+        else:
+            return JsonResponse({"status":"not put request"})
     else:
         return JsonResponse({"status": "unauthorized_user"})
