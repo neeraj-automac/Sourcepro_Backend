@@ -1735,17 +1735,17 @@ def add_delete_users(request):
 
         elif request.method=="DELETE":
 
-            # try:
-                user_to_be_deleted = User_details.objects.get(business_email=request.query_params.get("username"))
-                if user_to_be_deleted is not None:
-                    final_delete_usr=user_to_be_deleted.user_id
-                    final_delete_usr.delete()
-                    return JsonResponse({"status":"user_deleted_sucessfully"})
-                else:
-                    return JsonResponse({"status": "userdoesnot exist"})
+            try:
+                user_to_be_deleted = User_details.objects.get(business_email=request.query_params.get("business_email"))
+                # if user_to_be_deleted is not None:
+                final_delete_usr=user_to_be_deleted.user_id
+                final_delete_usr.delete()
+                #     return JsonResponse({"status":"user_deleted_sucessfully"})
+                # else:
+                #     return JsonResponse({"status": "userdoesnot exist"})
 
-            # except User.DoesNotExist:
-            #     return JsonResponse({"status": "user_does_not_exist"})
+            except User_details.DoesNotExist:
+                return JsonResponse({"status": "user_does_not_exist"})
         else:
             return JsonResponse({"status":"not_post_not_delete"})
     else:
@@ -1833,10 +1833,10 @@ def edit_user_details_hct(request):
 
                 ds = request.data  # expects a dictionary with user details as per the user_details model
 
-                user_id = request.data.get("username")
+                user_id = request.data.get("business_email")
 
                 try:
-                    rec = User_details.objects.get(user_id__username = user_id)#ds["user_id"]
+                    rec = User_details.objects.get(business_email = user_id)#ds["user_id"]
                     print(rec)
 
                     rec_list = json.loads(serializers.serialize('json', [rec, ]))
@@ -1872,7 +1872,7 @@ def edit_user_details_hct(request):
 
                         rec.save()
                         # print("item found -->", item)
-                    de = User_details.objects.filter(user_id__username=user_id)#ds["user_id"]
+                    de = User_details.objects.filter(business_email=user_id)#ds["user_id"]
                     de_s = user_details_serializer(de, many=True)
                     # print("d_s", de_s.data)
                     return Response({"user_details":de_s.data})
