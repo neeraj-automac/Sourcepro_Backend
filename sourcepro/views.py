@@ -1740,7 +1740,7 @@ def add_delete_users(request):
                 # if user_to_be_deleted is not None:
                 final_delete_usr=user_to_be_deleted.user_id
                 final_delete_usr.delete()
-                #     return JsonResponse({"status":"user_deleted_sucessfully"})
+                return JsonResponse({"status":"user_deleted_sucessfully"})
                 # else:
                 #     return JsonResponse({"status": "userdoesnot exist"})
 
@@ -1798,10 +1798,10 @@ def update_user_status(request):
     if request.user.is_authenticated:
         if request.method=="PUT":
             print("inside putt")
-            print(request.data.get("username"))
+            print(request.data.get("business_email"))
             try:
                 # user_pk=User.objects.get(username=request.data.get("username")).pk
-                user_status_to_be_updated = User_details.objects.get(business_email=request.data.get("username"))
+                user_status_to_be_updated = User_details.objects.get(business_email=request.data.get("business_email"))
                 # print('00000',user_status_to_be_updated.user_status)
                 if user_status_to_be_updated.user_status=="inactive":
                     user_status_to_be_updated.user_status="active"
