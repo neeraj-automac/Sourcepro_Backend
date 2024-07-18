@@ -70,7 +70,8 @@ CORS_ALLOWED_ORIGINS = [
 
     'http://localhost:3000',
     'http://192.168.29.74:3000',
-    
+    # 'http://192.168.29.220:8000',
+
 
 
 

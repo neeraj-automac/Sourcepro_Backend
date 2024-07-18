@@ -191,17 +191,81 @@ class UserDetails_create_Serializer(serializers.ModelSerializer):
 
 
 class UserDetails_pagination_Serializer(serializers.ModelSerializer):
-    #----in order to access other model fileds in same serializer u are using u need to use nested serializer here we have 
+    #----in order to access other model fileds in same serializer u need to use nested serializer here we have
     date_joined = serializers.DateTimeField(source='user_id.date_joined', read_only=True)
-    u_name = serializers.CharField(source='name')
-    u_contact_no = serializers.IntegerField(source='contact_no')
-    u_user_status = serializers.CharField(source='user_status')
-    u_business_email = serializers.EmailField(source='business_email')
-    u_location = serializers.CharField(source='location')
+    # date_joined = User_doj_Serializer(many=True, read_only=True)
+    # print('--------------------date_joined',date_joined)
+    # name = serializers.CharField()
+    # contact_no = serializers.IntegerField()
+    # user_status = serializers.CharField()
+    # business_email = serializers.EmailField()
+    # location = serializers.CharField()
 
 
 
     class Meta:
 
         model = User_details
-        fields = ['u_name','u_contact_no','u_user_status','u_business_email','u_location',"date_joined"]
+        fields = ['date_joined','name','contact_no','user_status','business_email','location']
+
+class UserDetails_business_email_Serializer(serializers.ModelSerializer):
+    # username = serializers.CharField(source='users.username', read_only=True)
+
+    class Meta:
+        model = User_details
+        fields = ['name','id']
+
+
+
+class TemplateDetails_pagination_Serializer(serializers.ModelSerializer):
+
+
+    class Meta:
+
+        model = Template
+        fields = ["id","template_name","template_heading","template_body"]
+
+class Template_dropdown_Serializer(serializers.ModelSerializer):
+
+
+
+
+    class Meta:
+
+        model = Template
+        fields = ["id","template_name"]
+
+class Broadcast_Serializer(serializers.ModelSerializer):
+# In Django REST Framework, when you use serializers.SerializerMethodField(), it automatically looks for
+# a method in the serializer class named get_ < field_name >
+# In your case, since the field is named users, it looks for a method named get_users.so it is mandatory to name method as get_users
+# if not named in such a way it raises a attribute error as no get_users
+
+
+
+
+
+
+        # fields = [,,,,,,]
+        # fields = '__all__'
+
+
+        template = serializers.CharField(source='template.template_name', read_only=True)
+        # users = serializers.CharField(source='users.business_email', read_only=True)
+
+        template_id = serializers.CharField(source='template.id', read_only=True)
+        users = serializers.SerializerMethodField()
+        frequency = serializers.CharField()
+        follow_up = serializers.CharField()
+        time = serializers.TimeField()
+        sent_status = serializers.BooleanField()
+
+        class Meta:
+            model = Broadcast
+            fields=['id','template','template_id','users','frequency','follow_up','time','sent_status']
+
+        def get_users(self, obj):
+            # return [user.business_email for user in obj.users.all()]
+            return [{'user_id': user.id, 'username': user.name} for user in obj.users.all()]
+
+

@@ -94,4 +94,17 @@ class ClipboardAdmin(admin.ModelAdmin):
 
 
 
+@admin.register(Template)
+class TemplateAdmin(admin.ModelAdmin):
+    list_display = ['template_name','template_heading']
+
+
+@admin.register(Broadcast)
+class BroadcastAdmin(admin.ModelAdmin):
+    list_display = ['template','frequency','follow_up','sent_status']
+
+
+
+
+
 
