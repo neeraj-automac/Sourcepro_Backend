@@ -1,0 +1,1 @@
+The course teaches you the essential concepts of Python programming, and gives you an in-depth knowledge in data analytics, machine learning, data visualization, web scraping, and natural language processing. You will master the essential concepts of data types, tuples, lists, dicts, basic operators, and functions
