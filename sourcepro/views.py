@@ -277,7 +277,7 @@ def home(request):
     
         old_courses = Course.objects.filter(type="old")
         old_courses_serializer = Course_serializer(old_courses, many=True)
-        old_courses_serializer_data=old_courses_serializer.data
+        -*old_courses_serializer_data=old_courses_serializer.data
         print("old_courses_serializer:::::", old_courses_serializer,old_courses)
         print("old_courses_serializer_data:::::", old_courses_serializer.data)
         user_id = request.user
@@ -1704,54 +1704,54 @@ def all_users_status(request):
 
 def add_delete_users(request):
 
-    if request.user.is_authenticated:
-        if request.method == 'POST':
-            username_for_user_table=request.data.get('business_email')
-            before_at_the_rate_part, domain = username_for_user_table.split("@")
-            final_username_for_user_table = f"{before_at_the_rate_part}_hct@{domain}"
-            print('*********',final_username_for_user_table)
-            print(request.data)
-            user_create_Serializer=User_create_Serializer(data={"username":final_username_for_user_table,"password":"hct_user"})#request.data.get('password')
-            # User.objects.get
-            # new_user=User.objects.create(username="neerajpynam@gmail.com",password="Neeraj@584")
-            # new_user.save()
-            # new_user_details=User_details.objects.create(user_id_id="neerajpynam@gmail",name="neeru",contact_no=123456789,business_email="neerajpynam@gmail.com",location="hyd")
-            # new_user_details.save()
+    # if request.user.is_authenticated:
+    if request.method == 'POST':
+        username_for_user_table=request.data.get('business_email')
+        before_at_the_rate_part, domain = username_for_user_table.split("@")
+        final_username_for_user_table = f"{before_at_the_rate_part}_hct@{domain}"
+        print('*********',final_username_for_user_table)
+        print(request.data)
+        user_create_Serializer=User_create_Serializer(data={"username":final_username_for_user_table,"password":"hct_user"})#request.data.get('password')
+        # User.objects.get
+        # new_user=User.objects.create(username="neerajpynam@gmail.com",password="Neeraj@584")
+        # new_user.save()
+        # new_user_details=User_details.objects.create(user_id_id="neerajpynam@gmail",name="neeru",contact_no=123456789,business_email="neerajpynam@gmail.com",location="hyd")
+        # new_user_details.save()
 
-            if user_create_Serializer.is_valid():
-                created_user=user_create_Serializer.save()
-                userdetails_create_Serializer = UserDetails_create_Serializer(
-                    data={"user_id":created_user.pk, "name": request.data.get('name'),
-                          "contact_no": request.data.get('contact_no'), "business_email": request.data.get('business_email'),
-                          "location": request.data.get('location'),"user_status":request.data.get('user_status')})
+        if user_create_Serializer.is_valid():
+            created_user=user_create_Serializer.save()
+            userdetails_create_Serializer = UserDetails_create_Serializer(
+                data={"user_id":created_user.pk, "name": request.data.get('name'),
+                      "contact_no": request.data.get('contact_no'), "business_email": request.data.get('business_email'),
+                      "location": request.data.get('location'),"user_status":request.data.get('user_status')})
 
-                if userdetails_create_Serializer.is_valid():
-                    userdetails_create_Serializer.save()
-                    return JsonResponse({"status": "created"})
-
-                else:
-                    print('ud',userdetails_create_Serializer.errors)
+            if userdetails_create_Serializer.is_valid():
+                userdetails_create_Serializer.save()
+                return JsonResponse({"status": "created"})
 
             else:
-                print('errors------------',user_create_Serializer.errors)
+                print('ud',userdetails_create_Serializer.errors)
 
-        elif request.method=="DELETE":
-
-            try:
-                user_to_be_deleted = User_details.objects.get(business_email=request.query_params.get("business_email"))
-                # if user_to_be_deleted is not None:
-                final_delete_usr=user_to_be_deleted.user_id
-                final_delete_usr.delete()
-                return JsonResponse({"status":"user_deleted_sucessfully"})
-                # else:
-                #     return JsonResponse({"status": "userdoesnot exist"})
-
-            except User_details.DoesNotExist:
-                return JsonResponse({"status": "user_does_not_exist"})
         else:
-            return JsonResponse({"status":"not_post_not_delete"})
+            print('errors------------',user_create_Serializer.errors)
+
+    elif request.method=="DELETE":
+
+        try:
+            user_to_be_deleted = User_details.objects.get(business_email=request.query_params.get("business_email"))
+            # if user_to_be_deleted is not None:
+            final_delete_usr=user_to_be_deleted.user_id
+            final_delete_usr.delete()
+            return JsonResponse({"status":"user_deleted_sucessfully"})
+            # else:
+            #     return JsonResponse({"status": "userdoesnot exist"})
+
+        except User_details.DoesNotExist:
+            return JsonResponse({"status": "user_does_not_exist"})
     else:
-        return JsonResponse({"status": "unauthorized_user"})
+        return JsonResponse({"status":"not_post_not_delete"})
+    # else:
+    #     return JsonResponse({"status": "unauthorized_user"})
 
 
 
@@ -1795,136 +1795,136 @@ def add_delete_users(request):
 #     #     return JsonResponse({"status": "unauthorized_user"})
 @api_view(['GET'])
 def pagination(request):
-    if request.user.is_authenticated:
-        if request.method == "GET":
-            page_number = request.query_params.get("page", 1)
-            try:
-                page_number = int(page_number)
-                if page_number <= 0:
-                    raise ValueError
-            except ValueError:
-                return JsonResponse({"status": "invalid_page_number"})
+    # if request.user.is_authenticated:
+    if request.method == "GET":
+        page_number = request.query_params.get("page", 1)
+        try:
+            page_number = int(page_number)
+            if page_number <= 0:
+                raise ValueError
+        except ValueError:
+            return JsonResponse({"status": "invalid_page_number"})
 
-            # Get the list of contacts filtered by a condition
-            contact_list = User_details.objects.filter(user_id__username__contains='_hct').order_by('-id')
-            print('contact_list', contact_list)
+        # Get the list of contacts filtered by a condition
+        contact_list = User_details.objects.filter(user_id__username__contains='_hct').order_by('-id')
+        print('contact_list', contact_list)
 
-            # Paginate the queryset
-            paginator = Paginator(contact_list, 30)  # Show 30 contacts per page
-            page_obj = paginator.get_page(page_number)
-            print('paginator', paginator)
-            print("number of pages", paginator.num_pages, page_obj)
+        # Paginate the queryset
+        paginator = Paginator(contact_list, 30)  # Show 30 contacts per page
+        page_obj = paginator.get_page(page_number)
+        print('paginator', paginator)
+        print("number of pages", paginator.num_pages, page_obj)
 
-            # Serialize the paginated data
-            page_serializer = UserDetails_pagination_Serializer(page_obj, many=True)
-            print("page_serializer.data", page_serializer.data)
+        # Serialize the paginated data
+        page_serializer = UserDetails_pagination_Serializer(page_obj, many=True)
+        print("page_serializer.data", page_serializer.data)
 
-            return JsonResponse({"number_of_pages": paginator.num_pages, "page_obj": page_serializer.data})
-        else:
-            return JsonResponse({"status": "not get req"})
-
-
+        return JsonResponse({"number_of_pages": paginator.num_pages, "page_obj": page_serializer.data})
     else:
-        return JsonResponse({"status": "unauthorized_user"})
+        return JsonResponse({"status": "not get req"})
+
+
+    # else:
+    #     return JsonResponse({"status": "unauthorized_user"})
 
 #hct
 @api_view(['PUT'])
 
 def update_user_status(request):
-    if request.user.is_authenticated:
-        if request.method=="PUT":
-            print("inside putt")
-            print(request.data.get("business_email"))
-            try:
-                # user_pk=User.objects.get(username=request.data.get("username")).pk
-                user_status_to_be_updated = User_details.objects.get(business_email=request.data.get("business_email"))
-                # print('00000',user_status_to_be_updated.user_status)
-                if user_status_to_be_updated.user_status=="inactive":
-                    print("inactive")
-                    user_status_to_be_updated.user_status="active"
-                    user_status_to_be_updated.save()
-                    print("active", user_status_to_be_updated.user_status)
-                    return JsonResponse({"status": "user_status_inactive_to_active_updated_sucessfully"})
-                elif user_status_to_be_updated.user_status=="active":
-                    print("active")
-                    user_status_to_be_updated.user_status = "inactive"
-                    user_status_to_be_updated.save()
-                    print("inactive",user_status_to_be_updated.user_status)
+    # if request.user.is_authenticated:
+    if request.method=="PUT":
+        print("inside putt")
+        print(request.data.get("business_email"))
+        try:
+            # user_pk=User.objects.get(username=request.data.get("username")).pk
+            user_status_to_be_updated = User_details.objects.get(business_email=request.data.get("business_email"))
+            # print('00000',user_status_to_be_updated.user_status)
+            if user_status_to_be_updated.user_status=="inactive":
+                print("inactive")
+                user_status_to_be_updated.user_status="active"
+                user_status_to_be_updated.save()
+                print("active", user_status_to_be_updated.user_status)
+                return JsonResponse({"status": "user_status_inactive_to_active_updated_sucessfully"})
+            elif user_status_to_be_updated.user_status=="active":
+                print("active")
+                user_status_to_be_updated.user_status = "inactive"
+                user_status_to_be_updated.save()
+                print("inactive",user_status_to_be_updated.user_status)
 
-                    return JsonResponse({"status": "user_status_active_to_inactive_updated_sucessfully"})
-                else:
-                    print("something else")
-
-
+                return JsonResponse({"status": "user_status_active_to_inactive_updated_sucessfully"})
+            else:
+                print("something else")
 
 
 
 
-            except User.DoesNotExist:
-                return JsonResponse({"status": "user_does_not_exist"})
 
 
-    else:
-        return JsonResponse({"status": "unauthorized_user"})
+        except User.DoesNotExist:
+            return JsonResponse({"status": "user_does_not_exist"})
+
+
+    # else:
+    #     return JsonResponse({"status": "unauthorized_user"})
 
 #hct
 @api_view(['GET', 'PUT'])
 def edit_user_details_hct(request):
-    if request.user.is_authenticated:
-        if request.method == 'PUT':
+    # if request.user.is_authenticated:
+    if request.method == 'PUT':
 
-                ds = request.data  # expects a dictionary with user details as per the user_details model
+            ds = request.data  # expects a dictionary with user details as per the user_details model
 
-                user_id = request.data.get("business_email")
+            user_id = request.data.get("business_email")
 
-                try:
-                    rec = User_details.objects.get(business_email = user_id)#ds["user_id"]
-                    print(rec)
+            try:
+                rec = User_details.objects.get(business_email = user_id)#ds["user_id"]
+                print(rec)
 
-                    rec_list = json.loads(serializers.serialize('json', [rec, ]))
+                rec_list = json.loads(serializers.serialize('json', [rec, ]))
 
-                    for item in ds and rec_list[0]["fields"]:
+                for item in ds and rec_list[0]["fields"]:
 
-                        if item == "name" and ds[item]!="":
+                    if item == "name" and ds[item]!="":
 
-                            rec.name = ds[item]
-                        else:
-                            rec.name =  rec.name
-                        if item == "contact_no" and ds[item]!="":
-                            rec.contact_no = ds[item]
-                        else:
-                            rec.contact_no=rec.contact_no
+                        rec.name = ds[item]
+                    else:
+                        rec.name =  rec.name
+                    if item == "contact_no" and ds[item]!="":
+                        rec.contact_no = ds[item]
+                    else:
+                        rec.contact_no=rec.contact_no
 
-                        if item == "business_email" and ds[item]!="":
-                            rec.business_email = ds[item]
-                        else:
-                            rec.business_email = rec.business_email
+                    if item == "business_email" and ds[item]!="":
+                        rec.business_email = ds[item]
+                    else:
+                        rec.business_email = rec.business_email
 
-                        if item == "location" and ds[item]!="":
-                            rec.location = ds[item]
-                        else:
-                            rec.location=rec.location
+                    if item == "location" and ds[item]!="":
+                        rec.location = ds[item]
+                    else:
+                        rec.location=rec.location
 
-                        if item == "user_status" and ds[item]!="":
-                            rec.user_status = ds[item]
-                        else:
-                            rec.user_status = rec.user_status
+                    if item == "user_status" and ds[item]!="":
+                        rec.user_status = ds[item]
+                    else:
+                        rec.user_status = rec.user_status
 
 
 
-                        rec.save()
-                        # print("item found -->", item)
-                    de = User_details.objects.filter(business_email=user_id)#ds["user_id"]
-                    de_s = user_details_serializer(de, many=True)
-                    # print("d_s", de_s.data)
-                    return Response({"user_details":de_s.data})
-                except User_details.DoesNotExist:
-                    return JsonResponse({"status":"user_does_not_exist"})
-        else:
-            return JsonResponse({"status":"not put request"})
-
+                    rec.save()
+                    # print("item found -->", item)
+                de = User_details.objects.filter(business_email=user_id)#ds["user_id"]
+                de_s = user_details_serializer(de, many=True)
+                # print("d_s", de_s.data)
+                return Response({"user_details":de_s.data})
+            except User_details.DoesNotExist:
+                return JsonResponse({"status":"user_does_not_exist"})
     else:
-        return JsonResponse({"status": "unauthorized_user"})
+        return JsonResponse({"status":"not put request"})
+
+    # else:
+    #     return JsonResponse({"status": "unauthorized_user"})
 
 #hct
 @api_view(['PUT'])
